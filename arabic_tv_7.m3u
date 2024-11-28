@@ -1,0 +1,623 @@
+#EXTM3U
+
+#EXTINF:-1 group-title="Testador IPTV", Gerado por Testador IPTV(PlayStore)
+https://play.google.com/store/apps/details?id=thalles.org.testadoriptv
+
+#EXTINF:-1 tvg-logo="http://s3.i3ns.net:2052/portal/picon/2023-10/30e135e274e07fc9eafff19dc9cdd388.svg" group-title="Arabic", 2M Monde
+http://37.49.225.117:8080/myhdosama/6JbVUE4zXTpRr2pf/11261
+
+#EXTINF:-1 tvg-logo="http://s3.i3ns.net:2052/portal/picon/2021-06/06db51446e2043a1cb0237acd1376879.png" group-title="Arabic", ABN
+http://37.49.225.117:8080/myhdosama/6JbVUE4zXTpRr2pf/63105
+
+#EXTINF:-1 tvg-logo="http://s3.i3ns.net:2052/portal/picon/2022-05/270704cdb8dcb57126a48195f72b8c6f.jpg" group-title="Arabic", Al Hadeth
+http://37.49.225.117:8080/myhdosama/6JbVUE4zXTpRr2pf/17223
+
+#EXTINF:-1 tvg-logo="http://s3.i3ns.net:2052/portal/picon/2023-10/f9bb58aa14cf57ee81c5a3498b67f148.jpg" group-title="Arabic", Al Haneen
+http://37.49.225.117:8080/myhdosama/6JbVUE4zXTpRr2pf/300236
+
+#EXTINF:-1 tvg-logo="http://s3.i3ns.net:2052/portal/picon/2023-04/3b7b0b8c22ca0ccd14fe5023f06df97e.png" group-title="Arabic", Al Hiwar TV
+http://37.49.225.117:8080/myhdosama/6JbVUE4zXTpRr2pf/33100
+
+#EXTINF:-1 tvg-logo="http://s3.i3ns.net:2052/portal/picon/2021-05/6a3eaeadd9d6138edbf732d701755309.png" group-title="Arabic", Al Horreya TV
+http://37.49.225.117:8080/myhdosama/6JbVUE4zXTpRr2pf/182318
+
+#EXTINF:-1 tvg-logo="http://s3.i3ns.net:2052/cs/etc/blank-icon.png" group-title="Arabic", Al Insan
+http://37.49.225.117:8080/myhdosama/6JbVUE4zXTpRr2pf/64388
+
+#EXTINF:-1 tvg-logo="http://s3.i3ns.net:2052/cs/etc/blank-icon.png" group-title="Arabic", Al Kalema TV
+http://37.49.225.117:8080/myhdosama/6JbVUE4zXTpRr2pf/299360
+
+#EXTINF:-1 tvg-logo="http://s3.i3ns.net:2052/portal/picon/2021-05/1a4cbcaee6cdc7ba6a7b170931e8d467.png" group-title="Arabic", Al Khalij TV
+http://37.49.225.117:8080/myhdosama/6JbVUE4zXTpRr2pf/165992
+
+#EXTINF:-1 tvg-logo="http://s3.i3ns.net:2052/portal/picon/2021-07/0f9ba7924e35fe49ba8b573bb189fafe.png" group-title="Arabic", Al Magharibia
+http://37.49.225.117:8080/myhdosama/6JbVUE4zXTpRr2pf/33096
+
+#EXTINF:-1 tvg-logo="http://s3.i3ns.net:2052/cs/etc/blank-icon.png" group-title="Arabic", AL Malakot
+http://37.49.225.117:8080/myhdosama/6JbVUE4zXTpRr2pf/300582
+
+#EXTINF:-1 tvg-logo="http://s3.i3ns.net:2052/portal/picon/2021-12/6cfe00921d74a30c96d6cefd47852483.png" group-title="Arabic", Al Qamar TV
+http://37.49.225.117:8080/myhdosama/6JbVUE4zXTpRr2pf/196082
+
+#EXTINF:-1 tvg-logo="http://s3.i3ns.net:2052/cs/etc/blank-icon.png" group-title="Arabic", Al Sirat TV
+http://37.49.225.117:8080/myhdosama/6JbVUE4zXTpRr2pf/11333
+
+#EXTINF:-1 tvg-logo="http://s3.i3ns.net:2052/cs/etc/blank-icon.png" group-title="Arabic", Al Tarek TV
+http://37.49.225.117:8080/myhdosama/6JbVUE4zXTpRr2pf/299372
+
+#EXTINF:-1 tvg-logo="http://s3.i3ns.net:2052/portal/picon/2022-10/1f0880cf7564b73393a64d6a62aff386.svg" group-title="Arabic", Alaraby TV
+http://37.49.225.117:8080/myhdosama/6JbVUE4zXTpRr2pf/43767
+
+#EXTINF:-1 tvg-logo="http://s3.i3ns.net:2052/portal/picon/2022-10/ded48f34a3666f32c1f3b2f6501aad4c.svg" group-title="Arabic", Alaraby TV 2
+http://37.49.225.117:8080/myhdosama/6JbVUE4zXTpRr2pf/296844
+
+#EXTINF:-1 tvg-logo="http://s3.i3ns.net:2052/portal/picon/2023-07/3d2aa989ba382e4ec0ddb3d388a3dc97.png" group-title="Arabic", Alkarma TV
+http://37.49.225.117:8080/myhdosama/6JbVUE4zXTpRr2pf/299361
+
+#EXTINF:-1 tvg-logo="http://s3.i3ns.net:2052/portal/picon/2021-05/3da862e2ece2fe6bf5561af2b178e84f.png" group-title="Arabic", Alkarma TV Discipleship
+http://37.49.225.117:8080/myhdosama/6JbVUE4zXTpRr2pf/27364
+
+#EXTINF:-1 tvg-logo="http://s3.i3ns.net:2052/portal/picon/2023-05/a09fd78718a828850c9721dc69a26bc4.png" group-title="Arabic", Alkarma TV Middle East
+http://37.49.225.117:8080/myhdosama/6JbVUE4zXTpRr2pf/284241
+
+#EXTINF:-1 tvg-logo="http://s3.i3ns.net:2052/portal/picon/2023-10/646f21f23f48c9e6f2146feab61418c8.png" group-title="Arabic", Alkarma TV North America and Canada
+http://37.49.225.117:8080/myhdosama/6JbVUE4zXTpRr2pf/300643
+
+#EXTINF:-1 tvg-logo="http://s3.i3ns.net:2052/portal/picon/2023-08/c70a0deffa2283b607f1c5383f1cdf9f.png" group-title="Arabic", Alkeraza TV
+http://37.49.225.117:8080/myhdosama/6JbVUE4zXTpRr2pf/299386
+
+#EXTINF:-1 tvg-logo="http://s3.i3ns.net:2052/portal/picon/2021-06/d90b01614db23e76ed5a7e2ffa01142b.png" group-title="Arabic", Almagd TV
+http://37.49.225.117:8080/myhdosama/6JbVUE4zXTpRr2pf/121049
+
+#EXTINF:-1 tvg-logo="http://s3.i3ns.net:2052/portal/picon/2021-05/ab1146075ea38a973d0bbc9fcab1a086.png" group-title="Arabic", Almustakillah TV
+http://37.49.225.117:8080/myhdosama/6JbVUE4zXTpRr2pf/11207
+
+#EXTINF:-1 tvg-logo="http://s3.i3ns.net:2052/cs/etc/blank-icon.png" group-title="Arabic", Amazon Prime
+http://37.49.225.117:8080/myhdosama/6JbVUE4zXTpRr2pf/279718
+
+#EXTINF:-1 tvg-logo="http://s3.i3ns.net:2052/cs/etc/blank-icon.png" group-title="Arabic", Amazon Prime 2
+http://37.49.225.117:8080/myhdosama/6JbVUE4zXTpRr2pf/279719
+
+#EXTINF:-1 tvg-logo="http://s3.i3ns.net:2052/cs/etc/blank-icon.png" group-title="Arabic", Amazon Prime 3
+http://37.49.225.117:8080/myhdosama/6JbVUE4zXTpRr2pf/279720
+
+#EXTINF:-1 tvg-logo="http://s3.i3ns.net:2052/portal/picon/2021-12/3bff988adeb13074c9ba75fd30646984.png" group-title="Arabic", AMC
+http://37.49.225.117:8080/myhdosama/6JbVUE4zXTpRr2pf/196037
+
+#EXTINF:-1 tvg-logo="http://s3.i3ns.net:2052/portal/picon/2023-04/19b1043bbe98d2e5c3760a69a505a289.jfif" group-title="Arabic", Apple Plus 8
+http://37.49.225.117:8080/myhdosama/6JbVUE4zXTpRr2pf/297916
+
+#EXTINF:-1 tvg-logo="http://s3.i3ns.net:2052/cs/etc/blank-icon.png" group-title="Arabic", Arab Tourism
+http://37.49.225.117:8080/myhdosama/6JbVUE4zXTpRr2pf/299610
+
+#EXTINF:-1 tvg-logo="http://s3.i3ns.net:2052/cs/etc/blank-icon.png" group-title="Arabic", Arab USA
+http://37.49.225.117:8080/myhdosama/6JbVUE4zXTpRr2pf/300252
+
+#EXTINF:-1 tvg-logo="http://s3.i3ns.net:2052/portal/picon/2021-06/b9ace1303dfeb0fc991bf0eee60bf89f.png" group-title="Arabic", AssyriaSat
+http://37.49.225.117:8080/myhdosama/6JbVUE4zXTpRr2pf/166127
+
+#EXTINF:-1 tvg-logo="http://s3.i3ns.net:2052/portal/picon/2021-05/2941c49a22d1ab27d7ec9d15e8d7eaad.png" group-title="Arabic", Baby TV
+http://37.49.225.117:8080/myhdosama/6JbVUE4zXTpRr2pf/64399
+
+#EXTINF:-1 tvg-logo="http://s3.i3ns.net:2052/portal/picon/2022-03/198da58b4a3e6dd3868c9483b9197922.png" group-title="Arabic", Basma Channel
+http://37.49.225.117:8080/myhdosama/6JbVUE4zXTpRr2pf/43796
+
+#EXTINF:-1 tvg-logo="http://s3.i3ns.net:2052/portal/picon/2022-09/a29a304335a59f8b45761d67a3387210.png" group-title="Arabic", BBC Arabic
+http://37.49.225.117:8080/myhdosama/6JbVUE4zXTpRr2pf/2924
+
+#EXTINF:-1 tvg-logo="http://s3.i3ns.net:2052/portal/picon/2022-10/7b9a375db7314aa6a9dd9a389fa8b47e.png" group-title="Arabic", BBC Earth
+http://37.49.225.117:8080/myhdosama/6JbVUE4zXTpRr2pf/198003
+
+#EXTINF:-1 tvg-logo="http://s3.i3ns.net:2052/cs/etc/blank-icon.png" group-title="Arabic", BeeDrama
+http://37.49.225.117:8080/myhdosama/6JbVUE4zXTpRr2pf/300788
+
+#EXTINF:-1 tvg-logo="http://s3.i3ns.net:2052/portal/picon/2023-09/2e2bd5ae938e87eb279c657811c09466.jpg" group-title="Arabic", beIN Box Office 1
+http://37.49.225.117:8080/myhdosama/6JbVUE4zXTpRr2pf/300137
+
+#EXTINF:-1 tvg-logo="http://s3.i3ns.net:2052/portal/picon/2023-09/21e5b736d43ca12c2cda6096e184d43e.png" group-title="Arabic", beIN Box Office 2
+http://37.49.225.117:8080/myhdosama/6JbVUE4zXTpRr2pf/283290
+
+#EXTINF:-1 tvg-logo="http://s3.i3ns.net:2052/portal/picon/2023-09/4528d895436686e22622bb757b4320ea.png" group-title="Arabic", beIN Movies Drama 3
+http://37.49.225.117:8080/myhdosama/6JbVUE4zXTpRr2pf/13652
+
+#EXTINF:-1 tvg-logo="http://s3.i3ns.net:2052/portal/picon/2023-09/ad0bafa54ec39ccaa754c3798f65fb66.png" group-title="Arabic", beIN Movies Family 4
+http://37.49.225.117:8080/myhdosama/6JbVUE4zXTpRr2pf/300139
+
+#EXTINF:-1 tvg-logo="http://s3.i3ns.net:2052/cs/etc/blank-icon.png" group-title="Arabic", beIN Series 1
+http://37.49.225.117:8080/myhdosama/6JbVUE4zXTpRr2pf/300142
+
+#EXTINF:-1 tvg-logo="http://s3.i3ns.net:2052/portal/picon/2023-10/c62f8bc2ce2ef4a62d2c66e692726a81.png" group-title="Arabic", beIN Series 2
+http://37.49.225.117:8080/myhdosama/6JbVUE4zXTpRr2pf/300485
+
+#EXTINF:-1 tvg-logo="http://s3.i3ns.net:2052/portal/picon/2022-08/f5322f3b59dd1d75de94e00964fdce69.jpg" group-title="Arabic", BeoutQ Action
+http://37.49.225.117:8080/myhdosama/6JbVUE4zXTpRr2pf/195903
+
+#EXTINF:-1 tvg-logo="http://s3.i3ns.net:2052/portal/picon/2022-08/78f8fe139c65adcb80947a576fe35da3.jpg" group-title="Arabic", BeoutQ Cinema
+http://37.49.225.117:8080/myhdosama/6JbVUE4zXTpRr2pf/283221
+
+#EXTINF:-1 tvg-logo="http://s3.i3ns.net:2052/portal/picon/2022-08/1ad8688900b4c2df3ef37ba73866cad1.jpg" group-title="Arabic", BeoutQ Movies
+http://37.49.225.117:8080/myhdosama/6JbVUE4zXTpRr2pf/195908
+
+#EXTINF:-1 tvg-logo="http://s3.i3ns.net:2052/portal/picon/2021-05/3a6f00998c394d719e3ac4c8d9e0d2f8.png" group-title="Arabic", Boomerang
+http://37.49.225.117:8080/myhdosama/6JbVUE4zXTpRr2pf/8915
+
+#EXTINF:-1 tvg-logo="http://s3.i3ns.net:2052/portal/picon/2021-05/48f1f21de4d63a0638c30a4a6666f0b9.png" group-title="Arabic", C Sat
+http://37.49.225.117:8080/myhdosama/6JbVUE4zXTpRr2pf/165379
+
+#EXTINF:-1 tvg-logo="http://s3.i3ns.net:2052/portal/picon/2021-05/107149260ff2561c10e3bc31d0ca121e.png" group-title="Arabic", Cartoon Network Arabic
+http://37.49.225.117:8080/myhdosama/6JbVUE4zXTpRr2pf/58461
+
+#EXTINF:-1 tvg-logo="http://s3.i3ns.net:2052/portal/picon/2021-05/c555ff02ef519f11a08dff20da4cdd4d.png" group-title="Arabic", Cima
+http://37.49.225.117:8080/myhdosama/6JbVUE4zXTpRr2pf/4914
+
+#EXTINF:-1 tvg-logo="http://s3.i3ns.net:2052/portal/picon/2023-09/dbd7b6066da0c7359fd637faf8345909.png" group-title="Arabic", Cinema One
+http://37.49.225.117:8080/myhdosama/6JbVUE4zXTpRr2pf/300128
+
+#EXTINF:-1 tvg-logo="http://s3.i3ns.net:2052/portal/picon/2021-05/ce63f46ff62af106afa95959a4264c52.png" group-title="Arabic", CNBC Arabiya
+http://37.49.225.117:8080/myhdosama/6JbVUE4zXTpRr2pf/73027
+
+#EXTINF:-1 tvg-logo="http://s3.i3ns.net:2052/cs/etc/blank-icon.png" group-title="Arabic", Crime+ Investigation
+http://37.49.225.117:8080/myhdosama/6JbVUE4zXTpRr2pf/195912
+
+#EXTINF:-1 tvg-logo="http://s3.i3ns.net:2052/portal/picon/2021-12/185be6dd1a663190e6028cab07f449da.png" group-title="Arabic", Daawah TV
+http://37.49.225.117:8080/myhdosama/6JbVUE4zXTpRr2pf/284338
+
+#EXTINF:-1 tvg-logo="http://s3.i3ns.net:2052/portal/picon/2023-06/bff54deb990d53323e691c3649b32547.png" group-title="Arabic", Discovery Family
+http://37.49.225.117:8080/myhdosama/6JbVUE4zXTpRr2pf/298841
+
+#EXTINF:-1 tvg-logo="http://s3.i3ns.net:2052/portal/picon/2021-05/097b4bac30f2eb60f13cfe548b188067.png" group-title="Arabic", Discovery Science
+http://37.49.225.117:8080/myhdosama/6JbVUE4zXTpRr2pf/192878
+
+#EXTINF:-1 tvg-logo="http://s3.i3ns.net:2052/portal/picon/2021-12/637c9582b59e8b398d007e72e31e9fb0.png" group-title="Arabic", Discovery world
+http://37.49.225.117:8080/myhdosama/6JbVUE4zXTpRr2pf/195943
+
+#EXTINF:-1 tvg-logo="http://s3.i3ns.net:2052/portal/picon/2021-05/ffb7811407ecff8787e5451a7022a4bf.png" group-title="Arabic", Disney Channel
+http://37.49.225.117:8080/myhdosama/6JbVUE4zXTpRr2pf/64409
+
+#EXTINF:-1 tvg-logo="http://s3.i3ns.net:2052/portal/picon/2021-05/2b85183c51913c4a1ca0c30410caf9c0.png" group-title="Arabic", Disney Junior
+http://37.49.225.117:8080/myhdosama/6JbVUE4zXTpRr2pf/64404
+
+#EXTINF:-1 tvg-logo="http://s3.i3ns.net:2052/cs/etc/blank-icon.png" group-title="Arabic", EL Fadi
+http://37.49.225.117:8080/myhdosama/6JbVUE4zXTpRr2pf/300583
+
+#EXTINF:-1 tvg-logo="http://s3.i3ns.net:2052/portal/picon/2021-05/cb898b1f567b1614557c1d4c5efe5599.jpg" group-title="Arabic", Elmouritania
+http://37.49.225.117:8080/myhdosama/6JbVUE4zXTpRr2pf/22021
+
+#EXTINF:-1 tvg-logo="http://s3.i3ns.net:2052/portal/picon/2021-05/fb66688b0704f3b89159b4396d8eec52.jpg" group-title="Arabic", Elmouritania 2
+http://37.49.225.117:8080/myhdosama/6JbVUE4zXTpRr2pf/22012
+
+#EXTINF:-1 tvg-logo="http://s3.i3ns.net:2052/portal/picon/2021-12/4d9a408d6275e94085c8562dc43b7df6.png" group-title="Arabic", Eman Channel
+http://37.49.225.117:8080/myhdosama/6JbVUE4zXTpRr2pf/197123
+
+#EXTINF:-1 tvg-logo="http://s3.i3ns.net:2052/cs/etc/blank-icon.png" group-title="Arabic", Fayrouz
+http://37.49.225.117:8080/myhdosama/6JbVUE4zXTpRr2pf/300580
+
+#EXTINF:-1 tvg-logo="http://s3.i3ns.net:2052/portal/picon/2021-05/c0847efb36f220296e65d3669c0f0060.png" group-title="Arabic", Fix & Foxi
+http://37.49.225.117:8080/myhdosama/6JbVUE4zXTpRr2pf/145293
+
+#EXTINF:-1 tvg-logo="http://s3.i3ns.net:2052/cs/etc/blank-icon.png" group-title="Arabic", Fozi Mozi
+http://37.49.225.117:8080/myhdosama/6JbVUE4zXTpRr2pf/300581
+
+#EXTINF:-1 tvg-logo="http://s3.i3ns.net:2052/portal/picon/2021-05/8f397a55ee22a105f62fb1ddb0eecd60.png" group-title="Arabic", France 24
+http://37.49.225.117:8080/myhdosama/6JbVUE4zXTpRr2pf/2929
+
+#EXTINF:-1 tvg-logo="http://s3.i3ns.net:2052/cs/etc/blank-icon.png" group-title="Arabic", GRENDIZER
+http://37.49.225.117:8080/myhdosama/6JbVUE4zXTpRr2pf/300584
+
+#EXTINF:-1 tvg-logo="http://s3.i3ns.net:2052/cs/etc/blank-icon.png" group-title="Arabic", HAWAS TV
+http://37.49.225.117:8080/myhdosama/6JbVUE4zXTpRr2pf/64313
+
+#EXTINF:-1 tvg-logo="http://s3.i3ns.net:2052/cs/etc/blank-icon.png" group-title="Arabic", Hekayat Alamya
+http://37.49.225.117:8080/myhdosama/6JbVUE4zXTpRr2pf/300585
+
+#EXTINF:-1 tvg-logo="http://s3.i3ns.net:2052/portal/picon/2023-10/e0d281131ae0c0ae4198f0f01e2f0742.svg" group-title="Arabic", History 2
+http://37.49.225.117:8080/myhdosama/6JbVUE4zXTpRr2pf/300318
+
+#EXTINF:-1 tvg-logo="http://s3.i3ns.net:2052/cs/etc/blank-icon.png" group-title="Arabic", HOME CINEMA 01
+http://37.49.225.117:8080/myhdosama/6JbVUE4zXTpRr2pf/299286
+
+#EXTINF:-1 tvg-logo="http://s3.i3ns.net:2052/cs/etc/blank-icon.png" group-title="Arabic", HOME CINEMA 02
+http://37.49.225.117:8080/myhdosama/6JbVUE4zXTpRr2pf/300586
+
+#EXTINF:-1 tvg-logo="http://s3.i3ns.net:2052/cs/etc/blank-icon.png" group-title="Arabic", HOME CINEMA 03
+http://37.49.225.117:8080/myhdosama/6JbVUE4zXTpRr2pf/299287
+
+#EXTINF:-1 tvg-logo="http://s3.i3ns.net:2052/cs/etc/blank-icon.png" group-title="Arabic", HOME CINEMA 04
+http://37.49.225.117:8080/myhdosama/6JbVUE4zXTpRr2pf/299288
+
+#EXTINF:-1 tvg-logo="http://s3.i3ns.net:2052/cs/etc/blank-icon.png" group-title="Arabic", HOME CINEMA 05
+http://37.49.225.117:8080/myhdosama/6JbVUE4zXTpRr2pf/299289
+
+#EXTINF:-1 tvg-logo="http://s3.i3ns.net:2052/cs/etc/blank-icon.png" group-title="Arabic", HOME CINEMA 06
+http://37.49.225.117:8080/myhdosama/6JbVUE4zXTpRr2pf/299290
+
+#EXTINF:-1 tvg-logo="http://s3.i3ns.net:2052/cs/etc/blank-icon.png" group-title="Arabic", HOME CINEMA 08
+http://37.49.225.117:8080/myhdosama/6JbVUE4zXTpRr2pf/299292
+
+#EXTINF:-1 tvg-logo="http://s3.i3ns.net:2052/cs/etc/blank-icon.png" group-title="Arabic", HOME CINEMA 10
+http://37.49.225.117:8080/myhdosama/6JbVUE4zXTpRr2pf/299294
+
+#EXTINF:-1 tvg-logo="http://s3.i3ns.net:2052/cs/etc/blank-icon.png" group-title="Arabic", HOME CINEMA 11
+http://37.49.225.117:8080/myhdosama/6JbVUE4zXTpRr2pf/299295
+
+#EXTINF:-1 tvg-logo="http://s3.i3ns.net:2052/cs/etc/blank-icon.png" group-title="Arabic", HOME CINEMA 13
+http://37.49.225.117:8080/myhdosama/6JbVUE4zXTpRr2pf/299297
+
+#EXTINF:-1 tvg-logo="http://s3.i3ns.net:2052/cs/etc/blank-icon.png" group-title="Arabic", HOME CINEMA 15
+http://37.49.225.117:8080/myhdosama/6JbVUE4zXTpRr2pf/299299
+
+#EXTINF:-1 tvg-logo="http://s3.i3ns.net:2052/cs/etc/blank-icon.png" group-title="Arabic", Home Cinema Action 2
+http://37.49.225.117:8080/myhdosama/6JbVUE4zXTpRr2pf/300587
+
+#EXTINF:-1 tvg-logo="http://s3.i3ns.net:2052/cs/etc/blank-icon.png" group-title="Arabic", Home Cinema Arabic 1
+http://37.49.225.117:8080/myhdosama/6JbVUE4zXTpRr2pf/145263
+
+#EXTINF:-1 tvg-logo="http://s3.i3ns.net:2052/cs/etc/blank-icon.png" group-title="Arabic", Home Cinema Hindi
+http://37.49.225.117:8080/myhdosama/6JbVUE4zXTpRr2pf/300588
+
+#EXTINF:-1 tvg-logo="http://s3.i3ns.net:2052/cs/etc/blank-icon.png" group-title="Arabic", Home Cinema Horror
+http://37.49.225.117:8080/myhdosama/6JbVUE4zXTpRr2pf/300589
+
+#EXTINF:-1 tvg-logo="http://s3.i3ns.net:2052/cs/etc/blank-icon.png" group-title="Arabic", Home Cinema Kids 1
+http://37.49.225.117:8080/myhdosama/6JbVUE4zXTpRr2pf/300590
+
+#EXTINF:-1 tvg-logo="http://s3.i3ns.net:2052/cs/etc/blank-icon.png" group-title="Arabic", Home Cinema Kids 2
+http://37.49.225.117:8080/myhdosama/6JbVUE4zXTpRr2pf/300591
+
+#EXTINF:-1 tvg-logo="http://s3.i3ns.net:2052/cs/etc/blank-icon.png" group-title="Arabic", i24 News
+http://37.49.225.117:8080/myhdosama/6JbVUE4zXTpRr2pf/300594
+
+#EXTINF:-1 tvg-logo="http://s3.i3ns.net:2052/portal/picon/2023-08/6761e70af194b0b741743515c74c8acb.png" group-title="Arabic", Investigation Discovery
+http://37.49.225.117:8080/myhdosama/6JbVUE4zXTpRr2pf/299758
+
+#EXTINF:-1 tvg-logo="http://s3.i3ns.net:2052/cs/etc/blank-icon.png" group-title="Arabic", Kan Ya Makan Alhayat
+http://37.49.225.117:8080/myhdosama/6JbVUE4zXTpRr2pf/300592
+
+#EXTINF:-1 tvg-logo="http://s3.i3ns.net:2052/cs/etc/blank-icon.png" group-title="Arabic", Kid Zone
+http://37.49.225.117:8080/myhdosama/6JbVUE4zXTpRr2pf/299754
+
+#EXTINF:-1 tvg-logo="http://s3.i3ns.net:2052/cs/etc/blank-icon.png" group-title="Arabic", KIDS Al Sanafer
+http://37.49.225.117:8080/myhdosama/6JbVUE4zXTpRr2pf/300593
+
+#EXTINF:-1 tvg-logo="http://s3.i3ns.net:2052/portal/picon/2022-05/c701aa18f91a69dd13205231d6e12c95.png" group-title="Arabic", kids co
+http://37.49.225.117:8080/myhdosama/6JbVUE4zXTpRr2pf/281501
+
+#EXTINF:-1 tvg-logo="http://s3.i3ns.net:2052/cs/etc/blank-icon.png" group-title="Arabic", Kids Nils
+http://37.49.225.117:8080/myhdosama/6JbVUE4zXTpRr2pf/300597
+
+#EXTINF:-1 tvg-logo="http://s3.i3ns.net:2052/cs/etc/blank-icon.png" group-title="Arabic", Majestic 1 Action
+http://37.49.225.117:8080/myhdosama/6JbVUE4zXTpRr2pf/300262
+
+#EXTINF:-1 tvg-logo="http://s3.i3ns.net:2052/cs/etc/blank-icon.png" group-title="Arabic", Majestic 1 Cartoon
+http://37.49.225.117:8080/myhdosama/6JbVUE4zXTpRr2pf/300261
+
+#EXTINF:-1 tvg-logo="http://s3.i3ns.net:2052/cs/etc/blank-icon.png" group-title="Arabic", Majestic 1 Cinema
+http://37.49.225.117:8080/myhdosama/6JbVUE4zXTpRr2pf/300264
+
+#EXTINF:-1 tvg-logo="http://s3.i3ns.net:2052/cs/etc/blank-icon.png" group-title="Arabic", Majestic 1 Horror
+http://37.49.225.117:8080/myhdosama/6JbVUE4zXTpRr2pf/300265
+
+#EXTINF:-1 tvg-logo="http://s3.i3ns.net:2052/cs/etc/blank-icon.png" group-title="Arabic", Majestic 1 Horror H263
+http://37.49.225.117:8080/myhdosama/6JbVUE4zXTpRr2pf/300266
+
+#EXTINF:-1 tvg-logo="http://s3.i3ns.net:2052/cs/etc/blank-icon.png" group-title="Arabic", Majestic 1 Series
+http://37.49.225.117:8080/myhdosama/6JbVUE4zXTpRr2pf/300267
+
+#EXTINF:-1 tvg-logo="http://s3.i3ns.net:2052/cs/etc/blank-icon.png" group-title="Arabic", Majestic 1 Zaman
+http://37.49.225.117:8080/myhdosama/6JbVUE4zXTpRr2pf/300268
+
+#EXTINF:-1 tvg-logo="http://s3.i3ns.net:2052/cs/etc/blank-icon.png" group-title="Arabic", Majestic Action
+http://37.49.225.117:8080/myhdosama/6JbVUE4zXTpRr2pf/300258
+
+#EXTINF:-1 tvg-logo="http://s3.i3ns.net:2052/cs/etc/blank-icon.png" group-title="Arabic", Majestic Action 1
+http://37.49.225.117:8080/myhdosama/6JbVUE4zXTpRr2pf/298679
+
+#EXTINF:-1 tvg-logo="http://s3.i3ns.net:2052/cs/etc/blank-icon.png" group-title="Arabic", Majestic Aflam
+http://37.49.225.117:8080/myhdosama/6JbVUE4zXTpRr2pf/300259
+
+#EXTINF:-1 tvg-logo="http://s3.i3ns.net:2052/cs/etc/blank-icon.png" group-title="Arabic", Majestic Boxoffice 1
+http://37.49.225.117:8080/myhdosama/6JbVUE4zXTpRr2pf/300256
+
+#EXTINF:-1 tvg-logo="http://s3.i3ns.net:2052/cs/etc/blank-icon.png" group-title="Arabic", Majestic Boxoffice 2
+http://37.49.225.117:8080/myhdosama/6JbVUE4zXTpRr2pf/300257
+
+#EXTINF:-1 tvg-logo="http://s3.i3ns.net:2052/cs/etc/blank-icon.png" group-title="Arabic", Majestic Cinema
+http://37.49.225.117:8080/myhdosama/6JbVUE4zXTpRr2pf/300263
+
+#EXTINF:-1 tvg-logo="http://s3.i3ns.net:2052/cs/etc/blank-icon.png" group-title="Arabic", Majestic Cinema 1
+http://37.49.225.117:8080/myhdosama/6JbVUE4zXTpRr2pf/225349
+
+#EXTINF:-1 tvg-logo="http://s3.i3ns.net:2052/cs/etc/blank-icon.png" group-title="Arabic", Majestic Cinema 2
+http://37.49.225.117:8080/myhdosama/6JbVUE4zXTpRr2pf/300254
+
+#EXTINF:-1 tvg-logo="http://s3.i3ns.net:2052/cs/etc/blank-icon.png" group-title="Arabic", Majestic Horror
+http://37.49.225.117:8080/myhdosama/6JbVUE4zXTpRr2pf/283226
+
+#EXTINF:-1 tvg-logo="http://s3.i3ns.net:2052/cs/etc/blank-icon.png" group-title="Arabic", Majestic Kids
+http://37.49.225.117:8080/myhdosama/6JbVUE4zXTpRr2pf/300260
+
+#EXTINF:-1 tvg-logo="http://s3.i3ns.net:2052/cs/etc/blank-icon.png" group-title="Arabic", Majestic Masra7yat
+http://37.49.225.117:8080/myhdosama/6JbVUE4zXTpRr2pf/300269
+
+#EXTINF:-1 tvg-logo="http://s3.i3ns.net:2052/cs/etc/blank-icon.png" group-title="Arabic", Majestic Masra7yat Plus
+http://37.49.225.117:8080/myhdosama/6JbVUE4zXTpRr2pf/300270
+
+#EXTINF:-1 tvg-logo="http://s3.i3ns.net:2052/cs/etc/blank-icon.png" group-title="Arabic", Majestic Netflix 1
+http://37.49.225.117:8080/myhdosama/6JbVUE4zXTpRr2pf/300272
+
+#EXTINF:-1 tvg-logo="http://s3.i3ns.net:2052/cs/etc/blank-icon.png" group-title="Arabic", Majestic Zaman
+http://37.49.225.117:8080/myhdosama/6JbVUE4zXTpRr2pf/300271
+
+#EXTINF:-1 tvg-logo="http://s3.i3ns.net:2052/portal/picon/2022-05/6f2627f3dd789c3dae68e13b7cc44002.jpg" group-title="Arabic", Marah TV
+http://37.49.225.117:8080/myhdosama/6JbVUE4zXTpRr2pf/283276
+
+#EXTINF:-1 tvg-logo="http://s3.i3ns.net:2052/cs/etc/blank-icon.png" group-title="Arabic", Marvel 1
+http://37.49.225.117:8080/myhdosama/6JbVUE4zXTpRr2pf/300273
+
+#EXTINF:-1 tvg-logo="http://s3.i3ns.net:2052/cs/etc/blank-icon.png" group-title="Arabic", Marvel 2
+http://37.49.225.117:8080/myhdosama/6JbVUE4zXTpRr2pf/300274
+
+#EXTINF:-1 tvg-logo="http://s3.i3ns.net:2052/cs/etc/blank-icon.png" group-title="Arabic", Marvel 3
+http://37.49.225.117:8080/myhdosama/6JbVUE4zXTpRr2pf/300275
+
+#EXTINF:-1 tvg-logo="http://s3.i3ns.net:2052/cs/etc/blank-icon.png" group-title="Arabic", Marvel 4
+http://37.49.225.117:8080/myhdosama/6JbVUE4zXTpRr2pf/300276
+
+#EXTINF:-1 tvg-logo="http://s3.i3ns.net:2052/cs/etc/blank-icon.png" group-title="Arabic", Marvel 5
+http://37.49.225.117:8080/myhdosama/6JbVUE4zXTpRr2pf/300277
+
+#EXTINF:-1 tvg-logo="http://s3.i3ns.net:2052/cs/etc/blank-icon.png" group-title="Arabic", Masha & the Bear
+http://37.49.225.117:8080/myhdosama/6JbVUE4zXTpRr2pf/300595
+
+#EXTINF:-1 tvg-logo="http://s3.i3ns.net:2052/portal/picon/2023-09/4ea018aae9cbb21fe1d4eb099c2fa7f7.png" group-title="Arabic", Miracle Channel
+http://37.49.225.117:8080/myhdosama/6JbVUE4zXTpRr2pf/299802
+
+#EXTINF:-1 tvg-logo="http://s3.i3ns.net:2052/cs/etc/blank-icon.png" group-title="Arabic", Moonbug Kids
+http://37.49.225.117:8080/myhdosama/6JbVUE4zXTpRr2pf/299968
+
+#EXTINF:-1 tvg-logo="http://s3.i3ns.net:2052/portal/picon/2022-01/42ef54fc21a8cac61f49d1290965ce7b.png" group-title="Arabic", MTA 3 Al Arabia
+http://37.49.225.117:8080/myhdosama/6JbVUE4zXTpRr2pf/266815
+
+#EXTINF:-1 tvg-logo="http://s3.i3ns.net:2052/cs/etc/blank-icon.png" group-title="Arabic", Muzik
+http://37.49.225.117:8080/myhdosama/6JbVUE4zXTpRr2pf/300341
+
+#EXTINF:-1 tvg-logo="http://s3.i3ns.net:2052/portal/picon/2023-06/04c80426fc26345cce9bb1059060de92.png" group-title="Arabic", My Cinema 10
+http://37.49.225.117:8080/myhdosama/6JbVUE4zXTpRr2pf/298842
+
+#EXTINF:-1 tvg-logo="http://s3.i3ns.net:2052/portal/picon/2023-06/e0a934f5d660dd352cd74a29fccba8e9.png" group-title="Arabic", My Cinema 11
+http://37.49.225.117:8080/myhdosama/6JbVUE4zXTpRr2pf/298843
+
+#EXTINF:-1 tvg-logo="http://s3.i3ns.net:2052/portal/picon/2023-06/c65fe089022c7cbd74bef66485b6d217.png" group-title="Arabic", My Cinema 12
+http://37.49.225.117:8080/myhdosama/6JbVUE4zXTpRr2pf/298844
+
+#EXTINF:-1 tvg-logo="http://s3.i3ns.net:2052/portal/picon/2023-04/328ef8fd8fe32d22360a1c04b0f79552.jpg" group-title="Arabic", National Geographic
+http://37.49.225.117:8080/myhdosama/6JbVUE4zXTpRr2pf/77844
+
+#EXTINF:-1 tvg-logo="http://s3.i3ns.net:2052/cs/etc/blank-icon.png" group-title="Arabic", Netflix Action 4
+http://37.49.225.117:8080/myhdosama/6JbVUE4zXTpRr2pf/225523
+
+#EXTINF:-1 tvg-logo="http://s3.i3ns.net:2052/cs/etc/blank-icon.png" group-title="Arabic", Netflix Action 5
+http://37.49.225.117:8080/myhdosama/6JbVUE4zXTpRr2pf/225524
+
+#EXTINF:-1 tvg-logo="http://s3.i3ns.net:2052/cs/etc/blank-icon.png" group-title="Arabic", Netflix Action 6
+http://37.49.225.117:8080/myhdosama/6JbVUE4zXTpRr2pf/225525
+
+#EXTINF:-1 tvg-logo="http://s3.i3ns.net:2052/cs/etc/blank-icon.png" group-title="Arabic", Netflix Adventure
+http://37.49.225.117:8080/myhdosama/6JbVUE4zXTpRr2pf/300305
+
+#EXTINF:-1 tvg-logo="http://s3.i3ns.net:2052/cs/etc/blank-icon.png" group-title="Arabic", Netflix Arabic 1
+http://37.49.225.117:8080/myhdosama/6JbVUE4zXTpRr2pf/158540
+
+#EXTINF:-1 tvg-logo="http://s3.i3ns.net:2052/cs/etc/blank-icon.png" group-title="Arabic", Netflix Arabic 2
+http://37.49.225.117:8080/myhdosama/6JbVUE4zXTpRr2pf/158541
+
+#EXTINF:-1 tvg-logo="http://s3.i3ns.net:2052/portal/picon/2022-08/3bf6f709fb5d0e2c473a16cb4ac5061b.jpg" group-title="Arabic", Netflix Comedy
+http://37.49.225.117:8080/myhdosama/6JbVUE4zXTpRr2pf/43836
+
+#EXTINF:-1 tvg-logo="http://s3.i3ns.net:2052/cs/etc/blank-icon.png" group-title="Arabic", Netflix Comedy 2
+http://37.49.225.117:8080/myhdosama/6JbVUE4zXTpRr2pf/300306
+
+#EXTINF:-1 tvg-logo="http://s3.i3ns.net:2052/cs/etc/blank-icon.png" group-title="Arabic", Netflix Crime 1
+http://37.49.225.117:8080/myhdosama/6JbVUE4zXTpRr2pf/300307
+
+#EXTINF:-1 tvg-logo="http://s3.i3ns.net:2052/cs/etc/blank-icon.png" group-title="Arabic", Netflix Drama
+http://37.49.225.117:8080/myhdosama/6JbVUE4zXTpRr2pf/85555
+
+#EXTINF:-1 tvg-logo="http://s3.i3ns.net:2052/cs/etc/blank-icon.png" group-title="Arabic", Netflix Horror 2
+http://37.49.225.117:8080/myhdosama/6JbVUE4zXTpRr2pf/225531
+
+#EXTINF:-1 tvg-logo="http://s3.i3ns.net:2052/cs/etc/blank-icon.png" group-title="Arabic", Netflix JR 1
+http://37.49.225.117:8080/myhdosama/6JbVUE4zXTpRr2pf/300309
+
+#EXTINF:-1 tvg-logo="http://s3.i3ns.net:2052/cs/etc/blank-icon.png" group-title="Arabic", Netflix Kung Fu
+http://37.49.225.117:8080/myhdosama/6JbVUE4zXTpRr2pf/300310
+
+#EXTINF:-1 tvg-logo="http://s3.i3ns.net:2052/cs/etc/blank-icon.png" group-title="Arabic", Netflix Sci-Fi
+http://37.49.225.117:8080/myhdosama/6JbVUE4zXTpRr2pf/122525
+
+#EXTINF:-1 tvg-logo="http://s3.i3ns.net:2052/portal/picon/2023-10/9c885a2c2abbc71c3cd1038cd6b3e0d5.svg" group-title="Arabic", Nickelodeon
+http://37.49.225.117:8080/myhdosama/6JbVUE4zXTpRr2pf/194214
+
+#EXTINF:-1 tvg-logo="http://s3.i3ns.net:2052/cs/etc/blank-icon.png" group-title="Arabic", Oggy TV
+http://37.49.225.117:8080/myhdosama/6JbVUE4zXTpRr2pf/300598
+
+#EXTINF:-1 tvg-logo="http://s3.i3ns.net:2052/portal/picon/2021-05/a39d7d31881c5e0ac0037c5b6a17bf96.png" group-title="Arabic", Oscar TV
+http://37.49.225.117:8080/myhdosama/6JbVUE4zXTpRr2pf/85157
+
+#EXTINF:-1 tvg-logo="http://s3.i3ns.net:2052/cs/etc/blank-icon.png" group-title="Arabic", OSN Box Office 2
+http://37.49.225.117:8080/myhdosama/6JbVUE4zXTpRr2pf/263662
+
+#EXTINF:-1 tvg-logo="http://s3.i3ns.net:2052/cs/etc/blank-icon.png" group-title="Arabic", OSN Box Office 3
+http://37.49.225.117:8080/myhdosama/6JbVUE4zXTpRr2pf/263660
+
+#EXTINF:-1 tvg-logo="http://s3.i3ns.net:2052/cs/etc/blank-icon.png" group-title="Arabic", OSN Cinema
+http://37.49.225.117:8080/myhdosama/6JbVUE4zXTpRr2pf/17231
+
+#EXTINF:-1 tvg-logo="http://s3.i3ns.net:2052/cs/etc/blank-icon.png" group-title="Arabic", OSN Movies Box Office 1
+http://37.49.225.117:8080/myhdosama/6JbVUE4zXTpRr2pf/260472
+
+#EXTINF:-1 tvg-logo="http://s3.i3ns.net:2052/cs/etc/blank-icon.png" group-title="Arabic", OSN Movies premiere
+http://37.49.225.117:8080/myhdosama/6JbVUE4zXTpRr2pf/260476
+
+#EXTINF:-1 tvg-logo="http://s3.i3ns.net:2052/cs/etc/blank-icon.png" group-title="Arabic", OSN Movies premiere 2
+http://37.49.225.117:8080/myhdosama/6JbVUE4zXTpRr2pf/83847
+
+#EXTINF:-1 tvg-logo="http://s3.i3ns.net:2052/cs/etc/blank-icon.png" group-title="Arabic", OSN Music Now
+http://37.49.225.117:8080/myhdosama/6JbVUE4zXTpRr2pf/260470
+
+#EXTINF:-1 tvg-logo="http://s3.i3ns.net:2052/cs/etc/blank-icon.png" group-title="Arabic", OSN Play Cinema 1
+http://37.49.225.117:8080/myhdosama/6JbVUE4zXTpRr2pf/299707
+
+#EXTINF:-1 tvg-logo="http://s3.i3ns.net:2052/cs/etc/blank-icon.png" group-title="Arabic", OSN Play Cinema 2
+http://37.49.225.117:8080/myhdosama/6JbVUE4zXTpRr2pf/299708
+
+#EXTINF:-1 tvg-logo="http://s3.i3ns.net:2052/cs/etc/blank-icon.png" group-title="Arabic", OSN Play Cinema 3
+http://37.49.225.117:8080/myhdosama/6JbVUE4zXTpRr2pf/299709
+
+#EXTINF:-1 tvg-logo="http://s3.i3ns.net:2052/cs/etc/blank-icon.png" group-title="Arabic", OSN Play Cinema 4
+http://37.49.225.117:8080/myhdosama/6JbVUE4zXTpRr2pf/299710
+
+#EXTINF:-1 tvg-logo="http://s3.i3ns.net:2052/cs/etc/blank-icon.png" group-title="Arabic", OSN Play Movies 1
+http://37.49.225.117:8080/myhdosama/6JbVUE4zXTpRr2pf/299711
+
+#EXTINF:-1 tvg-logo="http://s3.i3ns.net:2052/cs/etc/blank-icon.png" group-title="Arabic", OSN Play Movies 2
+http://37.49.225.117:8080/myhdosama/6JbVUE4zXTpRr2pf/299712
+
+#EXTINF:-1 tvg-logo="http://s3.i3ns.net:2052/cs/etc/blank-icon.png" group-title="Arabic", OSN Play Movies 3
+http://37.49.225.117:8080/myhdosama/6JbVUE4zXTpRr2pf/299713
+
+#EXTINF:-1 tvg-logo="http://s3.i3ns.net:2052/cs/etc/blank-icon.png" group-title="Arabic", OSN Play Movies 4
+http://37.49.225.117:8080/myhdosama/6JbVUE4zXTpRr2pf/299714
+
+#EXTINF:-1 tvg-logo="http://s3.i3ns.net:2052/cs/etc/blank-icon.png" group-title="Arabic", OSN YaHala Cinema
+http://37.49.225.117:8080/myhdosama/6JbVUE4zXTpRr2pf/263647
+
+#EXTINF:-1 tvg-logo="http://s3.i3ns.net:2052/cs/etc/blank-icon.png" group-title="Arabic", Pink Panther
+http://37.49.225.117:8080/myhdosama/6JbVUE4zXTpRr2pf/300599
+
+#EXTINF:-1 tvg-logo="http://s3.i3ns.net:2052/cs/etc/blank-icon.png" group-title="Arabic", Premiere Movies
+http://37.49.225.117:8080/myhdosama/6JbVUE4zXTpRr2pf/300600
+
+#EXTINF:-1 tvg-logo="http://s3.i3ns.net:2052/cs/etc/blank-icon.png" group-title="Arabic", Ragheb Alama
+http://37.49.225.117:8080/myhdosama/6JbVUE4zXTpRr2pf/300321
+
+#EXTINF:-1 tvg-logo="http://s3.i3ns.net:2052/cs/etc/blank-icon.png" group-title="Arabic", Remaas
+http://37.49.225.117:8080/myhdosama/6JbVUE4zXTpRr2pf/300601
+
+#EXTINF:-1 tvg-logo="http://s3.i3ns.net:2052/portal/picon/2023-03/a7157d98f96b3f060739e782adb9f141.svg" group-title="Arabic", RT Arabic
+http://37.49.225.117:8080/myhdosama/6JbVUE4zXTpRr2pf/11369
+
+#EXTINF:-1 tvg-logo="http://s3.i3ns.net:2052/portal/picon/2021-08/fccb5661aa2620382395f9dd15fd7038.png" group-title="Arabic", Sahel TV
+http://37.49.225.117:8080/myhdosama/6JbVUE4zXTpRr2pf/11896
+
+#EXTINF:-1 tvg-logo="http://s3.i3ns.net:2052/cs/etc/blank-icon.png" group-title="Arabic", Sarhan TV Classic
+http://37.49.225.117:8080/myhdosama/6JbVUE4zXTpRr2pf/283242
+
+#EXTINF:-1 tvg-logo="http://s3.i3ns.net:2052/cs/etc/blank-icon.png" group-title="Arabic", Sasuki
+http://37.49.225.117:8080/myhdosama/6JbVUE4zXTpRr2pf/300603
+
+#EXTINF:-1 tvg-logo="http://s3.i3ns.net:2052/portal/picon/2022-06/a591cf897304eb0019d9e7ddccd1666c.png" group-title="Arabic", Sat 7 Arabic
+http://37.49.225.117:8080/myhdosama/6JbVUE4zXTpRr2pf/276135
+
+#EXTINF:-1 tvg-logo="http://s3.i3ns.net:2052/portal/picon/2022-04/b80f1baeb2f01cc1f2ea8bba954c9cfb.jfif" group-title="Arabic", Sat 7 Kids
+http://37.49.225.117:8080/myhdosama/6JbVUE4zXTpRr2pf/285984
+
+#EXTINF:-1 tvg-logo="http://s3.i3ns.net:2052/portal/picon/2023-09/7d6e40c3897a92a2b2aaa7037cb01d2f.png" group-title="Arabic", Seraj
+http://37.49.225.117:8080/myhdosama/6JbVUE4zXTpRr2pf/299918
+
+#EXTINF:-1 tvg-logo="http://s3.i3ns.net:2052/portal/picon/2023-10/bd4fad3c8c03bcd54c09f21112a8e871.png" group-title="Arabic", Shahid
+http://37.49.225.117:8080/myhdosama/6JbVUE4zXTpRr2pf/300328
+
+#EXTINF:-1 tvg-logo="http://s3.i3ns.net:2052/portal/picon/2023-10/493dedb4b5d757a1a189dd5081ded2b1.png" group-title="Arabic", Shahid Action 1
+http://37.49.225.117:8080/myhdosama/6JbVUE4zXTpRr2pf/300327
+
+#EXTINF:-1 tvg-logo="http://s3.i3ns.net:2052/cs/etc/blank-icon.png" group-title="Arabic", Shahid Action 2
+http://37.49.225.117:8080/myhdosama/6JbVUE4zXTpRr2pf/300326
+
+#EXTINF:-1 tvg-logo="http://s3.i3ns.net:2052/cs/etc/blank-icon.png" group-title="Arabic", Shahid Adventure 2
+http://37.49.225.117:8080/myhdosama/6JbVUE4zXTpRr2pf/267077
+
+#EXTINF:-1 tvg-logo="http://s3.i3ns.net:2052/cs/etc/blank-icon.png" group-title="Arabic", Shahid Aflam
+http://37.49.225.117:8080/myhdosama/6JbVUE4zXTpRr2pf/122529
+
+#EXTINF:-1 tvg-logo="http://s3.i3ns.net:2052/cs/etc/blank-icon.png" group-title="Arabic", Shahid Aflam 2
+http://37.49.225.117:8080/myhdosama/6JbVUE4zXTpRr2pf/300333
+
+#EXTINF:-1 tvg-logo="http://s3.i3ns.net:2052/cs/etc/blank-icon.png" group-title="Arabic", Shahid Aflam 6
+http://37.49.225.117:8080/myhdosama/6JbVUE4zXTpRr2pf/300334
+
+#EXTINF:-1 tvg-logo="http://s3.i3ns.net:2052/cs/etc/blank-icon.png" group-title="Arabic", Shahid Aflam 7
+http://37.49.225.117:8080/myhdosama/6JbVUE4zXTpRr2pf/300335
+
+#EXTINF:-1 tvg-logo="http://s3.i3ns.net:2052/cs/etc/blank-icon.png" group-title="Arabic", Shahid Arabia
+http://37.49.225.117:8080/myhdosama/6JbVUE4zXTpRr2pf/300330
+
+#EXTINF:-1 tvg-logo="http://s3.i3ns.net:2052/cs/etc/blank-icon.png" group-title="Arabic", Shahid Family 1
+http://37.49.225.117:8080/myhdosama/6JbVUE4zXTpRr2pf/267087
+
+#EXTINF:-1 tvg-logo="http://s3.i3ns.net:2052/cs/etc/blank-icon.png" group-title="Arabic", Shahid mactv
+http://37.49.225.117:8080/myhdosama/6JbVUE4zXTpRr2pf/300672
+
+#EXTINF:-1 tvg-logo="http://s3.i3ns.net:2052/cs/etc/blank-icon.png" group-title="Arabic", Shahid Mosalsalat
+http://37.49.225.117:8080/myhdosama/6JbVUE4zXTpRr2pf/300332
+
+#EXTINF:-1 tvg-logo="http://s3.i3ns.net:2052/cs/etc/blank-icon.png" group-title="Arabic", Shahid Schi-Fi
+http://37.49.225.117:8080/myhdosama/6JbVUE4zXTpRr2pf/300329
+
+#EXTINF:-1 tvg-logo="http://s3.i3ns.net:2052/cs/etc/blank-icon.png" group-title="Arabic", SHAMEL AFLAM
+http://37.49.225.117:8080/myhdosama/6JbVUE4zXTpRr2pf/300336
+
+#EXTINF:-1 tvg-logo="http://s3.i3ns.net:2052/cs/etc/blank-icon.png" group-title="Arabic", SHAMEL AFLAM 2
+http://37.49.225.117:8080/myhdosama/6JbVUE4zXTpRr2pf/300605
+
+#EXTINF:-1 tvg-logo="http://s3.i3ns.net:2052/cs/etc/blank-icon.png" group-title="Arabic", Shaun The sheep
+http://37.49.225.117:8080/myhdosama/6JbVUE4zXTpRr2pf/300606
+
+#EXTINF:-1 tvg-logo="http://s3.i3ns.net:2052/portal/picon/2022-08/243442755d207f369bf5fcf67289be07.jpg" group-title="Arabic", Shoof Max 2
+http://37.49.225.117:8080/myhdosama/6JbVUE4zXTpRr2pf/283223
+
+#EXTINF:-1 tvg-logo="http://s3.i3ns.net:2052/portal/picon/2022-08/9cd7c6013233616a6afcf920222f64d9.jpg" group-title="Arabic", Shoof Max 3
+http://37.49.225.117:8080/myhdosama/6JbVUE4zXTpRr2pf/283224
+
+#EXTINF:-1 tvg-logo="http://s3.i3ns.net:2052/cs/etc/blank-icon.png" group-title="Arabic", Sirag TV
+http://37.49.225.117:8080/myhdosama/6JbVUE4zXTpRr2pf/300607
+
+#EXTINF:-1 tvg-logo="http://s3.i3ns.net:2052/portal/picon/2021-05/ef799ac28fec946375fee85e58754a4b.png" group-title="Arabic", Sky News Arabia
+http://37.49.225.117:8080/myhdosama/6JbVUE4zXTpRr2pf/3739
+
+#EXTINF:-1 tvg-logo="http://s3.i3ns.net:2052/cs/etc/blank-icon.png" group-title="Arabic", Spongbob
+http://37.49.225.117:8080/myhdosama/6JbVUE4zXTpRr2pf/300609
+
+#EXTINF:-1 tvg-logo="http://s3.i3ns.net:2052/cs/etc/blank-icon.png" group-title="Arabic", SPORT
+http://37.49.225.117:8080/myhdosama/6JbVUE4zXTpRr2pf/225379
+
+#EXTINF:-1 tvg-logo="http://s3.i3ns.net:2052/portal/picon/2023-02/b3f2c9e33e3b204078526c4011569ed0.png" group-title="Arabic", Star Movies HD
+http://37.49.225.117:8080/myhdosama/6JbVUE4zXTpRr2pf/195999
+
+#EXTINF:-1 tvg-logo="http://s3.i3ns.net:2052/portal/picon/2023-07/f66e110229d92259606a04849af094bb.png" group-title="Arabic", StoryChannel TV
+http://37.49.225.117:8080/myhdosama/6JbVUE4zXTpRr2pf/299428
+
+#EXTINF:-1 tvg-logo="http://s3.i3ns.net:2052/cs/etc/blank-icon.png" group-title="Arabic", TAHA TV
+http://37.49.225.117:8080/myhdosama/6JbVUE4zXTpRr2pf/11188
+
+#EXTINF:-1 tvg-logo="http://s3.i3ns.net:2052/portal/picon/2021-09/f3e4b25119b4279b9333304f95fe5b5f.png" group-title="Arabic", TCM
+http://37.49.225.117:8080/myhdosama/6JbVUE4zXTpRr2pf/196022
+
+#EXTINF:-1 tvg-logo="http://s3.i3ns.net:2052/cs/etc/blank-icon.png" group-title="Arabic", Teletubbies
+http://37.49.225.117:8080/myhdosama/6JbVUE4zXTpRr2pf/300611
+
+#EXTINF:-1 tvg-logo="http://s3.i3ns.net:2052/portal/picon/2023-05/88a686f9b1a0836421e6b3355c3496e7.png" group-title="Arabic", The Way TV
+http://37.49.225.117:8080/myhdosama/6JbVUE4zXTpRr2pf/276042
+
+#EXTINF:-1 tvg-logo="http://s3.i3ns.net:2052/cs/etc/blank-icon.png" group-title="Arabic", TLC
+http://37.49.225.117:8080/myhdosama/6JbVUE4zXTpRr2pf/284213
+
+#EXTINF:-1 tvg-logo="http://s3.i3ns.net:2052/cs/etc/blank-icon.png" group-title="Arabic", TOM AND JERY
+http://37.49.225.117:8080/myhdosama/6JbVUE4zXTpRr2pf/300610
+
+#EXTINF:-1 tvg-logo="http://s3.i3ns.net:2052/portal/picon/2021-12/db54e3ce61ce26d995031a6a2bcb1d92.png" group-title="Arabic", TRT Arabi
+http://37.49.225.117:8080/myhdosama/6JbVUE4zXTpRr2pf/281349
+
+#EXTINF:-1 tvg-logo="http://s3.i3ns.net:2052/cs/etc/blank-icon.png" group-title="Arabic", Wassouf
+http://37.49.225.117:8080/myhdosama/6JbVUE4zXTpRr2pf/300602
+

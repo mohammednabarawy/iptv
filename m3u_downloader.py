@@ -384,48 +384,156 @@ def handle_file_host(driver, url):
                 driver.close()
             driver.switch_to.window(main_handle)
 
-def download_m3u_file(url, output_dir, driver=None):
-    try:
-        # Check if this is a file hosting site
-        parsed_url = urlparse(url)
-        domain = parsed_url.netloc.lower()
+class M3UDownloader:
+    def __init__(self, output_dir="m3u_files"):
+        self.output_dir = output_dir
+        os.makedirs(output_dir, exist_ok=True)
         
-        if any(host in domain for host in FILE_HOSTS.keys()):
-            if driver:
-                download_url = handle_file_host(driver, url)
-                if download_url:
-                    url = download_url
-                else:
-                    return False
+        # Track processed URLs and downloaded files
+        self.processed_urls = set()
+        self.downloaded_files = set()
+        self.downloaded_contents = set()  # Store hashes of file contents
+        self.url_to_filename = {}  # Map URLs to their downloaded filenames
         
-        headers = {
-            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
-            'Accept': '*/*',
-            'Accept-Encoding': 'gzip, deflate, br',
-            'Connection': 'keep-alive'
-        }
+        # Load existing files
+        self._load_existing_files()
         
-        response = requests.get(url, headers=headers, allow_redirects=True, timeout=30)
-        response.raise_for_status()
-        
-        # Check if the content seems to be an M3U file
-        content_preview = response.content[:100].decode('utf-8', errors='ignore')
-        if not ('#EXTM3U' in content_preview or '.m3u' in url.lower() or '.m3u8' in url.lower()):
+    def _load_existing_files(self):
+        """Load existing files to avoid duplicates"""
+        if os.path.exists(self.output_dir):
+            for filename in os.listdir(self.output_dir):
+                if filename.lower().endswith(('.m3u', '.m3u8')):
+                    filepath = os.path.join(self.output_dir, filename)
+                    self.downloaded_files.add(filename.lower())
+                    try:
+                        with open(filepath, 'rb') as f:
+                            content = f.read()
+                            content_hash = hash(content)
+                            self.downloaded_contents.add(content_hash)
+                    except Exception as e:
+                        print(f"{Fore.YELLOW}Error reading file {filename}: {str(e)}{Style.RESET_ALL}")
+    
+    def _normalize_url(self, url):
+        """Normalize URL to avoid duplicates with different formats"""
+        try:
+            # Parse the URL
+            parsed = urlparse(url)
+            # Normalize the domain to lowercase
+            domain = parsed.netloc.lower()
+            # Remove common tracking parameters
+            query_params = parse_qs(parsed.query)
+            filtered_params = {k: v for k, v in query_params.items() 
+                            if k.lower() not in ['utm_source', 'utm_medium', 'utm_campaign',
+                                               'fbclid', 'gclid', '_ga', 'ref', 'source']}
+            # Reconstruct the URL
+            normalized = f"{parsed.scheme}://{domain}{parsed.path}"
+            if filtered_params:
+                normalized += '?' + '&'.join(f"{k}={v[0]}" for k, v in sorted(filtered_params.items()))
+            return normalized
+        except:
+            return url
+    
+    def is_duplicate_content(self, content):
+        """Check if content is duplicate based on its hash"""
+        content_hash = hash(content)
+        return content_hash in self.downloaded_contents
+    
+    def generate_unique_filename(self, url, content=None):
+        """Generate a unique filename for the M3U file"""
+        try:
+            parsed_url = urlparse(url)
+            base_name = os.path.basename(parsed_url.path)
+            if not base_name or base_name in ['.m3u', '.m3u8']:
+                base_name = f"playlist_{int(time.time())}"
+            
+            # Clean the filename
+            base_name = re.sub(r'[<>:"/\\|?*]', '_', unquote(base_name))
+            name, ext = os.path.splitext(base_name)
+            if not ext.lower() in ['.m3u', '.m3u8']:
+                ext = '.m3u'
+            
+            # If content is provided, use its hash in the filename
+            if content:
+                content_hash = hash(content)
+                name = f"{name}_{content_hash}"
+            
+            # Ensure unique filename
+            counter = 1
+            filename = f"{name}{ext}"
+            while filename.lower() in self.downloaded_files:
+                filename = f"{name}_{counter}{ext}"
+                counter += 1
+            
+            return filename
+            
+        except Exception as e:
+            print(f"{Fore.YELLOW}Error generating filename: {str(e)}{Style.RESET_ALL}")
+            return f"playlist_{int(time.time())}.m3u"
+    
+    def download_m3u_file(self, url, driver=None):
+        """Download M3U file with duplicate detection"""
+        try:
+            # Normalize URL to avoid duplicates
+            normalized_url = self._normalize_url(url)
+            if normalized_url in self.processed_urls:
+                print(f"{Fore.YELLOW}Skipping duplicate URL: {url}{Style.RESET_ALL}")
+                return False
+            
+            self.processed_urls.add(normalized_url)
+            
+            # Check if this is a file hosting site
+            parsed_url = urlparse(url)
+            domain = parsed_url.netloc.lower()
+            
+            if any(host in domain for host in FILE_HOSTS.keys()):
+                if driver:
+                    download_url = handle_file_host(driver, url)
+                    if download_url:
+                        url = download_url
+                    else:
+                        return False
+            
+            headers = {
+                'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+                'Accept': '*/*',
+                'Accept-Encoding': 'gzip, deflate, br',
+                'Connection': 'keep-alive'
+            }
+            
+            response = requests.get(url, headers=headers, allow_redirects=True, timeout=30)
+            response.raise_for_status()
+            
+            content = response.content
+            
+            # Check if content is a duplicate
+            if self.is_duplicate_content(content):
+                print(f"{Fore.YELLOW}Skipping duplicate content from: {url}{Style.RESET_ALL}")
+                return False
+            
+            # Check if the content seems to be an M3U file
+            content_preview = content[:100].decode('utf-8', errors='ignore')
+            if not ('#EXTM3U' in content_preview or '.m3u' in url.lower() or '.m3u8' in url.lower()):
+                return False
+            
+            # Generate unique filename
+            filename = self.generate_unique_filename(url, content)
+            filepath = os.path.join(self.output_dir, filename)
+            
+            # Save the file
+            with open(filepath, 'wb') as f:
+                f.write(content)
+            
+            # Update tracking sets
+            self.downloaded_files.add(filename.lower())
+            self.downloaded_contents.add(hash(content))
+            self.url_to_filename[normalized_url] = filename
+            
+            print(f"{Fore.GREEN}Successfully downloaded: {filename}{Style.RESET_ALL}")
+            return True
+            
+        except Exception as e:
+            print(f"{Fore.RED}Error downloading {url}: {str(e)}{Style.RESET_ALL}")
             return False
-            
-        filename = clean_filename(url)
-        if not filename or filename in ['.m3u', '.m3u8']:
-            filename = f"playlist_{int(time.time())}.m3u"
-            
-        filepath = os.path.join(output_dir, filename)
-        
-        with open(filepath, 'wb') as f:
-            f.write(response.content)
-        print(f"{Fore.GREEN}Successfully downloaded: {filename}{Style.RESET_ALL}")
-        return True
-    except Exception as e:
-        print(f"{Fore.RED}Error downloading {url}: {str(e)}{Style.RESET_ALL}")
-        return False
 
 def extract_m3u_links(text):
     """Extract potential M3U links from text content"""
@@ -447,7 +555,8 @@ def clean_filename(url):
 def is_potential_m3u_page(url):
     patterns = [
         'iptv', 'playlist', 'm3u', 'stream', 'channel', 'live',
-        'download', 'media', 'tv', 'sports', 'movie', 'link'
+        'download', 'free', 'link', 'tv', 'hd', '4k', 'sports',
+        'movies', 'shows', 'series', 'entertainment',
     ]
     url_lower = url.lower()
     return any(pattern in url_lower for pattern in patterns)
@@ -486,16 +595,16 @@ def get_page_links(driver, url):
         print(f"{Fore.RED}Error getting links from {url}: {str(e)}{Style.RESET_ALL}")
         return []
 
-def process_page(driver, url, output_dir, processed_urls, depth=0, max_depth=3):
+def process_page(driver, url, downloader, depth=0, max_depth=3):
     """Recursively process pages to find M3U files"""
-    if depth > max_depth or url in processed_urls:
+    if depth > max_depth or url in downloader.processed_urls:
         return 0
-        
+    
     # Skip if URL should not be processed
     if not should_process_url(url):
         return 0
-        
-    processed_urls.add(url)
+    
+    downloader.processed_urls.add(url)
     m3u_count = 0
     
     print(f"\n{Fore.CYAN}Processing page (depth {depth}): {url}{Style.RESET_ALL}")
@@ -505,13 +614,17 @@ def process_page(driver, url, output_dir, processed_urls, depth=0, max_depth=3):
     print(f"Found {len(links)} links on this page")
     
     for href in links:
-        if not href or href in processed_urls or not should_process_url(href):
+        if not href or not should_process_url(href):
             continue
-            
+        
+        normalized_href = downloader._normalize_url(href)
+        if normalized_href in downloader.processed_urls:
+            continue
+        
         # Check if it's a direct M3U file
         if href.lower().endswith(('.m3u', '.m3u8')):
             print(f"\nAttempting to download M3U file: {href}")
-            if download_m3u_file(href, output_dir, driver):
+            if downloader.download_m3u_file(href, driver):
                 m3u_count += 1
         
         # Check hosting platforms that might contain M3U files
@@ -522,12 +635,12 @@ def process_page(driver, url, output_dir, processed_urls, depth=0, max_depth=3):
             'gofile.io', 'anonfiles.com', 'bayfiles.com'
         ]):
             print(f"\nChecking hosting platform: {href}")
-            if download_m3u_file(href, output_dir, driver):
+            if downloader.download_m3u_file(href, driver):
                 m3u_count += 1
         
         # If it's a potential page with M3U files, process it recursively
         elif is_potential_m3u_page(href):
-            m3u_count += process_page(driver, href, output_dir, processed_urls, depth + 1, max_depth)
+            m3u_count += process_page(driver, href, downloader, depth + 1, max_depth)
     
     return m3u_count
 
@@ -547,21 +660,19 @@ def safe_get_with_retry(driver, url, max_retries=3):
 
 def scrape_heylink():
     url = "https://heylink.me/tech_edu_byte/"
-    output_dir = "m3u_files"
+    downloader = M3UDownloader("m3u_files")
     
     print(f"{Fore.CYAN}Starting to scrape M3U files from {url}{Style.RESET_ALL}")
-    os.makedirs(output_dir, exist_ok=True)
-    print(f"Output directory: {os.path.abspath(output_dir)}")
+    print(f"Output directory: {os.path.abspath(downloader.output_dir)}")
     
     try:
         print("Initializing Chrome WebDriver...")
         driver = setup_driver()
         
-        processed_urls = set()
-        total_m3u_files = process_page(driver, url, output_dir, processed_urls)
+        total_m3u_files = process_page(driver, url, downloader)
         
         print(f"\n{Fore.GREEN}Total M3U files downloaded: {total_m3u_files}{Style.RESET_ALL}")
-        print(f"Files are saved in: {os.path.abspath(output_dir)}")
+        print(f"Files are saved in: {os.path.abspath(downloader.output_dir)}")
         
     except Exception as e:
         print(f"{Fore.RED}Error scraping website: {str(e)}{Style.RESET_ALL}")

@@ -1,0 +1,848 @@
+#EXTM3U
+
+#EXTINF:-1 group-title="Testador IPTV", Gerado por Testador IPTV(PlayStore)
+https://play.google.com/store/apps/details?id=thalles.org.testadoriptv
+
+#EXTINF:-1 tvg-logo="https://img.freeflagicons.com/thumb/round_icon/poland/poland_640.png" group-title="[PL] INFORMACJE", ##### [PL] INFORMACJE #####
+http://dm.lion-ott.com:80/jocelyne/jocelyne/763254
+
+#EXTINF:-1 tvg-logo="http://logo.protv.cc/picons/logos/tvn24bis.png" group-title="[PL] INFORMACJE", [PL] TVN24 BIS HD
+http://dm.lion-ott.com:80/jocelyne/jocelyne/689639
+
+#EXTINF:-1 tvg-logo="http://logo.protv.cc/picons/logos/tvn24hd.png" group-title="[PL] INFORMACJE", [PL] TVN24 HD
+http://dm.lion-ott.com:80/jocelyne/jocelyne/689640
+
+#EXTINF:-1 tvg-logo="http://logo.protv.cc/picons/logos/tvpinfo.png" group-title="[PL] INFORMACJE", [PL] TVP INFO HD
+http://dm.lion-ott.com:80/jocelyne/jocelyne/689649
+
+#EXTINF:-1 tvg-logo="http://logo.protv.cc/picons/logos/polsatnewshd.png" group-title="[PL] INFORMACJE", [PL] POLSAT NEWS HD
+http://dm.lion-ott.com:80/jocelyne/jocelyne/689711
+
+#EXTINF:-1 tvg-logo="http://logo.protv.cc/picons/logos/polsatnews2.png" group-title="[PL] INFORMACJE", [PL] POLSAT NEWS 2
+http://dm.lion-ott.com:80/jocelyne/jocelyne/689785
+
+#EXTINF:-1 tvg-logo="http://logo.protv.cc/picons/logos/tvrepublika.png" group-title="[PL] INFORMACJE", [PL] TV REPUBLIKA
+http://dm.lion-ott.com:80/jocelyne/jocelyne/689809
+
+#EXTINF:-1 tvg-logo="http://logo.protv.cc/picons/logos/cnnihd.png" group-title="[PL] INFORMACJE", [PL] CNNI HD
+http://dm.lion-ott.com:80/jocelyne/jocelyne/690390
+
+#EXTINF:-1 tvg-logo="http://logo.protv.cc/picons/logos/wpolscepl.png" group-title="[PL] INFORMACJE", [PL] WPOLSCE
+http://dm.lion-ott.com:80/jocelyne/jocelyne/689821
+
+#EXTINF:-1 tvg-logo="http://logo.protv.cc/picons/logos/WYDARZENIA-24.png" group-title="[PL] INFORMACJE", PL - WYDARZENIA 24
+http://dm.lion-ott.com:80/jocelyne/jocelyne/986068
+
+#EXTINF:-1 tvg-logo="https://img.freeflagicons.com/thumb/round_icon/poland/poland_640.png" group-title="[PL] FILMOWE", ##### [PL] FILMOWE #####
+http://dm.lion-ott.com:80/jocelyne/jocelyne/763255
+
+#EXTINF:-1 tvg-logo="http://logo.protv.cc/picons/logos/tvnfabula.png" group-title="[PL] FILMOWE", [PL] TVN FABULA HD
+http://dm.lion-ott.com:80/jocelyne/jocelyne/689636
+
+#EXTINF:-1 tvg-logo="http://logo.protv.cc/picons/logos/polsatseriale.png" group-title="[PL] FILMOWE", [PL] POLSAT SERIALE HD
+http://dm.lion-ott.com:80/jocelyne/jocelyne/689645
+
+#EXTINF:-1 tvg-logo="http://logo.protv.cc/picons/logos/polsatrodzina.png" group-title="[PL] FILMOWE", [PL] POLSAT RODZINA HD
+http://dm.lion-ott.com:80/jocelyne/jocelyne/689646
+
+#EXTINF:-1 tvg-logo="http://logo.protv.cc/picons/logos/polsatfilmhd.png" group-title="[PL] FILMOWE", [PL] POLSAT FILM HD
+http://dm.lion-ott.com:80/jocelyne/jocelyne/689647
+
+#EXTINF:-1 tvg-logo="http://logo.protv.cc/picons/logos/canalplus1hd.png" group-title="[PL] FILMOWE", [PL] CANAL+ 1 HD
+http://dm.lion-ott.com:80/jocelyne/jocelyne/689651
+
+#EXTINF:-1 tvg-logo="http://logo.protv.cc/picons/logos/canalplusnowhd.png" group-title="[PL] FILMOWE", [PL] CANAL+ NOW HD
+http://dm.lion-ott.com:80/jocelyne/jocelyne/689653
+
+#EXTINF:-1 tvg-logo="http://logo.protv.cc/picons/logos/canalplus.png" group-title="[PL] FILMOWE", [PL] CANAL+ PREMIUM HD
+http://dm.lion-ott.com:80/jocelyne/jocelyne/689654
+
+#EXTINF:-1 tvg-logo="http://logo.protv.cc/picons/logos/canalplusfamilyhd.png" group-title="[PL] FILMOWE", [PL] CANAL+ FAMILY HD
+http://dm.lion-ott.com:80/jocelyne/jocelyne/689652
+
+#EXTINF:-1 tvg-logo="http://logo.protv.cc/picons/logos/canalplusserialehd.png" group-title="[PL] FILMOWE", [PL] CANAL+ SERIALE HD
+http://dm.lion-ott.com:80/jocelyne/jocelyne/689655
+
+#EXTINF:-1 tvg-logo="http://logo.protv.cc/picons/logos/HBO-2-HD.jpg" group-title="[PL] FILMOWE", [PL] HBO 2 HD
+http://dm.lion-ott.com:80/jocelyne/jocelyne/689656
+
+#EXTINF:-1 tvg-logo="http://logo.protv.cc/picons/logos/hbo3hd.png" group-title="[PL] FILMOWE", [PL] HBO 3 HD
+http://dm.lion-ott.com:80/jocelyne/jocelyne/689657
+
+#EXTINF:-1 tvg-logo="http://logo.protv.cc/picons/logos/HBO-HD.png" group-title="[PL] FILMOWE", [PL] HBO HD
+http://dm.lion-ott.com:80/jocelyne/jocelyne/689658
+
+#EXTINF:-1 tvg-logo="http://logo.protv.cc/picons/logos/alekinoplushd.png" group-title="[PL] FILMOWE", [PL] ALE KINO+ HD
+http://dm.lion-ott.com:80/jocelyne/jocelyne/689659
+
+#EXTINF:-1 tvg-logo="http://logo.protv.cc/picons/logos/canalplusfilmhd.png" group-title="[PL] FILMOWE", [PL] CANAL+ FILM HD
+http://dm.lion-ott.com:80/jocelyne/jocelyne/689661
+
+#EXTINF:-1 tvg-logo="http://logo.protv.cc/picons/logos/axnhd.png" group-title="[PL] FILMOWE", [PL] AXN HD
+http://dm.lion-ott.com:80/jocelyne/jocelyne/689662
+
+#EXTINF:-1 tvg-logo="http://logo.protv.cc/picons/logos/axnspinhd.png" group-title="[PL] FILMOWE", [PL] AXN SPIN HD
+http://dm.lion-ott.com:80/jocelyne/jocelyne/689663
+
+#EXTINF:-1 tvg-logo="http://logo.protv.cc/picons/logos/cinemax2hd.png" group-title="[PL] FILMOWE", [PL] CINEMAX 2 HD
+http://dm.lion-ott.com:80/jocelyne/jocelyne/689664
+
+#EXTINF:-1 tvg-logo="http://logo.protv.cc/picons/logos/comedycentralpolandhd.png" group-title="[PL] FILMOWE", [PL] COMEDY CENTRAL HD
+http://dm.lion-ott.com:80/jocelyne/jocelyne/689665
+
+#EXTINF:-1 tvg-logo="http://logo.protv.cc/picons/logos/comedycentralpolandhd.png" group-title="[PL] FILMOWE", [PL] COMEDY CENTRAL POLAND HD
+http://dm.lion-ott.com:80/jocelyne/jocelyne/689666
+
+#EXTINF:-1 tvg-logo="http://logo.protv.cc/picons/logos/cinemaxhd.png" group-title="[PL] FILMOWE", [PL] CINEMAX HD
+http://dm.lion-ott.com:80/jocelyne/jocelyne/689667
+
+#EXTINF:-1 tvg-logo="http://logo.protv.cc/picons/logos/filmboxpremium.png" group-title="[PL] FILMOWE", [PL] FILMBOX PREMIUM HD
+http://dm.lion-ott.com:80/jocelyne/jocelyne/689669
+
+#EXTINF:-1 tvg-logo="http://logo.protv.cc/picons/logos/foxcomedyhd.png" group-title="[PL] FILMOWE", [PL] FOX COMEDY HD
+http://dm.lion-ott.com:80/jocelyne/jocelyne/689672
+
+#EXTINF:-1 tvg-logo="http://logo.protv.cc/picons/logos/kinotv.png" group-title="[PL] FILMOWE", [PL] KINO TV HD
+http://dm.lion-ott.com:80/jocelyne/jocelyne/689674
+
+#EXTINF:-1 tvg-logo="http://logo.protv.cc/picons/logos/kinopolska.png" group-title="[PL] FILMOWE", [PL] KINO POLSKA HD
+http://dm.lion-ott.com:80/jocelyne/jocelyne/689676
+
+#EXTINF:-1 tvg-logo="http://logo.protv.cc/picons/logos/foxhd.png" group-title="[PL] FILMOWE", [PL] FOX HD
+http://dm.lion-ott.com:80/jocelyne/jocelyne/689675
+
+#EXTINF:-1 tvg-logo="http://logo.protv.cc/picons/logos/TLC-HD.png" group-title="[PL] FILMOWE", [PL] TLC HD
+http://dm.lion-ott.com:80/jocelyne/jocelyne/689678
+
+#EXTINF:-1 tvg-logo="http://logo.protv.cc/picons/logos/paramountchannelhd.png" group-title="[PL] FILMOWE", [PL] PARAMOUNT CHANNEL HD
+http://dm.lion-ott.com:80/jocelyne/jocelyne/689680
+
+#EXTINF:-1 tvg-logo="http://logo.protv.cc/picons/logos/scifiuniversal.png" group-title="[PL] FILMOWE", [PL] SCIFI UNIVERSAL HD
+http://dm.lion-ott.com:80/jocelyne/jocelyne/689701
+
+#EXTINF:-1 tvg-logo="http://logo.protv.cc/picons/logos/amchd.png" group-title="[PL] FILMOWE", [PL] AMC HD
+http://dm.lion-ott.com:80/jocelyne/jocelyne/689719
+
+#EXTINF:-1 tvg-logo="http://logo.protv.cc/picons/logos/NOVELAS+.png" group-title="[PL] FILMOWE", [PL] NOVELAS+ HD
+http://dm.lion-ott.com:80/jocelyne/jocelyne/689742
+
+#EXTINF:-1 tvg-logo="http://logo.protv.cc/picons/logos/redcarpettv.png" group-title="[PL] FILMOWE", [PL] RED CARPET TV HD
+http://dm.lion-ott.com:80/jocelyne/jocelyne/689757
+
+#EXTINF:-1 tvg-logo="http://logo.protv.cc/picons/logos/axnblackhd.png" group-title="[PL] FILMOWE", [PL] AXN BLACK
+http://dm.lion-ott.com:80/jocelyne/jocelyne/689776
+
+#EXTINF:-1 tvg-logo="http://logo.protv.cc/picons/logos/axnwhitehd.png" group-title="[PL] FILMOWE", [PL] AXN WHITE
+http://dm.lion-ott.com:80/jocelyne/jocelyne/689777
+
+#EXTINF:-1 tvg-logo="http://logo.protv.cc/picons/logos/bbcfirst.png" group-title="[PL] FILMOWE", [PL] BBC FIRST HD
+http://dm.lion-ott.com:80/jocelyne/jocelyne/689703
+
+#EXTINF:-1 tvg-logo="http://logo.protv.cc/picons/logos/cbseuropa.png" group-title="[PL] FILMOWE", [PL] CBS EUROPA HD
+http://dm.lion-ott.com:80/jocelyne/jocelyne/689721
+
+#EXTINF:-1 tvg-logo="http://logo.protv.cc/picons/logos/romancetvhd.png" group-title="[PL] FILMOWE", [PL] ROMANCE TV HD
+http://dm.lion-ott.com:80/jocelyne/jocelyne/689758
+
+#EXTINF:-1 tvg-logo="http://logo.protv.cc/picons/logos/filmboxaction.png" group-title="[PL] FILMOWE", [PL] FILMBOX ACTION
+http://dm.lion-ott.com:80/jocelyne/jocelyne/689779
+
+#EXTINF:-1 tvg-logo="http://logo.protv.cc/picons/logos/filmboxarthouse.png" group-title="[PL] FILMOWE", [PL] FILMBOX ARTHOUSE
+http://dm.lion-ott.com:80/jocelyne/jocelyne/689780
+
+#EXTINF:-1 tvg-logo="http://logo.protv.cc/picons/logos/filmboxfamily.png" group-title="[PL] FILMOWE", [PL] FILMBOX FAMILY
+http://dm.lion-ott.com:80/jocelyne/jocelyne/689781
+
+#EXTINF:-1 tvg-logo="http://logo.protv.cc/picons/logos/kinopolskamuzyka.png" group-title="[PL] FILMOWE", [PL] KINO POLSKA MUZYKA
+http://dm.lion-ott.com:80/jocelyne/jocelyne/689799
+
+#EXTINF:-1 tvg-logo="http://logo.protv.cc/picons/logos/activefamily.png" group-title="[PL] FILMOWE", [PL] ACTIVE FAMILY
+http://dm.lion-ott.com:80/jocelyne/jocelyne/689778
+
+#EXTINF:-1 tvg-logo="http://logo.protv.cc/picons/logos/epicdramahd.png" group-title="[PL] FILMOWE", [PL] EPIC DRAMA HD
+http://dm.lion-ott.com:80/jocelyne/jocelyne/689731
+
+#EXTINF:-1 tvg-logo="http://logo.protv.cc/picons/logos/vod208.png" group-title="[PL] FILMOWE", [PL] VOD 205
+http://dm.lion-ott.com:80/jocelyne/jocelyne/689815
+
+#EXTINF:-1 tvg-logo="http://logo.protv.cc/picons/logos/vod208.png" group-title="[PL] FILMOWE", [PL] VOD 206
+http://dm.lion-ott.com:80/jocelyne/jocelyne/689816
+
+#EXTINF:-1 tvg-logo="http://logo.protv.cc/picons/logos/vod208.png" group-title="[PL] FILMOWE", [PL] VOD 207
+http://dm.lion-ott.com:80/jocelyne/jocelyne/689817
+
+#EXTINF:-1 tvg-logo="http://logo.protv.cc/picons/logos/vod208.png" group-title="[PL] FILMOWE", [PL] VOD 208
+http://dm.lion-ott.com:80/jocelyne/jocelyne/689818
+
+#EXTINF:-1 tvg-logo="http://logo.protv.cc/picons/logos/tvpseriale.png" group-title="[PL] FILMOWE", [PL] TVP SERIALE
+http://dm.lion-ott.com:80/jocelyne/jocelyne/689823
+
+#EXTINF:-1 tvg-logo="https://img.freeflagicons.com/thumb/round_icon/poland/poland_640.png" group-title="[PL] KULTURA", ##### [PL] KULTURA #####
+http://dm.lion-ott.com:80/jocelyne/jocelyne/763257
+
+#EXTINF:-1 tvg-logo="http://logo.protv.cc/picons/logos/travelchannelhd.png" group-title="[PL] KULTURA", [PL] TRAVEL CHANNEL HD
+http://dm.lion-ott.com:80/jocelyne/jocelyne/689707
+
+#EXTINF:-1 tvg-logo="http://logo.protv.cc/picons/logos/tvn24biznesiswiat.png" group-title="[PL] KULTURA", [PL] BIZNES24 HD
+http://dm.lion-ott.com:80/jocelyne/jocelyne/689708
+
+#EXTINF:-1 tvg-logo="http://logo.protv.cc/picons/logos/canalplusdokumenthd.png" group-title="[PL] KULTURA", [PL] CANAL+ DOKUMENT HD
+http://dm.lion-ott.com:80/jocelyne/jocelyne/689710
+
+#EXTINF:-1 tvg-logo="http://logo.protv.cc/picons/logos/natgeopeoplehd.png" group-title="[PL] KULTURA", [PL] NAT GEO PEOPLE HD
+http://dm.lion-ott.com:80/jocelyne/jocelyne/689712
+
+#EXTINF:-1 tvg-logo="http://logo.protv.cc/picons/logos/natgeowildhd.png" group-title="[PL] KULTURA", [PL] NAT GEO WILD HD
+http://dm.lion-ott.com:80/jocelyne/jocelyne/689713
+
+#EXTINF:-1 tvg-logo="http://logo.protv.cc/picons/logos/animalplanethdpolish.png" group-title="[PL] KULTURA", [PL] ANIMAL PLANET HD
+http://dm.lion-ott.com:80/jocelyne/jocelyne/689715
+
+#EXTINF:-1 tvg-logo="http://logo.protv.cc/picons/logos/planeteplushd.png" group-title="[PL] KULTURA", [PL] PLANETE+ HD
+http://dm.lion-ott.com:80/jocelyne/jocelyne/689747
+
+#EXTINF:-1 tvg-logo="http://logo.protv.cc/picons/logos/crimeinvestigationnetwork.png" group-title="[PL] KULTURA", [PL] CRIME AND INVESTIGATION HD
+http://dm.lion-ott.com:80/jocelyne/jocelyne/689723
+
+#EXTINF:-1 tvg-logo="http://logo.protv.cc/picons/logos/discoveryhd.png" group-title="[PL] KULTURA", [PL] DISCOVERY HD
+http://dm.lion-ott.com:80/jocelyne/jocelyne/689724
+
+#EXTINF:-1 tvg-logo="http://logo.protv.cc/picons/logos/discoverysciencehd.png" group-title="[PL] KULTURA", [PL] DISCOVERY SCIENCE HD
+http://dm.lion-ott.com:80/jocelyne/jocelyne/689726
+
+#EXTINF:-1 tvg-logo="http://logo.protv.cc/picons/logos/eentertainmenthd.png" group-title="[PL] KULTURA", [PL] E! ENTERTAINMENT HD
+http://dm.lion-ott.com:80/jocelyne/jocelyne/689730
+
+#EXTINF:-1 tvg-logo="http://logo.protv.cc/picons/logos/foodnetworkhd.png" group-title="[PL] KULTURA", [PL] FOOD NETWORK HD
+http://dm.lion-ott.com:80/jocelyne/jocelyne/689671
+
+#EXTINF:-1 tvg-logo="http://logo.protv.cc/picons/logos/adventurehd.png" group-title="[PL] KULTURA", [PL] ADVENTURE HD
+http://dm.lion-ott.com:80/jocelyne/jocelyne/689718
+
+#EXTINF:-1 tvg-logo="http://logo.protv.cc/picons/logos/H2--HD.jpg" group-title="[PL] KULTURA", [PL] H2 HD
+http://dm.lion-ott.com:80/jocelyne/jocelyne/689734
+
+#EXTINF:-1 tvg-logo="http://logo.protv.cc/picons/logos/INVESTIGATION-DISCOVERY.png" group-title="[PL] KULTURA", [PL] ID HD
+http://dm.lion-ott.com:80/jocelyne/jocelyne/689736
+
+#EXTINF:-1 tvg-logo="http://logo.protv.cc/picons/logos/VIASAT-EXPLORER.png" group-title="[PL] KULTURA", [PL] POLSAT VIASAT EXPLORE HD
+http://dm.lion-ott.com:80/jocelyne/jocelyne/689754
+
+#EXTINF:-1 tvg-logo="http://logo.protv.cc/picons/logos/VIASAT-HISTORY-HD.jpg" group-title="[PL] KULTURA", [PL] POLSAT VIASAT HISTORY HD
+http://dm.lion-ott.com:80/jocelyne/jocelyne/689755
+
+#EXTINF:-1 tvg-logo="http://logo.protv.cc/picons/logos/VIASAT-NATURE-HD.png" group-title="[PL] KULTURA", [PL] POLSAT VIASAT NATURE HD
+http://dm.lion-ott.com:80/jocelyne/jocelyne/689756
+
+#EXTINF:-1 tvg-logo="http://logo.protv.cc/picons/logos/TVP-DOKUMENT.jpeg" group-title="[PL] KULTURA", [PL] TVP DOKUMENT HD
+http://dm.lion-ott.com:80/jocelyne/jocelyne/689764
+
+#EXTINF:-1 tvg-logo="http://logo.protv.cc/picons/logos/tvpkultura.png" group-title="[PL] KULTURA", [PL] TVP KULTURA HD
+http://dm.lion-ott.com:80/jocelyne/jocelyne/689765
+
+#EXTINF:-1 tvg-logo="http://logo.protv.cc/picons/logos/historyhd.png" group-title="[PL] KULTURA", [PL] HISTORY HD
+http://dm.lion-ott.com:80/jocelyne/jocelyne/689768
+
+#EXTINF:-1 tvg-logo="http://logo.protv.cc/picons/logos/tvphistoria.png" group-title="[PL] KULTURA", [PL] TVP HISTORIA
+http://dm.lion-ott.com:80/jocelyne/jocelyne/689774
+
+#EXTINF:-1 tvg-logo="http://logo.protv.cc/picons/logos/discoveryhistoria.png" group-title="[PL] KULTURA", [PL] DISCOVERY HISTORIA
+http://dm.lion-ott.com:80/jocelyne/jocelyne/689784
+
+#EXTINF:-1 tvg-logo="http://logo.protv.cc/picons/logos/davincilearning.png" group-title="[PL] KULTURA", [PL] DA VINCI LEARNING
+http://dm.lion-ott.com:80/jocelyne/jocelyne/689788
+
+#EXTINF:-1 tvg-logo="http://logo.protv.cc/picons/logos/HOME-TV.jpg" group-title="[PL] KULTURA", [PL] HOME TV
+http://dm.lion-ott.com:80/jocelyne/jocelyne/689798
+
+#EXTINF:-1 tvg-logo="http://logo.protv.cc/picons/logos/waterplanet.png" group-title="[PL] KULTURA", [PL] WATER PLANET
+http://dm.lion-ott.com:80/jocelyne/jocelyne/689819
+
+#EXTINF:-1 tvg-logo="http://logo.protv.cc/picons/logos/polsathd.png" group-title="[PL] OGÓLNE", [PL] POLSAT HD
+http://dm.lion-ott.com:80/jocelyne/jocelyne/689643
+
+#EXTINF:-1 tvg-logo="https://img.freeflagicons.com/thumb/round_icon/poland/poland_640.png" group-title="[PL] OGÓLNE", ##### [PL] OGÓLNE #####
+http://dm.lion-ott.com:80/jocelyne/jocelyne/763256
+
+#EXTINF:-1 tvg-logo="http://logo.protv.cc/picons/logos/tvp1hd.png" group-title="[PL] OGÓLNE", [PL] TVP 1 HD
+http://dm.lion-ott.com:80/jocelyne/jocelyne/689632
+
+#EXTINF:-1 tvg-logo="http://logo.protv.cc/picons/logos/tvp2hd.png" group-title="[PL] OGÓLNE", [PL] TVP 2 HD
+http://dm.lion-ott.com:80/jocelyne/jocelyne/689633
+
+#EXTINF:-1 tvg-logo="http://logo.protv.cc/picons/logos/tvnhd.png" group-title="[PL] OGÓLNE", [PL] TVN HD
+http://dm.lion-ott.com:80/jocelyne/jocelyne/689634
+
+#EXTINF:-1 tvg-logo="http://logo.protv.cc/picons/logos/tvn7hd.png" group-title="[PL] OGÓLNE", [PL] TVN 7 HD
+http://dm.lion-ott.com:80/jocelyne/jocelyne/689635
+
+#EXTINF:-1 tvg-logo="http://logo.protv.cc/picons/logos/tvnstylehd.png" group-title="[PL] OGÓLNE", [PL] TVN STYLE HD
+http://dm.lion-ott.com:80/jocelyne/jocelyne/689637
+
+#EXTINF:-1 tvg-logo="http://logo.protv.cc/picons/logos/tvnturbohd.png" group-title="[PL] OGÓLNE", [PL] TVN TURBO HD
+http://dm.lion-ott.com:80/jocelyne/jocelyne/689638
+
+#EXTINF:-1 tvg-logo="http://logo.protv.cc/picons/logos/tv4hd.png" group-title="[PL] OGÓLNE", [PL] TV4 HD
+http://dm.lion-ott.com:80/jocelyne/jocelyne/689642
+
+#EXTINF:-1 tvg-logo="http://logo.protv.cc/picons/logos/tv6_HD.png" group-title="[PL] OGÓLNE", [PL] TV6 HD
+http://dm.lion-ott.com:80/jocelyne/jocelyne/689641
+
+#EXTINF:-1 tvg-logo="http://logo.protv.cc/picons/logos/tvphd.png" group-title="[PL] OGÓLNE", [PL] TVP HD
+http://dm.lion-ott.com:80/jocelyne/jocelyne/689648
+
+#EXTINF:-1 tvg-logo="http://logo.protv.cc/picons/logos/tvpolonia.png" group-title="[PL] OGÓLNE", [PL] POLONIA HD
+http://dm.lion-ott.com:80/jocelyne/jocelyne/689770
+
+#EXTINF:-1 tvg-logo="http://logo.protv.cc/picons/logos/polsat2hd.png" group-title="[PL] OGÓLNE", [PL] POLSAT 2 HD
+http://dm.lion-ott.com:80/jocelyne/jocelyne/689644
+
+#EXTINF:-1 tvg-logo="http://logo.protv.cc/picons/logos/13ulicahd.png" group-title="[PL] OGÓLNE", [PL] 13 ULICA HD
+http://dm.lion-ott.com:80/jocelyne/jocelyne/689660
+
+#EXTINF:-1 tvg-logo="http://logo.protv.cc/picons/logos/fokustv.png" group-title="[PL] OGÓLNE", [PL] FOKUS TV HD
+http://dm.lion-ott.com:80/jocelyne/jocelyne/689670
+
+#EXTINF:-1 tvg-logo="http://logo.protv.cc/picons/logos/puls2.png" group-title="[PL] OGÓLNE", [PL] PULS 2 HD
+http://dm.lion-ott.com:80/jocelyne/jocelyne/689673
+
+#EXTINF:-1 tvg-logo="http://logo.protv.cc/picons/logos/puls.png" group-title="[PL] OGÓLNE", [PL] PULS HD
+http://dm.lion-ott.com:80/jocelyne/jocelyne/689677
+
+#EXTINF:-1 tvg-logo="http://logo.protv.cc/picons/logos/TNT-HD.png" group-title="[PL] OGÓLNE", [PL] TNT HD
+http://dm.lion-ott.com:80/jocelyne/jocelyne/689679
+
+#EXTINF:-1 tvg-logo="http://logo.protv.cc/picons/logos/bbcbrithd.png" group-title="[PL] OGÓLNE", [PL] BBC BRIT HD
+http://dm.lion-ott.com:80/jocelyne/jocelyne/689702
+
+#EXTINF:-1 tvg-logo="http://logo.protv.cc/picons/logos/bbclifestyle.png" group-title="[PL] OGÓLNE", [PL] BBC LIFESTYLE HD
+http://dm.lion-ott.com:80/jocelyne/jocelyne/689717
+
+#EXTINF:-1 tvg-logo="http://logo.protv.cc/picons/logos/cartoonnetworkhd.png" group-title="[PL] OGÓLNE", [PL] CARTOON NETWORK HD
+http://dm.lion-ott.com:80/jocelyne/jocelyne/689720
+
+#EXTINF:-1 tvg-logo="http://logo.protv.cc/picons/logos/domoplushd.png" group-title="[PL] OGÓLNE", [PL] DOMO+ HD
+http://dm.lion-ott.com:80/jocelyne/jocelyne/689728
+
+#EXTINF:-1 tvg-logo="http://logo.protv.cc/picons/logos/dtxhd.png" group-title="[PL] OGÓLNE", [PL] DTX HD
+http://dm.lion-ott.com:80/jocelyne/jocelyne/689729
+
+#EXTINF:-1 tvg-logo="http://logo.protv.cc/picons/logos/kuchniaplushd.png" group-title="[PL] OGÓLNE", [PL] KUCHNIA+ HD
+http://dm.lion-ott.com:80/jocelyne/jocelyne/689737
+
+#EXTINF:-1 tvg-logo="http://logo.protv.cc/picons/logos/nowatv.png" group-title="[PL] OGÓLNE", [PL] NOWA TV HD
+http://dm.lion-ott.com:80/jocelyne/jocelyne/689745
+
+#EXTINF:-1 tvg-logo="http://logo.protv.cc/picons/logos/polsatcafehd.png" group-title="[PL] OGÓLNE", [PL] POLSAT CAFE HD
+http://dm.lion-ott.com:80/jocelyne/jocelyne/689748
+
+#EXTINF:-1 tvg-logo="http://logo.protv.cc/picons/logos/comedycentralextra.png" group-title="[PL] OGÓLNE", [PL] POLSAT COMEDY CENTRAL EXTRA HD
+http://dm.lion-ott.com:80/jocelyne/jocelyne/689749
+
+#EXTINF:-1 tvg-logo="http://logo.protv.cc/picons/logos/polsatdoku.png" group-title="[PL] OGÓLNE", [PL] POLSAT DOKU HD
+http://dm.lion-ott.com:80/jocelyne/jocelyne/689750
+
+#EXTINF:-1 tvg-logo="http://logo.protv.cc/picons/logos/polsatgames.png" group-title="[PL] OGÓLNE", [PL] POLSAT GAMES HD
+http://dm.lion-ott.com:80/jocelyne/jocelyne/689751
+
+#EXTINF:-1 tvg-logo="http://logo.protv.cc/picons/logos/polsatplayhd.png" group-title="[PL] OGÓLNE", [PL] POLSAT PLAY HD
+http://dm.lion-ott.com:80/jocelyne/jocelyne/689753
+
+#EXTINF:-1 tvg-logo="http://logo.protv.cc/picons/logos/studiomedtv.png" group-title="[PL] OGÓLNE", [PL] STUDIOMED TV HD
+http://dm.lion-ott.com:80/jocelyne/jocelyne/689759
+
+#EXTINF:-1 tvg-logo="http://logo.protv.cc/picons/logos/ttv.png" group-title="[PL] OGÓLNE", [PL] TTV HD
+http://dm.lion-ott.com:80/jocelyne/jocelyne/689763
+
+#EXTINF:-1 tvg-logo="http://logo.protv.cc/picons/logos/superpolsat.png" group-title="[PL] OGÓLNE", [PL] SUPER POLSAT HD
+http://dm.lion-ott.com:80/jocelyne/jocelyne/689766
+
+#EXTINF:-1 tvg-logo="http://logo.protv.cc/picons/logos/HGTV-HD.png" group-title="[PL] OGÓLNE", [PL] HGTV HD
+http://dm.lion-ott.com:80/jocelyne/jocelyne/689767
+
+#EXTINF:-1 tvg-logo="http://logo.protv.cc/picons/logos/polonia1.png" group-title="[PL] OGÓLNE", [PL] TVP POLONIA 1
+http://dm.lion-ott.com:80/jocelyne/jocelyne/689771
+
+#EXTINF:-1 tvg-logo="http://logo.protv.cc/picons/logos/tvp3.png" group-title="[PL] OGÓLNE", [PL] TVP 3
+http://dm.lion-ott.com:80/jocelyne/jocelyne/689772
+
+#EXTINF:-1 tvg-logo="http://logo.protv.cc/picons/logos/tvpabc.png" group-title="[PL] OGÓLNE", [PL] TVP ABC
+http://dm.lion-ott.com:80/jocelyne/jocelyne/689773
+
+#EXTINF:-1 tvg-logo="http://logo.protv.cc/picons/logos/tvprozrywka.png" group-title="[PL] OGÓLNE", [PL] TVP ROZRYWKA
+http://dm.lion-ott.com:80/jocelyne/jocelyne/689775
+
+#EXTINF:-1 tvg-logo="http://logo.protv.cc/picons/logos/tele5hd.png" group-title="[PL] OGÓLNE", [PL] TELE 5
+http://dm.lion-ott.com:80/jocelyne/jocelyne/689782
+
+#EXTINF:-1 tvg-logo="http://logo.protv.cc/picons/logos/metrotv.png" group-title="[PL] OGÓLNE", [PL] METRO
+http://dm.lion-ott.com:80/jocelyne/jocelyne/689800
+
+#EXTINF:-1 tvg-logo="http://logo.protv.cc/picons/logos/wp.png" group-title="[PL] OGÓLNE", [PL] WP
+http://dm.lion-ott.com:80/jocelyne/jocelyne/689820
+
+#EXTINF:-1 tvg-logo="http://logo.protv.cc/picons/logos/zoomtvhd.jpg" group-title="[PL] OGÓLNE", [PL] ZOOM TV
+http://dm.lion-ott.com:80/jocelyne/jocelyne/689822
+
+#EXTINF:-1 tvg-logo="https://img.freeflagicons.com/thumb/round_icon/poland/poland_640.png" group-title="[PL] MUZYKA | DZIECI", ##### [PL] MUZYKA & DZIECI #####
+http://dm.lion-ott.com:80/jocelyne/jocelyne/763259
+
+#EXTINF:-1 tvg-logo="http://logo.protv.cc/picons/logos/boomeranghd.png" group-title="[PL] MUZYKA | DZIECI", [PL] BOOMERANG HD
+http://dm.lion-ott.com:80/jocelyne/jocelyne/689709
+
+#EXTINF:-1 tvg-logo="http://logo.protv.cc/picons/logos/bbcearthhd.png" group-title="[PL] MUZYKA | DZIECI", [PL] BBC EARTH HD
+http://dm.lion-ott.com:80/jocelyne/jocelyne/689716
+
+#EXTINF:-1 tvg-logo="http://logo.protv.cc/picons/logos/cbsreality.png" group-title="[PL] MUZYKA | DZIECI", [PL] CBS REALITY HD
+http://dm.lion-ott.com:80/jocelyne/jocelyne/689722
+
+#EXTINF:-1 tvg-logo="http://logo.protv.cc/picons/logos/disneychannelhd.png" group-title="[PL] MUZYKA | DZIECI", [PL] DISNEY CHANNEL HD
+http://dm.lion-ott.com:80/jocelyne/jocelyne/689727
+
+#EXTINF:-1 tvg-logo="http://logo.protv.cc/picons/logos/MINIMINI-.jpeg" group-title="[PL] MUZYKA | DZIECI", [PL] MINIMINI HD
+http://dm.lion-ott.com:80/jocelyne/jocelyne/689738
+
+#EXTINF:-1 tvg-logo="http://logo.protv.cc/picons/logos/nicktoons.png" group-title="[PL] MUZYKA | DZIECI", [PL] NICKTOONS HD
+http://dm.lion-ott.com:80/jocelyne/jocelyne/689740
+
+#EXTINF:-1 tvg-logo="http://logo.protv.cc/picons/logos/TEEN-NICK.jpg" group-title="[PL] MUZYKA | DZIECI", [PL] TEENNICK HD
+http://dm.lion-ott.com:80/jocelyne/jocelyne/689741
+
+#EXTINF:-1 tvg-logo="http://logo.protv.cc/picons/logos/mtvlivehd.png" group-title="[PL] MUZYKA | DZIECI", [PL] MTV LIVE HD
+http://dm.lion-ott.com:80/jocelyne/jocelyne/689743
+
+#EXTINF:-1 tvg-logo="http://logo.protv.cc/picons/logos/mtvpolska.png" group-title="[PL] MUZYKA | DZIECI", [PL] MTV POLSKA HD
+http://dm.lion-ott.com:80/jocelyne/jocelyne/689744
+
+#EXTINF:-1 tvg-logo="http://logo.protv.cc/picons/logos/polsatmusichd.png" group-title="[PL] MUZYKA | DZIECI", [PL] POLSAT MUSIC HD
+http://dm.lion-ott.com:80/jocelyne/jocelyne/689752
+
+#EXTINF:-1 tvg-logo="http://logo.protv.cc/picons/logos/sundancehd.png" group-title="[PL] MUZYKA | DZIECI", [PL] SUNDANCE TV HD
+http://dm.lion-ott.com:80/jocelyne/jocelyne/689760
+
+#EXTINF:-1 tvg-logo="http://logo.protv.cc/picons/logos/teletoonplushd.png" group-title="[PL] MUZYKA | DZIECI", [PL] TELETOON+ HD
+http://dm.lion-ott.com:80/jocelyne/jocelyne/689762
+
+#EXTINF:-1 tvg-logo="http://logo.protv.cc/picons/logos/polotv.png" group-title="[PL] MUZYKA | DZIECI", [PL] POLO TV HD
+http://dm.lion-ott.com:80/jocelyne/jocelyne/689769
+
+#EXTINF:-1 tvg-logo="http://logo.protv.cc/picons/logos/bbccbeebies.png" group-title="[PL] MUZYKA | DZIECI", [PL] BBC CBEEBIES
+http://dm.lion-ott.com:80/jocelyne/jocelyne/689786
+
+#EXTINF:-1 tvg-logo="http://logo.protv.cc/picons/logos/babytv.png" group-title="[PL] MUZYKA | DZIECI", [PL] BABY TV
+http://dm.lion-ott.com:80/jocelyne/jocelyne/689787
+
+#EXTINF:-1 tvg-logo="http://logo.protv.cc/picons/logos/discopolomusic.png" group-title="[PL] MUZYKA | DZIECI", [PL] DISCO POLO MUSIC
+http://dm.lion-ott.com:80/jocelyne/jocelyne/689789
+
+#EXTINF:-1 tvg-logo="http://logo.protv.cc/picons/logos/4fundance.png" group-title="[PL] MUZYKA | DZIECI", [PL] 4FUN DANCE
+http://dm.lion-ott.com:80/jocelyne/jocelyne/689790
+
+#EXTINF:-1 tvg-logo="http://logo.protv.cc/picons/logos/4fungold.png" group-title="[PL] MUZYKA | DZIECI", [PL] 4FUN GOLD HITS
+http://dm.lion-ott.com:80/jocelyne/jocelyne/689791
+
+#EXTINF:-1 tvg-logo="http://logo.protv.cc/picons/logos/4funtv.png" group-title="[PL] MUZYKA | DZIECI", [PL] 4FUN.TV
+http://dm.lion-ott.com:80/jocelyne/jocelyne/689792
+
+#EXTINF:-1 tvg-logo="http://logo.protv.cc/picons/logos/disneyjuniorhd.png" group-title="[PL] MUZYKA | DZIECI", [PL] DISNEY JUNIOR
+http://dm.lion-ott.com:80/jocelyne/jocelyne/689793
+
+#EXTINF:-1 tvg-logo="http://logo.protv.cc/picons/logos/disneyxdhd.png" group-title="[PL] MUZYKA | DZIECI", [PL] DISNEY XD
+http://dm.lion-ott.com:80/jocelyne/jocelyne/689794
+
+#EXTINF:-1 tvg-logo="http://logo.protv.cc/picons/logos/eskatv.png" group-title="[PL] MUZYKA | DZIECI", [PL] ESKA ROCK TV
+http://dm.lion-ott.com:80/jocelyne/jocelyne/689795
+
+#EXTINF:-1 tvg-logo="http://logo.protv.cc/picons/logos/eskatv.png" group-title="[PL] MUZYKA | DZIECI", [PL] ESKA TV
+http://dm.lion-ott.com:80/jocelyne/jocelyne/689796
+
+#EXTINF:-1 tvg-logo="http://logo.protv.cc/picons/logos/eskatvextra.png" group-title="[PL] MUZYKA | DZIECI", [PL] ESKA TV EXTRA
+http://dm.lion-ott.com:80/jocelyne/jocelyne/689797
+
+#EXTINF:-1 tvg-logo="http://logo.protv.cc/picons/logos/nickjrpolska.png" group-title="[PL] MUZYKA | DZIECI", [PL] NICK JR POLSKA
+http://dm.lion-ott.com:80/jocelyne/jocelyne/689801
+
+#EXTINF:-1 tvg-logo="http://logo.protv.cc/picons/logos/NICKELODEON-HD.png" group-title="[PL] MUZYKA | DZIECI", [PL] NICKELODEON
+http://dm.lion-ott.com:80/jocelyne/jocelyne/689802
+
+#EXTINF:-1 tvg-logo="http://logo.protv.cc/picons/logos/mtvrocks.png" group-title="[PL] MUZYKA | DZIECI", [PL] MTV ROCKS
+http://dm.lion-ott.com:80/jocelyne/jocelyne/689804
+
+#EXTINF:-1 tvg-logo="http://logo.protv.cc/picons/logos/nutatv.png" group-title="[PL] MUZYKA | DZIECI", [PL] NUTA TV
+http://dm.lion-ott.com:80/jocelyne/jocelyne/689805
+
+#EXTINF:-1 tvg-logo="http://logo.protv.cc/picons/logos/polsatjimjam.png" group-title="[PL] MUZYKA | DZIECI", [PL] POLSAT JIM JAM
+http://dm.lion-ott.com:80/jocelyne/jocelyne/689806
+
+#EXTINF:-1 tvg-logo="http://logo.protv.cc/picons/logos/powertv.png" group-title="[PL] MUZYKA | DZIECI", [PL] POWER TV
+http://dm.lion-ott.com:80/jocelyne/jocelyne/689807
+
+#EXTINF:-1 tvg-logo="http://logo.protv.cc/picons/logos/starstv.png" group-title="[PL] MUZYKA | DZIECI", [PL] STARS.TV
+http://dm.lion-ott.com:80/jocelyne/jocelyne/689808
+
+#EXTINF:-1 tvg-logo="http://logo.protv.cc/picons/logos/MTV-HD.png" group-title="[PL] MUZYKA | DZIECI", [PL] MTV 00S
+http://dm.lion-ott.com:80/jocelyne/jocelyne/689812
+
+#EXTINF:-1 tvg-logo="http://logo.protv.cc/picons/logos/musicbox.png" group-title="[PL] MUZYKA | DZIECI", [PL] MUSIC BOX POLSKA
+http://dm.lion-ott.com:80/jocelyne/jocelyne/689813
+
+#EXTINF:-1 tvg-logo="http://logo.protv.cc/picons/logos/voxmusictv.png" group-title="[PL] MUZYKA | DZIECI", [PL] VOX MUSIC TV
+http://dm.lion-ott.com:80/jocelyne/jocelyne/689814
+
+#EXTINF:-1 tvg-logo="https://img.freeflagicons.com/thumb/round_icon/poland/poland_640.png" group-title="[PL] SPORTOWE", ##### [PL] SPORTOWE #####
+http://dm.lion-ott.com:80/jocelyne/jocelyne/763258
+
+#EXTINF:-1 tvg-logo="http://logo.protv.cc/picons/logos/tvpsporthd.png" group-title="[PL] SPORTOWE", [PL] TVP SPORT HD
+http://dm.lion-ott.com:80/jocelyne/jocelyne/689650
+
+#EXTINF:-1 tvg-logo="http://logo.protv.cc/picons/logos/polsatsportnews.png" group-title="[PL] SPORTOWE", [PL] POLSAT SPORT NEWS HD
+http://dm.lion-ott.com:80/jocelyne/jocelyne/689684
+
+#EXTINF:-1 tvg-logo="http://logo.protv.cc/picons/logos/polsatsportextrahd.png" group-title="[PL] SPORTOWE", [PL] POLSAT SPORT EXTRA HD
+http://dm.lion-ott.com:80/jocelyne/jocelyne/689681
+
+#EXTINF:-1 tvg-logo="http://logo.protv.cc/picons/logos/polsatsporthd.png" group-title="[PL] SPORTOWE", [PL] POLSAT SPORT HD
+http://dm.lion-ott.com:80/jocelyne/jocelyne/689682
+
+#EXTINF:-1 tvg-logo="http://logo.protv.cc/picons/logos/polsatsportfighthd.png" group-title="[PL] SPORTOWE", [PL] POLSAT SPORT FIGHT HD
+http://dm.lion-ott.com:80/jocelyne/jocelyne/689683
+
+#EXTINF:-1 tvg-logo="http://logo.protv.cc/picons/logos/polsatsportpremium1.png" group-title="[PL] SPORTOWE", [PL] POLSAT SPORT PREMIUM 1 HD
+http://dm.lion-ott.com:80/jocelyne/jocelyne/689685
+
+#EXTINF:-1 tvg-logo="http://logo.protv.cc/picons/logos/polsatsportpremium2.png" group-title="[PL] SPORTOWE", [PL] POLSAT SPORT PREMIUM 2 HD
+http://dm.lion-ott.com:80/jocelyne/jocelyne/689686
+
+#EXTINF:-1 tvg-logo="http://logo.protv.cc/picons/logos/polsatsportpremiumppv3.png" group-title="[PL] SPORTOWE", [PL] POLSAT SPORT PREMIUM 3 HD
+http://dm.lion-ott.com:80/jocelyne/jocelyne/689687
+
+#EXTINF:-1 tvg-logo="http://logo.protv.cc/picons/logos/polsatsportpremiumppv4.png" group-title="[PL] SPORTOWE", [PL] POLSAT SPORT PREMIUM 4 HD
+http://dm.lion-ott.com:80/jocelyne/jocelyne/689688
+
+#EXTINF:-1 tvg-logo="http://logo.protv.cc/picons/logos/polsatsportpremiumppv5.png" group-title="[PL] SPORTOWE", [PL] POLSAT SPORT PREMIUM 5 HD
+http://dm.lion-ott.com:80/jocelyne/jocelyne/689689
+
+#EXTINF:-1 tvg-logo="http://logo.protv.cc/picons/logos/polsatsportpremiumppv6.png" group-title="[PL] SPORTOWE", [PL] POLSAT SPORT PREMIUM 6 HD
+http://dm.lion-ott.com:80/jocelyne/jocelyne/689690
+
+#EXTINF:-1 tvg-logo="http://logo.protv.cc/picons/logos/canalplussport2hd.png" group-title="[PL] SPORTOWE", [PL] CANAL+ SPORT 2 HD
+http://dm.lion-ott.com:80/jocelyne/jocelyne/689692
+
+#EXTINF:-1 tvg-logo="http://logo.protv.cc/picons/logos/canalplussporthd.png" group-title="[PL] SPORTOWE", [PL] CANAL+ SPORT HD
+http://dm.lion-ott.com:80/jocelyne/jocelyne/689691
+
+#EXTINF:-1 tvg-logo="http://logo.protv.cc/picons/logos/canalplussport3hd.png" group-title="[PL] SPORTOWE", [PL] CANAL+ SPORT 3 HD
+http://dm.lion-ott.com:80/jocelyne/jocelyne/689693
+
+#EXTINF:-1 tvg-logo="http://logo.protv.cc/picons/logos/canalplussport4hd.png" group-title="[PL] SPORTOWE", [PL] CANAL+ SPORT 4 HD
+http://dm.lion-ott.com:80/jocelyne/jocelyne/689694
+
+#EXTINF:-1 tvg-logo="http://logo.protv.cc/picons/logos/elevensports1hd.png" group-title="[PL] SPORTOWE", [PL] ELEVEN SPORTS 1 HD
+http://dm.lion-ott.com:80/jocelyne/jocelyne/689695
+
+#EXTINF:-1 tvg-logo="http://logo.protv.cc/picons/logos/elevensports2hd.png" group-title="[PL] SPORTOWE", [PL] ELEVEN SPORTS 2 HD
+http://dm.lion-ott.com:80/jocelyne/jocelyne/689696
+
+#EXTINF:-1 tvg-logo="http://logo.protv.cc/picons/logos/elevensports3hd.png" group-title="[PL] SPORTOWE", [PL] ELEVEN SPORTS 3 HD
+http://dm.lion-ott.com:80/jocelyne/jocelyne/689697
+
+#EXTINF:-1 tvg-logo="http://logo.protv.cc/picons/logos/elevensports4hd.png" group-title="[PL] SPORTOWE", [PL] ELEVEN SPORTS 4 HD
+http://dm.lion-ott.com:80/jocelyne/jocelyne/689698
+
+#EXTINF:-1 tvg-logo="http://logo.protv.cc/picons/logos/eurosport1hd.png" group-title="[PL] SPORTOWE", [PL] EUROSPORT 1 HD
+http://dm.lion-ott.com:80/jocelyne/jocelyne/689699
+
+#EXTINF:-1 tvg-logo="http://logo.protv.cc/picons/logos/eurosport2hd.png" group-title="[PL] SPORTOWE", [PL] EUROSPORT 2 HD
+http://dm.lion-ott.com:80/jocelyne/jocelyne/689700
+
+#EXTINF:-1 tvg-logo="http://logo.protv.cc/picons/logos/extremesportshd.png" group-title="[PL] SPORTOWE", [PL] EXTREME SPORTS HD
+http://dm.lion-ott.com:80/jocelyne/jocelyne/689704
+
+#EXTINF:-1 tvg-logo="http://logo.protv.cc/picons/logos/sportklubhd.png" group-title="[PL] SPORTOWE", [PL] SPORTKLUB HD
+http://dm.lion-ott.com:80/jocelyne/jocelyne/689705
+
+#EXTINF:-1 tvg-logo="http://logo.protv.cc/picons/logos/fightboxhd.png" group-title="[PL] SPORTOWE", [PL] FIGHTBOX HD
+http://dm.lion-ott.com:80/jocelyne/jocelyne/689706
+
+#EXTINF:-1 tvg-logo="http://logo.protv.cc/picons/logos/fightklub.png" group-title="[PL] SPORTOWE", [PL] FIGHTKLUB HD
+http://dm.lion-ott.com:80/jocelyne/jocelyne/689732
+
+#EXTINF:-1 tvg-logo="http://logo.protv.cc/picons/logos/GOLF-CHANNEL-NP.png" group-title="[PL] SPORTOWE", [PL] GOLF CHANNEL HD
+http://dm.lion-ott.com:80/jocelyne/jocelyne/689733
+
+#EXTINF:-1 tvg-logo="http://logo.protv.cc/picons/logos/motowizjatv.png" group-title="[PL] SPORTOWE", [PL] MOTOWIZJA HD
+http://dm.lion-ott.com:80/jocelyne/jocelyne/689739
+
+#EXTINF:-1 tvg-logo="http://logo.protv.cc/picons/logos/nsportplushd.png" group-title="[PL] SPORTOWE", [PL] NSPORT+ HD
+http://dm.lion-ott.com:80/jocelyne/jocelyne/689746
+
+#EXTINF:-1 tvg-logo="http://logo.protv.cc/picons/logos/stopklatkatv.png" group-title="[PL] SPORTOWE", [PL] STOPKLATKA TV
+http://dm.lion-ott.com:80/jocelyne/jocelyne/689783
+
+#EXTINF:-1 tvg-logo="https://img.freeflagicons.com/thumb/round_icon/poland/poland_640.png" group-title="[PL] NA HD", ##### [PL] POLAND NA #####
+http://dm.lion-ott.com:80/jocelyne/jocelyne/691008
+
+#EXTINF:-1 tvg-logo="http://logo.protv.cc/picons/logos/tvphd.png" group-title="[PL] NA HD", [PL] TVP HD NA
+http://dm.lion-ott.com:80/jocelyne/jocelyne/691009
+
+#EXTINF:-1 tvg-logo="http://logo.protv.cc/picons/logos/tvp1hd.png" group-title="[PL] NA HD", [PL] TVP 1 HD NA
+http://dm.lion-ott.com:80/jocelyne/jocelyne/691010
+
+#EXTINF:-1 tvg-logo="http://logo.protv.cc/picons/logos/tvp2hd.png" group-title="[PL] NA HD", [PL] TVP 2 HD NA
+http://dm.lion-ott.com:80/jocelyne/jocelyne/691011
+
+#EXTINF:-1 tvg-logo="http://logo.protv.cc/picons/logos/tvpkultura.png" group-title="[PL] NA HD", [PL] TVP KULTURA HD NA
+http://dm.lion-ott.com:80/jocelyne/jocelyne/691012
+
+#EXTINF:-1 tvg-logo="http://logo.protv.cc/picons/logos/tvphistoria.png" group-title="[PL] NA HD", [PL] TVP HISTORIA NA
+http://dm.lion-ott.com:80/jocelyne/jocelyne/691013
+
+#EXTINF:-1 tvg-logo="http://logo.protv.cc/picons/logos/tvpabc.png" group-title="[PL] NA HD", [PL] TVP ABC NA
+http://dm.lion-ott.com:80/jocelyne/jocelyne/691014
+
+#EXTINF:-1 tvg-logo="http://logo.protv.cc/picons/logos/tvprozrywka.png" group-title="[PL] NA HD", [PL] TVP ROZRYWKA NA
+http://dm.lion-ott.com:80/jocelyne/jocelyne/691015
+
+#EXTINF:-1 tvg-logo="http://logo.protv.cc/picons/logos/tvpseriale.png" group-title="[PL] NA HD", [PL] TVP SERIALE NA
+http://dm.lion-ott.com:80/jocelyne/jocelyne/691016
+
+#EXTINF:-1 tvg-logo="http://logo.protv.cc/picons/logos/tvnhd.png" group-title="[PL] NA HD", [PL] TVN HD NA
+http://dm.lion-ott.com:80/jocelyne/jocelyne/691018
+
+#EXTINF:-1 tvg-logo="http://logo.protv.cc/picons/logos/tvn24hd.png" group-title="[PL] NA HD", [PL] TVN24 HD NA
+http://dm.lion-ott.com:80/jocelyne/jocelyne/691038
+
+#EXTINF:-1 tvg-logo="http://logo.protv.cc/picons/logos/tvnstylehd.png" group-title="[PL] NA HD", [PL] TVN STYLE HD NA
+http://dm.lion-ott.com:80/jocelyne/jocelyne/691020
+
+#EXTINF:-1 tvg-logo="http://logo.protv.cc/picons/logos/tvnturbohd.png" group-title="[PL] NA HD", [PL] TVN TURBO HD NA
+http://dm.lion-ott.com:80/jocelyne/jocelyne/691021
+
+#EXTINF:-1 tvg-logo="http://logo.protv.cc/picons/logos/polsatplayhd.png" group-title="[PL] NA HD", [PL] POLSAT PLAY HD NA
+http://dm.lion-ott.com:80/jocelyne/jocelyne/691022
+
+#EXTINF:-1 tvg-logo="http://logo.protv.cc/picons/logos/polsatcafehd.png" group-title="[PL] NA HD", [PL] POLSAT CAFE HD NA
+http://dm.lion-ott.com:80/jocelyne/jocelyne/691023
+
+#EXTINF:-1 tvg-logo="http://logo.protv.cc/picons/logos/kuchniaplushd.png" group-title="[PL] NA HD", [PL] KUCHNIA+ HD NA
+http://dm.lion-ott.com:80/jocelyne/jocelyne/691024
+
+#EXTINF:-1 tvg-logo="http://logo.protv.cc/picons/logos/domoplushd.png" group-title="[PL] NA HD", [PL] DOMO+ HD NA
+http://dm.lion-ott.com:80/jocelyne/jocelyne/691025
+
+#EXTINF:-1 tvg-logo="http://logo.protv.cc/picons/logos/kinopolska.png" group-title="[PL] NA HD", [PL] KINO POLSKA HD NA
+http://dm.lion-ott.com:80/jocelyne/jocelyne/691026
+
+#EXTINF:-1 tvg-logo="http://logo.protv.cc/picons/logos/polsatsportpremium1.png" group-title="[PL] NA HD", [PL] POLSAT SPORT PREMIUM 1 HD NA
+http://dm.lion-ott.com:80/jocelyne/jocelyne/691027
+
+#EXTINF:-1 tvg-logo="http://logo.protv.cc/picons/logos/polsatsportpremium2.png" group-title="[PL] NA HD", [PL] POLSAT SPORT PREMIUM 2 HD NA
+http://dm.lion-ott.com:80/jocelyne/jocelyne/691028
+
+#EXTINF:-1 tvg-logo="http://logo.protv.cc/picons/logos/canalplusfilmhd.png" group-title="[PL] NA HD", [PL] CANAL+ FILM HD NA
+http://dm.lion-ott.com:80/jocelyne/jocelyne/691029
+
+#EXTINF:-1 tvg-logo="http://logo.protv.cc/picons/logos/canalplus1hd.png" group-title="[PL] NA HD", [PL] CANAL+ 1 HD NA
+http://dm.lion-ott.com:80/jocelyne/jocelyne/691030
+
+#EXTINF:-1 tvg-logo="http://logo.protv.cc/picons/logos/canalplusfilmhd.png" group-title="[PL] NA HD", [PL] CANAL+ FAMILY HD NA
+http://dm.lion-ott.com:80/jocelyne/jocelyne/691031
+
+#EXTINF:-1 tvg-logo="http://logo.protv.cc/picons/logos/canalplusnowhd.png" group-title="[PL] NA HD", [PL] CANAL+ NOW HD NA
+http://dm.lion-ott.com:80/jocelyne/jocelyne/691032
+
+#EXTINF:-1 tvg-logo="http://logo.protv.cc/picons/logos/canalpluspr.png" group-title="[PL] NA HD", [PL] CANAL+ PREMIUM HD NA
+http://dm.lion-ott.com:80/jocelyne/jocelyne/691033
+
+#EXTINF:-1 tvg-logo="http://logo.protv.cc/picons/logos/canalplusserialehd.png" group-title="[PL] NA HD", [PL] CANAL+ SERIALE HD NA
+http://dm.lion-ott.com:80/jocelyne/jocelyne/691034
+
+#EXTINF:-1 tvg-logo="http://logo.protv.cc/picons/logos/hbohd.png" group-title="[PL] NA HD", [PL] HBO HD NA
+http://dm.lion-ott.com:80/jocelyne/jocelyne/691035
+
+#EXTINF:-1 tvg-logo="http://logo.protv.cc/picons/logos/hbo2hd.png" group-title="[PL] NA HD", [PL] HBO 2 HD NA
+http://dm.lion-ott.com:80/jocelyne/jocelyne/691036
+
+#EXTINF:-1 tvg-logo="http://logo.protv.cc/picons/logos/hbo3hd.png" group-title="[PL] NA HD", [PL] HBO 3 HD NA
+http://dm.lion-ott.com:80/jocelyne/jocelyne/691037
+
+#EXTINF:-1 tvg-logo="http://logo.protv.cc/picons/logos/tv6_HD.png" group-title="[PL] NA HD", [PL] TV6 HD NA
+http://dm.lion-ott.com:80/jocelyne/jocelyne/691039
+
+#EXTINF:-1 tvg-logo="http://logo.protv.cc/picons/logos/tv4hd.png" group-title="[PL] NA HD", [PL] TV4 HD NA
+http://dm.lion-ott.com:80/jocelyne/jocelyne/691040
+
+#EXTINF:-1 tvg-logo="http://logo.protv.cc/picons/logos/polsathd.png" group-title="[PL] NA HD", [PL] POLSAT HD NA
+http://dm.lion-ott.com:80/jocelyne/jocelyne/691041
+
+#EXTINF:-1 tvg-logo="http://logo.protv.cc/picons/logos/polsat2hd.png" group-title="[PL] NA HD", [PL] POLSAT2 HD NA
+http://dm.lion-ott.com:80/jocelyne/jocelyne/691042
+
+#EXTINF:-1 tvg-logo="http://logo.protv.cc/picons/logos/polsatseriale.png" group-title="[PL] NA HD", [PL] POLSAT SERIALE HD NA
+http://dm.lion-ott.com:80/jocelyne/jocelyne/691043
+
+#EXTINF:-1 tvg-logo="http://logo.protv.cc/stalker_portal/misc/logos/320/42.png?1674475300" group-title="[PL] VIAPLAY SPORT", [PL] PREMIER LEAGUE TOP EVENT FHD
+http://dm.lion-ott.com:80/jocelyne/jocelyne/842137
+
+#EXTINF:-1 tvg-logo="http://logo.protv.cc/stalker_portal/misc/logos/320/42.png?1674475300" group-title="[PL] VIAPLAY SPORT", [PL] PREMIER LEAGUE TOP EVENT HD
+http://dm.lion-ott.com:80/jocelyne/jocelyne/842136
+
+#EXTINF:-1 tvg-logo="http://logo.protv.cc/stalker_portal/misc/logos/320/42.png?1674475300" group-title="[PL] VIAPLAY SPORT", [PL] XTRA 1  HD
+http://dm.lion-ott.com:80/jocelyne/jocelyne/842135
+
+#EXTINF:-1 tvg-logo="http://logo.protv.cc/stalker_portal/misc/logos/320/42.png?1674475300" group-title="[PL] VIAPLAY SPORT", [PL] XTRA 2 HD
+http://dm.lion-ott.com:80/jocelyne/jocelyne/842134
+
+#EXTINF:-1 tvg-logo="http://logo.protv.cc/stalker_portal/misc/logos/320/42.png?1674475300" group-title="[PL] VIAPLAY SPORT", [PL] XTRA 3 HD
+http://dm.lion-ott.com:80/jocelyne/jocelyne/842133
+
+#EXTINF:-1 tvg-logo="http://logo.protv.cc/stalker_portal/misc/logos/320/42.png?1674475300" group-title="[PL] VIAPLAY SPORT", [PL] XTRA 4 HD
+http://dm.lion-ott.com:80/jocelyne/jocelyne/842132
+
+#EXTINF:-1 tvg-logo="http://logo.protv.cc/stalker_portal/misc/logos/320/42.png?1674475300" group-title="[PL] VIAPLAY SPORT", [PL] XTRA 5 HD
+http://dm.lion-ott.com:80/jocelyne/jocelyne/842131
+
+#EXTINF:-1 tvg-logo="http://logo.protv.cc/stalker_portal/misc/logos/320/42.png?1674475300" group-title="[PL] VIAPLAY SPORT", [PL] XTRA 6 HD
+http://dm.lion-ott.com:80/jocelyne/jocelyne/842130
+
+#EXTINF:-1 tvg-logo="http://logo.protv.cc/stalker_portal/misc/logos/320/42.png?1674475300" group-title="[PL] VIAPLAY SPORT", [PL] XTRA 7 HD
+http://dm.lion-ott.com:80/jocelyne/jocelyne/842129
+
+#EXTINF:-1 tvg-logo="http://logo.protv.cc/stalker_portal/misc/logos/320/42.png?1674475300" group-title="[PL] VIAPLAY SPORT", [PL] XTRA 8 HD
+http://dm.lion-ott.com:80/jocelyne/jocelyne/842128
+
+#EXTINF:-1 tvg-logo="http://logo.protv.cc/stalker_portal/misc/logos/320/42.png?1674475300" group-title="[PL] VIAPLAY SPORT", [PL] XTRA 9 HD
+http://dm.lion-ott.com:80/jocelyne/jocelyne/842127
+
+#EXTINF:-1 tvg-logo="http://logo.protv.cc/stalker_portal/misc/logos/320/42.png?1674475300" group-title="[PL] VIAPLAY SPORT", [PL] XTRA 10 HD
+http://dm.lion-ott.com:80/jocelyne/jocelyne/842126
+
+#EXTINF:-1 tvg-logo="http://logo.protv.cc/stalker_portal/misc/logos/320/42.png?1674475300" group-title="[PL] VIAPLAY SPORT", [PL] XTRA 11 HD
+http://dm.lion-ott.com:80/jocelyne/jocelyne/842125
+
+#EXTINF:-1 tvg-logo="http://logo.protv.cc/stalker_portal/misc/logos/320/42.png?1674475300" group-title="[PL] VIAPLAY SPORT", [PL] XTRA 12 HD
+http://dm.lion-ott.com:80/jocelyne/jocelyne/842124
+
+#EXTINF:-1 tvg-logo="http://logo.protv.cc/stalker_portal/misc/logos/320/42.png?1674475300" group-title="[PL] VIAPLAY SPORT", [PL] XTRA 13 HD
+http://dm.lion-ott.com:80/jocelyne/jocelyne/842123
+
+#EXTINF:-1 tvg-logo="http://logo.protv.cc/stalker_portal/misc/logos/320/42.png?1674475300" group-title="[PL] VIAPLAY SPORT", [PL] XTRA 14 HD
+http://dm.lion-ott.com:80/jocelyne/jocelyne/842122
+
+#EXTINF:-1 tvg-logo="http://logo.protv.cc/stalker_portal/misc/logos/320/42.png?1674475300" group-title="[PL] VIAPLAY SPORT", [PL] XTRA 15  HD
+http://dm.lion-ott.com:80/jocelyne/jocelyne/842121
+
+#EXTINF:-1 tvg-logo="http://logo.protv.cc/stalker_portal/misc/logos/320/42.png?1674475300" group-title="[PL] VIAPLAY SPORT", [PL] XTRA 16 HD
+http://dm.lion-ott.com:80/jocelyne/jocelyne/842120
+
+#EXTINF:-1 tvg-logo="http://logo.protv.cc/stalker_portal/misc/logos/320/42.png?1674475300" group-title="[PL] VIAPLAY SPORT", [PL] XTRA 17 HD
+http://dm.lion-ott.com:80/jocelyne/jocelyne/842119
+
+#EXTINF:-1 tvg-logo="http://logo.protv.cc/stalker_portal/misc/logos/320/42.png?1674475300" group-title="[PL] VIAPLAY SPORT", [PL] XTRA 18 HD
+http://dm.lion-ott.com:80/jocelyne/jocelyne/842118
+
+#EXTINF:-1 tvg-logo="http://logo.protv.cc/stalker_portal/misc/logos/320/42.png?1674475300" group-title="[PL] VIAPLAY SPORT", [PL] XTRA 19 HD
+http://dm.lion-ott.com:80/jocelyne/jocelyne/842117
+
+#EXTINF:-1 tvg-logo="http://logo.protv.cc/stalker_portal/misc/logos/320/42.png?1674475300" group-title="[PL] VIAPLAY SPORT", [PL] XTRA 20 HD
+http://dm.lion-ott.com:80/jocelyne/jocelyne/842116
+
+#EXTINF:-1 tvg-logo="http://logo.protv.cc/stalker_portal/misc/logos/320/42.png?1674475300" group-title="[PL] VIAPLAY SPORT", [PL] XTRA 21 HD
+http://dm.lion-ott.com:80/jocelyne/jocelyne/842115
+
+#EXTINF:-1 tvg-logo="http://logo.protv.cc/stalker_portal/misc/logos/320/42.png?1674475300" group-title="[PL] VIAPLAY SPORT", [PL] XTRA 22  HD
+http://dm.lion-ott.com:80/jocelyne/jocelyne/842114
+
+#EXTINF:-1 tvg-logo="http://logo.protv.cc/stalker_portal/misc/logos/320/42.png?1674475300" group-title="[PL] VIAPLAY SPORT", [PL] XTRA 23 HD
+http://dm.lion-ott.com:80/jocelyne/jocelyne/842113
+
+#EXTINF:-1 tvg-logo="http://logo.protv.cc/stalker_portal/misc/logos/320/42.png?1674475300" group-title="[PL] VIAPLAY SPORT", [PL] XTRA 25 HD
+http://dm.lion-ott.com:80/jocelyne/jocelyne/842112
+
+#EXTINF:-1 tvg-logo="http://logo.protv.cc/stalker_portal/misc/logos/320/42.png?1674475300" group-title="[PL] VIAPLAY SPORT", [PL] XTRA 26 HD
+http://dm.lion-ott.com:80/jocelyne/jocelyne/842111
+
+#EXTINF:-1 tvg-logo="http://logo.protv.cc/stalker_portal/misc/logos/320/42.png?1674475300" group-title="[PL] VIAPLAY SPORT", [PL] XTRA 40 HD
+http://dm.lion-ott.com:80/jocelyne/jocelyne/842110
+
+#EXTINF:-1 tvg-logo="http://logo.protv.cc/stalker_portal/misc/logos/320/42.png?1674475300" group-title="[PL] VIAPLAY SPORT", [PL] XTRA 44 HD
+http://dm.lion-ott.com:80/jocelyne/jocelyne/842109
+
+#EXTINF:-1 tvg-logo="http://logo.protv.cc/stalker_portal/misc/logos/320/42.png?1674475300" group-title="[PL] VIAPLAY SPORT", [PL] XTRA 48 HD
+http://dm.lion-ott.com:80/jocelyne/jocelyne/842108
+
+#EXTINF:-1 tvg-logo="http://logo.protv.cc/stalker_portal/misc/logos/320/42.png?1674475300" group-title="[PL] VIAPLAY SPORT", [PL] XTRA 49 HD
+http://dm.lion-ott.com:80/jocelyne/jocelyne/842107
+
+#EXTINF:-1 tvg-logo="http://logo.protv.cc/stalker_portal/misc/logos/320/42.png?1674475300" group-title="[PL] VIAPLAY SPORT", [PL] XTRA 50 HD
+http://dm.lion-ott.com:80/jocelyne/jocelyne/842106
+
+#EXTINF:-1 tvg-logo="http://logo.protv.cc/stalker_portal/misc/logos/320/42.png?1674475300" group-title="[PL] VIAPLAY SPORT", [PL] XTRA 63 HD
+http://dm.lion-ott.com:80/jocelyne/jocelyne/842105
+
+#EXTINF:-1 tvg-logo="http://logo.protv.cc/stalker_portal/misc/logos/320/42.png?1674475300" group-title="[PL] VIAPLAY SPORT", [PL] XTRA 64 HD
+http://dm.lion-ott.com:80/jocelyne/jocelyne/842104
+
+#EXTINF:-1 tvg-logo="http://logo.protv.cc/stalker_portal/misc/logos/320/42.png?1674475300" group-title="[PL] VIAPLAY SPORT", [PL] XTRA 65 HD
+http://dm.lion-ott.com:80/jocelyne/jocelyne/842103
+
+#EXTINF:-1 tvg-logo="http://logo.protv.cc/stalker_portal/misc/logos/320/42.png?1674475300" group-title="[PL] VIAPLAY SPORT", [PL] XTRA 66 HD
+http://dm.lion-ott.com:80/jocelyne/jocelyne/842102
+
+#EXTINF:-1 tvg-logo="http://logo.protv.cc/stalker_portal/misc/logos/320/42.png?1674475300" group-title="[PL] VIAPLAY SPORT", [PL] XTRA 67 HD
+http://dm.lion-ott.com:80/jocelyne/jocelyne/842101
+
+#EXTINF:-1 tvg-logo="http://logo.protv.cc/stalker_portal/misc/logos/320/42.png?1674475300" group-title="[PL] VIAPLAY SPORT", [PL] XTRA 68 HD
+http://dm.lion-ott.com:80/jocelyne/jocelyne/842100
+
+#EXTINF:-1 tvg-logo="http://logo.protv.cc/stalker_portal/misc/logos/320/42.png?1674475300" group-title="[PL] VIAPLAY SPORT", [PL] XTRA 69 HD
+http://dm.lion-ott.com:80/jocelyne/jocelyne/842099
+
+#EXTINF:-1 tvg-logo="http://logo.protv.cc/stalker_portal/misc/logos/320/42.png?1674475300" group-title="[PL] VIAPLAY SPORT", [PL] XTRA 70 HD
+http://dm.lion-ott.com:80/jocelyne/jocelyne/842098
+
+#EXTINF:-1 tvg-logo="http://logo.protv.cc/stalker_portal/misc/logos/320/42.png?1674475300" group-title="[PL] VIAPLAY SPORT", [PL] XTRA 71 FHD
+http://dm.lion-ott.com:80/jocelyne/jocelyne/842097
+
+#EXTINF:-1 tvg-logo="http://logo.protv.cc/stalker_portal/misc/logos/320/42.png?1674475300" group-title="[PL] VIAPLAY SPORT", [PL] XTRA 71 HD
+http://dm.lion-ott.com:80/jocelyne/jocelyne/842096
+
+#EXTINF:-1 tvg-logo="http://logo.protv.cc/stalker_portal/misc/logos/320/42.png?1674475300" group-title="[PL] VIAPLAY SPORT", [PL] XTRA 72 HD
+http://dm.lion-ott.com:80/jocelyne/jocelyne/842095
+
+#EXTINF:-1 tvg-logo="http://logo.protv.cc/stalker_portal/misc/logos/320/42.png?1674475300" group-title="[PL] VIAPLAY SPORT", [PL] XTRA 73 HD
+http://dm.lion-ott.com:80/jocelyne/jocelyne/842094
+
+#EXTINF:-1 tvg-logo="http://logo.protv.cc/stalker_portal/misc/logos/320/42.png?1674475300" group-title="[PL] VIAPLAY SPORT", [PL] XTRA 74 HD
+http://dm.lion-ott.com:80/jocelyne/jocelyne/842093
+
+#EXTINF:-1 tvg-logo="http://logo.protv.cc/stalker_portal/misc/logos/320/42.png?1674475300" group-title="[PL] VIAPLAY SPORT", [PL] XTRA 75 HD
+http://dm.lion-ott.com:80/jocelyne/jocelyne/842092
+
+#EXTINF:-1 tvg-logo="http://logo.protv.cc/stalker_portal/misc/logos/320/42.png?1674475300" group-title="[PL] VIAPLAY SPORT", [PL] XTRA 76 HD
+http://dm.lion-ott.com:80/jocelyne/jocelyne/842091
+
+#EXTINF:-1 tvg-logo="http://logo.protv.cc/stalker_portal/misc/logos/320/42.png?1674475300" group-title="[PL] VIAPLAY SPORT", [PL] XTRA 77 HD
+http://dm.lion-ott.com:80/jocelyne/jocelyne/842090
+
+#EXTINF:-1 tvg-logo="http://logo.protv.cc/stalker_portal/misc/logos/320/42.png?1674475300" group-title="[PL] VIAPLAY SPORT", [PL] XTRA 78 HD
+http://dm.lion-ott.com:80/jocelyne/jocelyne/842089
+
+#EXTINF:-1 tvg-logo="http://logo.protv.cc/stalker_portal/misc/logos/320/42.png?1674475300" group-title="[PL] VIAPLAY SPORT", [PL] XTRA 79 HD
+http://dm.lion-ott.com:80/jocelyne/jocelyne/842088
+
+#EXTINF:-1 tvg-logo="http://logo.protv.cc/stalker_portal/misc/logos/320/42.png?1674475300" group-title="[PL] VIAPLAY SPORT", [PL] XTRA 80 HD
+http://dm.lion-ott.com:80/jocelyne/jocelyne/842087
+
+#EXTINF:-1 tvg-logo="http://logo.protv.cc/stalker_portal/misc/logos/320/42.png?1674475300" group-title="[PL] VIAPLAY SPORT", [PL] XTRA 81 HD
+http://dm.lion-ott.com:80/jocelyne/jocelyne/842086
+
+#EXTINF:-1 tvg-logo="http://logo.protv.cc/stalker_portal/misc/logos/320/42.png?1674475300" group-title="[PL] VIAPLAY SPORT", [PL] XTRA 82 HD
+http://dm.lion-ott.com:80/jocelyne/jocelyne/842085
+
+#EXTINF:-1 tvg-logo="http://logo.protv.cc/stalker_portal/misc/logos/320/42.png?1674475300" group-title="[PL] VIAPLAY SPORT", [PL] XTRA 83 FHD
+http://dm.lion-ott.com:80/jocelyne/jocelyne/842084
+
+#EXTINF:-1 tvg-logo="http://logo.protv.cc/stalker_portal/misc/logos/320/42.png?1674475300" group-title="[PL] VIAPLAY SPORT", [PL] XTRA 83 HD
+http://dm.lion-ott.com:80/jocelyne/jocelyne/842083
+

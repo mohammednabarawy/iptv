@@ -1,0 +1,716 @@
+#EXTM3U
+
+#EXTINF:-1 group-title="Testador IPTV", Gerado por Testador IPTV(PlayStore)
+https://play.google.com/store/apps/details?id=thalles.org.testadoriptv
+
+#EXTINF:-1 tvg-logo="http://127.0.0.1/" group-title="Without category", IE| EURONEWS HD
+http://myportal.live:8080/live/327089047961/608199916574/453215.ts
+
+#EXTINF:-1 tvg-logo="http://127.0.0.1/" group-title="Without category", IE| Oireachtas TV
+http://myportal.live:8080/live/327089047961/608199916574/517881.ts
+
+#EXTINF:-1 tvg-logo="http://127.0.0.1/" group-title="Without category", IE| RTE Junior FHD
+http://myportal.live:8080/live/327089047961/608199916574/176635.ts
+
+#EXTINF:-1 tvg-logo="http://127.0.0.1/" group-title="Without category", IE| RTE News Now FHD
+http://myportal.live:8080/live/327089047961/608199916574/176634.ts
+
+#EXTINF:-1 tvg-logo="http://127.0.0.1/" group-title="Without category", IE| RTE ONE FHD
+http://myportal.live:8080/live/327089047961/608199916574/176642.ts
+
+#EXTINF:-1 tvg-logo="http://127.0.0.1/" group-title="Without category", IE| RTE TWO FHD
+http://myportal.live:8080/live/327089047961/608199916574/266269.ts
+
+#EXTINF:-1 tvg-logo="http://127.0.0.1/" group-title="Without category", IE| TG4 FHD
+http://myportal.live:8080/live/327089047961/608199916574/266329.ts
+
+#EXTINF:-1 tvg-logo="http://127.0.0.1/" group-title="Without category", IE| VIRGIN TWO FHD
+http://myportal.live:8080/live/327089047961/608199916574/242393.ts
+
+#EXTINF:-1 tvg-logo="http://127.0.0.1/" group-title="Without category", UK| 4Music HD
+http://myportal.live:8080/live/327089047961/608199916574/242464.ts
+
+#EXTINF:-1 tvg-logo="http://127.0.0.1/" group-title="Without category", UK| 4Seven SD
+http://myportal.live:8080/live/327089047961/608199916574/242465.ts
+
+#EXTINF:-1 tvg-logo="http://127.0.0.1/" group-title="Without category", UK| 5ACTION
+http://myportal.live:8080/live/327089047961/608199916574/525685.ts
+
+#EXTINF:-1 tvg-logo="http://127.0.0.1/" group-title="Without category", UK| 5SELECT SD
+http://myportal.live:8080/live/327089047961/608199916574/242466.ts
+
+#EXTINF:-1 tvg-logo="http://127.0.0.1/" group-title="Without category", UK| 5STAR
+http://myportal.live:8080/live/327089047961/608199916574/242467.ts
+
+#EXTINF:-1 tvg-logo="http://127.0.0.1/" group-title="Without category", UK| 5USA
+http://myportal.live:8080/live/327089047961/608199916574/242461.ts
+
+#EXTINF:-1 tvg-logo="http://127.0.0.1/" group-title="Without category", UK| 92 News SD
+http://myportal.live:8080/live/327089047961/608199916574/242468.ts
+
+#EXTINF:-1 tvg-logo="http://127.0.0.1/" group-title="Without category", UK| AAJ TAK SD
+http://myportal.live:8080/live/327089047961/608199916574/242470.ts
+
+#EXTINF:-1 tvg-logo="http://127.0.0.1/" group-title="Without category", UK| Ahlulbayt TV SD
+http://myportal.live:8080/live/327089047961/608199916574/242472.ts
+
+#EXTINF:-1 tvg-logo="http://127.0.0.1/" group-title="Without category", UK| Akaal Channel SD
+http://myportal.live:8080/live/327089047961/608199916574/242473.ts
+
+#EXTINF:-1 tvg-logo="http://127.0.0.1/" group-title="Without category", UK| Al Jazeera FHD
+http://myportal.live:8080/live/327089047961/608199916574/242277.ts
+
+#EXTINF:-1 tvg-logo="http://127.0.0.1/" group-title="Without category", UK| Alibi FHD
+http://myportal.live:8080/live/327089047961/608199916574/242278.ts
+
+#EXTINF:-1 tvg-logo="http://127.0.0.1/" group-title="Without category", UK| Animal Planet FHD
+http://myportal.live:8080/live/327089047961/608199916574/242856.ts
+
+#EXTINF:-1 tvg-logo="http://127.0.0.1/" group-title="Without category", UK| Arise News SD
+http://myportal.live:8080/live/327089047961/608199916574/242477.ts
+
+#EXTINF:-1 tvg-logo="http://127.0.0.1/" group-title="Without category", UK| ARY Digital SD
+http://myportal.live:8080/live/327089047961/608199916574/242478.ts
+
+#EXTINF:-1 tvg-logo="http://127.0.0.1/" group-title="Without category", UK| ARY Family HD
+http://myportal.live:8080/live/327089047961/608199916574/242479.ts
+
+#EXTINF:-1 tvg-logo="http://127.0.0.1/" group-title="Without category", UK| Baby TV HD
+http://myportal.live:8080/live/327089047961/608199916574/242485.ts
+
+#EXTINF:-1 tvg-logo="http://127.0.0.1/" group-title="Without category", UK| BBC 1 HD
+http://myportal.live:8080/live/327089047961/608199916574/242397.ts
+
+#EXTINF:-1 tvg-logo="http://127.0.0.1/" group-title="Without category", UK| BBC 1 Scotland HD
+http://myportal.live:8080/live/327089047961/608199916574/242284.ts
+
+#EXTINF:-1 tvg-logo="http://127.0.0.1/" group-title="Without category", UK| BBC 1 Wales HD
+http://myportal.live:8080/live/327089047961/608199916574/242285.ts
+
+#EXTINF:-1 tvg-logo="http://127.0.0.1/" group-title="Without category", UK| BBC 2 HD
+http://myportal.live:8080/live/327089047961/608199916574/242400.ts
+
+#EXTINF:-1 tvg-logo="http://127.0.0.1/" group-title="Without category", UK| BBC 2 Wales SD
+http://myportal.live:8080/live/327089047961/608199916574/242515.ts
+
+#EXTINF:-1 tvg-logo="http://127.0.0.1/" group-title="Without category", UK| BBC 3 HD
+http://myportal.live:8080/live/327089047961/608199916574/308509.ts
+
+#EXTINF:-1 tvg-logo="http://127.0.0.1/" group-title="Without category", UK| BBC 4 HD
+http://myportal.live:8080/live/327089047961/608199916574/242280.ts
+
+#EXTINF:-1 tvg-logo="http://127.0.0.1/" group-title="Without category", UK| BBC ALBA HD
+http://myportal.live:8080/live/327089047961/608199916574/242486.ts
+
+#EXTINF:-1 tvg-logo="http://127.0.0.1/" group-title="Without category", UK| BBC News HD
+http://myportal.live:8080/live/327089047961/608199916574/242281.ts
+
+#EXTINF:-1 tvg-logo="http://127.0.0.1/" group-title="Without category", UK| BBC Parliament HD
+http://myportal.live:8080/live/327089047961/608199916574/242504.ts
+
+#EXTINF:-1 tvg-logo="http://127.0.0.1/" group-title="Without category", UK| BBC World News HD
+http://myportal.live:8080/live/327089047961/608199916574/530302.ts
+
+#EXTINF:-1 tvg-logo="http://127.0.0.1/" group-title="Without category", UK| BLAZE SD
+http://myportal.live:8080/live/327089047961/608199916574/242517.ts
+
+#EXTINF:-1 tvg-logo="http://127.0.0.1/" group-title="Without category", UK| Boomerang FHD
+http://myportal.live:8080/live/327089047961/608199916574/242290.ts
+
+#EXTINF:-1 tvg-logo="http://127.0.0.1/" group-title="Without category", UK| BRIT ASIA HD
+http://myportal.live:8080/live/327089047961/608199916574/263036.ts
+
+#EXTINF:-1 tvg-logo="http://127.0.0.1/" group-title="Without category", UK| Brit Asia SD
+http://myportal.live:8080/live/327089047961/608199916574/242521.ts
+
+#EXTINF:-1 tvg-logo="http://127.0.0.1/" group-title="Without category", UK| British Muslim SD
+http://myportal.live:8080/live/327089047961/608199916574/242522.ts
+
+#EXTINF:-1 tvg-logo="http://127.0.0.1/" group-title="Without category", UK| Cartoon Network FHD
+http://myportal.live:8080/live/327089047961/608199916574/242291.ts
+
+#EXTINF:-1 tvg-logo="http://127.0.0.1/" group-title="Without category", UK| Cartoonito HD
+http://myportal.live:8080/live/327089047961/608199916574/242526.ts
+
+#EXTINF:-1 tvg-logo="http://127.0.0.1/" group-title="Without category", UK| CBBC HD
+http://myportal.live:8080/live/327089047961/608199916574/242403.ts
+
+#EXTINF:-1 tvg-logo="http://127.0.0.1/" group-title="Without category", UK| CBeebies HD
+http://myportal.live:8080/live/327089047961/608199916574/242293.ts
+
+#EXTINF:-1 tvg-logo="http://127.0.0.1/" group-title="Without category", UK| CBeebies HD
+http://myportal.live:8080/live/327089047961/608199916574/512924.ts
+
+#EXTINF:-1 tvg-logo="http://127.0.0.1/" group-title="Without category", UK| CBS Reality SD
+http://myportal.live:8080/live/327089047961/608199916574/242530.ts
+
+#EXTINF:-1 tvg-logo="http://127.0.0.1/" group-title="Without category", UK| Challenge
+http://myportal.live:8080/live/327089047961/608199916574/242532.ts
+
+#EXTINF:-1 tvg-logo="http://127.0.0.1/" group-title="Without category", UK| Channel 4 HD
+http://myportal.live:8080/live/327089047961/608199916574/242533.ts
+
+#EXTINF:-1 tvg-logo="http://127.0.0.1/" group-title="Without category", UK| Channel 5 HD
+http://myportal.live:8080/live/327089047961/608199916574/242405.ts
+
+#EXTINF:-1 tvg-logo="http://127.0.0.1/" group-title="Without category", UK| CITV FHD
+http://myportal.live:8080/live/327089047961/608199916574/519159.ts
+
+#EXTINF:-1 tvg-logo="http://127.0.0.1/" group-title="Without category", UK| CNA NEWS FHD
+http://myportal.live:8080/live/327089047961/608199916574/269970.ts
+
+#EXTINF:-1 tvg-logo="http://127.0.0.1/" group-title="Without category", UK| CNBC FHD
+http://myportal.live:8080/live/327089047961/608199916574/242296.ts
+
+#EXTINF:-1 tvg-logo="http://127.0.0.1/" group-title="Without category", UK| CNN HD
+http://myportal.live:8080/live/327089047961/608199916574/242297.ts
+
+#EXTINF:-1 tvg-logo="http://127.0.0.1/" group-title="Without category", UK| COLORS FHD
+http://myportal.live:8080/live/327089047961/608199916574/242298.ts
+
+#EXTINF:-1 tvg-logo="http://127.0.0.1/" group-title="Without category", UK| Comedy Central FHD
+http://myportal.live:8080/live/327089047961/608199916574/242406.ts
+
+#EXTINF:-1 tvg-logo="http://127.0.0.1/" group-title="Without category", UK| Create & Craft FHD
+http://myportal.live:8080/live/327089047961/608199916574/242300.ts
+
+#EXTINF:-1 tvg-logo="http://127.0.0.1/" group-title="Without category", UK| Crime+ Investigation FHD
+http://myportal.live:8080/live/327089047961/608199916574/242301.ts
+
+#EXTINF:-1 tvg-logo="http://127.0.0.1/" group-title="Without category", UK| Dave
+http://myportal.live:8080/live/327089047961/608199916574/242409.ts
+
+#EXTINF:-1 tvg-logo="http://127.0.0.1/" group-title="Without category", UK| Dave ja vu SD
+http://myportal.live:8080/live/327089047961/608199916574/242553.ts
+
+#EXTINF:-1 tvg-logo="http://127.0.0.1/" group-title="Without category", UK| Discovery Channel FHD
+http://myportal.live:8080/live/327089047961/608199916574/242857.ts
+
+#EXTINF:-1 tvg-logo="http://127.0.0.1/" group-title="Without category", UK| Discovery DMAX SD
+http://myportal.live:8080/live/327089047961/608199916574/242862.ts
+
+#EXTINF:-1 tvg-logo="http://127.0.0.1/" group-title="Without category", UK| Discovery History SD
+http://myportal.live:8080/live/327089047961/608199916574/242863.ts
+
+#EXTINF:-1 tvg-logo="http://127.0.0.1/" group-title="Without category", UK| Discovery Science HD
+http://myportal.live:8080/live/327089047961/608199916574/242864.ts
+
+#EXTINF:-1 tvg-logo="http://127.0.0.1/" group-title="Without category", UK| Discovery Turbo SD
+http://myportal.live:8080/live/327089047961/608199916574/242865.ts
+
+#EXTINF:-1 tvg-logo="http://127.0.0.1/" group-title="Without category", UK| DMAX SD
+http://myportal.live:8080/live/327089047961/608199916574/271392.ts
+
+#EXTINF:-1 tvg-logo="http://127.0.0.1/" group-title="Without category", UK| Drama
+http://myportal.live:8080/live/327089047961/608199916574/242560.ts
+
+#EXTINF:-1 tvg-logo="http://127.0.0.1/" group-title="Without category", UK| Dunya News SD
+http://myportal.live:8080/live/327089047961/608199916574/242562.ts
+
+#EXTINF:-1 tvg-logo="http://127.0.0.1/" group-title="Without category", UK| E! HD
+http://myportal.live:8080/live/327089047961/608199916574/242411.ts
+
+#EXTINF:-1 tvg-logo="http://127.0.0.1/" group-title="Without category", UK| E4
+http://myportal.live:8080/live/327089047961/608199916574/242412.ts
+
+#EXTINF:-1 tvg-logo="http://127.0.0.1/" group-title="Without category", UK| Eden HD
+http://myportal.live:8080/live/327089047961/608199916574/242565.ts
+
+#EXTINF:-1 tvg-logo="http://127.0.0.1/" group-title="Without category", UK| Eman Channel SD
+http://myportal.live:8080/live/327089047961/608199916574/242568.ts
+
+#EXTINF:-1 tvg-logo="http://127.0.0.1/" group-title="Without category", UK| EuroNews HD
+http://myportal.live:8080/live/327089047961/608199916574/242571.ts
+
+#EXTINF:-1 tvg-logo="http://127.0.0.1/" group-title="Without category", UK| Eurosport 1 FHD
+http://myportal.live:8080/live/327089047961/608199916574/242308.ts
+
+#EXTINF:-1 tvg-logo="http://127.0.0.1/" group-title="Without category", UK| Eurosport 2 FHD
+http://myportal.live:8080/live/327089047961/608199916574/242309.ts
+
+#EXTINF:-1 tvg-logo="http://127.0.0.1/" group-title="Without category", UK| Film 4 HD
+http://myportal.live:8080/live/327089047961/608199916574/242417.ts
+
+#EXTINF:-1 tvg-logo="http://127.0.0.1/" group-title="Without category", UK| Food Network SD
+http://myportal.live:8080/live/327089047961/608199916574/242577.ts
+
+#EXTINF:-1 tvg-logo="http://127.0.0.1/" group-title="Without category", UK| France 24 HD
+http://myportal.live:8080/live/327089047961/608199916574/242312.ts
+
+#EXTINF:-1 tvg-logo="http://127.0.0.1/" group-title="Without category", UK| GB NEWS FHD
+http://myportal.live:8080/live/327089047961/608199916574/263033.ts
+
+#EXTINF:-1 tvg-logo="http://127.0.0.1/" group-title="Without category", UK| GEO News SD
+http://myportal.live:8080/live/327089047961/608199916574/242583.ts
+
+#EXTINF:-1 tvg-logo="http://127.0.0.1/" group-title="Without category", UK| GEO TV SD
+http://myportal.live:8080/live/327089047961/608199916574/242584.ts
+
+#EXTINF:-1 tvg-logo="http://127.0.0.1/" group-title="Without category", UK| Gold FHD
+http://myportal.live:8080/live/327089047961/608199916574/242314.ts
+
+#EXTINF:-1 tvg-logo="http://127.0.0.1/" group-title="Without category", UK| Great! Action
+http://myportal.live:8080/live/327089047961/608199916574/242719.ts
+
+#EXTINF:-1 tvg-logo="http://127.0.0.1/" group-title="Without category", UK| Great! Movies
+http://myportal.live:8080/live/327089047961/608199916574/242724.ts
+
+#EXTINF:-1 tvg-logo="http://127.0.0.1/" group-title="Without category", UK| HGTV SD
+http://myportal.live:8080/live/327089047961/608199916574/242866.ts
+
+#EXTINF:-1 tvg-logo="http://127.0.0.1/" group-title="Without category", UK| Hidayat TV SD
+http://myportal.live:8080/live/327089047961/608199916574/242590.ts
+
+#EXTINF:-1 tvg-logo="http://127.0.0.1/" group-title="Without category", UK| Hochanda SD
+http://myportal.live:8080/live/327089047961/608199916574/242597.ts
+
+#EXTINF:-1 tvg-logo="http://127.0.0.1/" group-title="Without category", UK| Horror Xtra SD
+http://myportal.live:8080/live/327089047961/608199916574/242598.ts
+
+#EXTINF:-1 tvg-logo="http://127.0.0.1/" group-title="Without category", UK| HUM Masala SD
+http://myportal.live:8080/live/327089047961/608199916574/242600.ts
+
+#EXTINF:-1 tvg-logo="http://127.0.0.1/" group-title="Without category", UK| Investigation Discovery HD
+http://myportal.live:8080/live/327089047961/608199916574/242603.ts
+
+#EXTINF:-1 tvg-logo="http://127.0.0.1/" group-title="Without category", UK| iON TV SD
+http://myportal.live:8080/live/327089047961/608199916574/242604.ts
+
+#EXTINF:-1 tvg-logo="http://127.0.0.1/" group-title="Without category", UK| IQRA TV Urdu
+http://myportal.live:8080/live/327089047961/608199916574/242606.ts
+
+#EXTINF:-1 tvg-logo="http://127.0.0.1/" group-title="Without category", UK| Iran International FHD
+http://myportal.live:8080/live/327089047961/608199916574/242316.ts
+
+#EXTINF:-1 tvg-logo="http://127.0.0.1/" group-title="Without category", UK| Islam Channel
+http://myportal.live:8080/live/327089047961/608199916574/242607.ts
+
+#EXTINF:-1 tvg-logo="http://127.0.0.1/" group-title="Without category", UK| Islam TV SD
+http://myportal.live:8080/live/327089047961/608199916574/242608.ts
+
+#EXTINF:-1 tvg-logo="http://127.0.0.1/" group-title="Without category", UK| ITV 1 HD
+http://myportal.live:8080/live/327089047961/608199916574/242331.ts
+
+#EXTINF:-1 tvg-logo="http://127.0.0.1/" group-title="Without category", UK| ITV 2 HD
+http://myportal.live:8080/live/327089047961/608199916574/242332.ts
+
+#EXTINF:-1 tvg-logo="http://127.0.0.1/" group-title="Without category", UK| ITV 3
+http://myportal.live:8080/live/327089047961/608199916574/242333.ts
+
+#EXTINF:-1 tvg-logo="http://127.0.0.1/" group-title="Without category", UK| ITV 4
+http://myportal.live:8080/live/327089047961/608199916574/242424.ts
+
+#EXTINF:-1 tvg-logo="http://127.0.0.1/" group-title="Without category", UK| ITV Be HD
+http://myportal.live:8080/live/327089047961/608199916574/242620.ts
+
+#EXTINF:-1 tvg-logo="http://127.0.0.1/" group-title="Without category", UK| Kerrang!
+http://myportal.live:8080/live/327089047961/608199916574/242625.ts
+
+#EXTINF:-1 tvg-logo="http://127.0.0.1/" group-title="Without category", UK| KISS
+http://myportal.live:8080/live/327089047961/608199916574/242627.ts
+
+#EXTINF:-1 tvg-logo="http://127.0.0.1/" group-title="Without category", UK| KTV India SD
+http://myportal.live:8080/live/327089047961/608199916574/242628.ts
+
+#EXTINF:-1 tvg-logo="http://127.0.0.1/" group-title="Without category", UK| LEGEND SD
+http://myportal.live:8080/live/327089047961/608199916574/497123.ts
+
+#EXTINF:-1 tvg-logo="http://127.0.0.1/" group-title="Without category", UK| Love World FHD
+http://myportal.live:8080/live/327089047961/608199916574/242337.ts
+
+#EXTINF:-1 tvg-logo="http://127.0.0.1/" group-title="Without category", UK| MADANI TV SD
+http://myportal.live:8080/live/327089047961/608199916574/242633.ts
+
+#EXTINF:-1 tvg-logo="http://127.0.0.1/" group-title="Without category", UK| More4
+http://myportal.live:8080/live/327089047961/608199916574/242426.ts
+
+#EXTINF:-1 tvg-logo="http://127.0.0.1/" group-title="Without category", UK| MTV CLASSIC FHD
+http://myportal.live:8080/live/327089047961/608199916574/242642.ts
+
+#EXTINF:-1 tvg-logo="http://127.0.0.1/" group-title="Without category", UK| MTV HD
+http://myportal.live:8080/live/327089047961/608199916574/242640.ts
+
+#EXTINF:-1 tvg-logo="http://127.0.0.1/" group-title="Without category", UK| MTV HITS HD
+http://myportal.live:8080/live/327089047961/608199916574/242643.ts
+
+#EXTINF:-1 tvg-logo="http://127.0.0.1/" group-title="Without category", UK| MUTV HD
+http://myportal.live:8080/live/327089047961/608199916574/242341.ts
+
+#EXTINF:-1 tvg-logo="http://127.0.0.1/" group-title="Without category", UK| Nat Geo HD
+http://myportal.live:8080/live/327089047961/608199916574/242427.ts
+
+#EXTINF:-1 tvg-logo="http://127.0.0.1/" group-title="Without category", UK| Nat Geo Wild FHD
+http://myportal.live:8080/live/327089047961/608199916574/242343.ts
+
+#EXTINF:-1 tvg-logo="http://127.0.0.1/" group-title="Without category", UK| Nat Geo Wild HD
+http://myportal.live:8080/live/327089047961/608199916574/242428.ts
+
+#EXTINF:-1 tvg-logo="http://127.0.0.1/" group-title="Without category", UK| Nat Geo Wild SD
+http://myportal.live:8080/live/327089047961/608199916574/242647.ts
+
+#EXTINF:-1 tvg-logo="http://127.0.0.1/" group-title="Without category", UK| NHK World FHD
+http://myportal.live:8080/live/327089047961/608199916574/242344.ts
+
+#EXTINF:-1 tvg-logo="http://127.0.0.1/" group-title="Without category", UK| Nick Jr FHD
+http://myportal.live:8080/live/327089047961/608199916574/242345.ts
+
+#EXTINF:-1 tvg-logo="http://127.0.0.1/" group-title="Without category", UK| Nick Jr HD
+http://myportal.live:8080/live/327089047961/608199916574/242429.ts
+
+#EXTINF:-1 tvg-logo="http://127.0.0.1/" group-title="Without category", UK| Nick Jr SD
+http://myportal.live:8080/live/327089047961/608199916574/242651.ts
+
+#EXTINF:-1 tvg-logo="http://127.0.0.1/" group-title="Without category", UK| Nickelodeon FHD
+http://myportal.live:8080/live/327089047961/608199916574/242346.ts
+
+#EXTINF:-1 tvg-logo="http://127.0.0.1/" group-title="Without category", UK| Nickelodeon HD
+http://myportal.live:8080/live/327089047961/608199916574/242430.ts
+
+#EXTINF:-1 tvg-logo="http://127.0.0.1/" group-title="Without category", UK| Nickelodeon SD
+http://myportal.live:8080/live/327089047961/608199916574/242652.ts
+
+#EXTINF:-1 tvg-logo="http://127.0.0.1/" group-title="Without category", UK| Nicktoons HD
+http://myportal.live:8080/live/327089047961/608199916574/242654.ts
+
+#EXTINF:-1 tvg-logo="http://127.0.0.1/" group-title="Without category", UK| Noor TV SD
+http://myportal.live:8080/live/327089047961/608199916574/242655.ts
+
+#EXTINF:-1 tvg-logo="http://127.0.0.1/" group-title="Without category", UK| NOW 70s HD
+http://myportal.live:8080/live/327089047961/608199916574/242656.ts
+
+#EXTINF:-1 tvg-logo="http://127.0.0.1/" group-title="Without category", UK| NOW 80s HD
+http://myportal.live:8080/live/327089047961/608199916574/242657.ts
+
+#EXTINF:-1 tvg-logo="http://127.0.0.1/" group-title="Without category", UK| NOW 90s HD
+http://myportal.live:8080/live/327089047961/608199916574/242658.ts
+
+#EXTINF:-1 tvg-logo="http://127.0.0.1/" group-title="Without category", UK| PBS America SD
+http://myportal.live:8080/live/327089047961/608199916574/242663.ts
+
+#EXTINF:-1 tvg-logo="http://127.0.0.1/" group-title="Without category", UK| Pick FHD
+http://myportal.live:8080/live/327089047961/608199916574/242665.ts
+
+#EXTINF:-1 tvg-logo="http://127.0.0.1/" group-title="Without category", UK| Pitaara SD
+http://myportal.live:8080/live/327089047961/608199916574/242667.ts
+
+#EXTINF:-1 tvg-logo="http://127.0.0.1/" group-title="Without category", UK| POP Max SD
+http://myportal.live:8080/live/327089047961/608199916574/242669.ts
+
+#EXTINF:-1 tvg-logo="http://127.0.0.1/" group-title="Without category", UK| POP SD
+http://myportal.live:8080/live/327089047961/608199916574/242668.ts
+
+#EXTINF:-1 tvg-logo="http://127.0.0.1/" group-title="Without category", UK| Premier Sports 1 FHD
+http://myportal.live:8080/live/327089047961/608199916574/242347.ts
+
+#EXTINF:-1 tvg-logo="http://127.0.0.1/" group-title="Without category", UK| Premier Sports 1 HD
+http://myportal.live:8080/live/327089047961/608199916574/628936.ts
+
+#EXTINF:-1 tvg-logo="http://127.0.0.1/" group-title="Without category", UK| Premier Sports 1 SD
+http://myportal.live:8080/live/327089047961/608199916574/628937.ts
+
+#EXTINF:-1 tvg-logo="http://127.0.0.1/" group-title="Without category", UK| Premier Sports 2 FHD
+http://myportal.live:8080/live/327089047961/608199916574/242348.ts
+
+#EXTINF:-1 tvg-logo="http://127.0.0.1/" group-title="Without category", UK| Premier Sports 2 HD
+http://myportal.live:8080/live/327089047961/608199916574/628938.ts
+
+#EXTINF:-1 tvg-logo="http://127.0.0.1/" group-title="Without category", UK| Premier Sports 2 SD
+http://myportal.live:8080/live/327089047961/608199916574/628939.ts
+
+#EXTINF:-1 tvg-logo="http://127.0.0.1/" group-title="Without category", UK| PTV GLOBAL SD
+http://myportal.live:8080/live/327089047961/608199916574/242674.ts
+
+#EXTINF:-1 tvg-logo="http://127.0.0.1/" group-title="Without category", UK| Quest FHD
+http://myportal.live:8080/live/327089047961/608199916574/242859.ts
+
+#EXTINF:-1 tvg-logo="http://127.0.0.1/" group-title="Without category", UK| Quest HD
+http://myportal.live:8080/live/327089047961/608199916574/242433.ts
+
+#EXTINF:-1 tvg-logo="http://127.0.0.1/" group-title="Without category", UK| Quest Red FHD
+http://myportal.live:8080/live/327089047961/608199916574/242860.ts
+
+#EXTINF:-1 tvg-logo="http://127.0.0.1/" group-title="Without category", UK| Quest Red SD
+http://myportal.live:8080/live/327089047961/608199916574/242676.ts
+
+#EXTINF:-1 tvg-logo="http://127.0.0.1/" group-title="Without category", UK| Quest SD
+http://myportal.live:8080/live/327089047961/608199916574/242675.ts
+
+#EXTINF:-1 tvg-logo="http://127.0.0.1/" group-title="Without category", UK| QVC Beauty SD
+http://myportal.live:8080/live/327089047961/608199916574/242678.ts
+
+#EXTINF:-1 tvg-logo="http://127.0.0.1/" group-title="Without category", UK| QVC Style FHD
+http://myportal.live:8080/live/327089047961/608199916574/242680.ts
+
+#EXTINF:-1 tvg-logo="http://127.0.0.1/" group-title="Without category", UK| Racing TV FHD
+http://myportal.live:8080/live/327089047961/608199916574/242350.ts
+
+#EXTINF:-1 tvg-logo="http://127.0.0.1/" group-title="Without category", UK| Racing TV HD
+http://myportal.live:8080/live/327089047961/608199916574/242434.ts
+
+#EXTINF:-1 tvg-logo="http://127.0.0.1/" group-title="Without category", UK| Reality Xtra SD
+http://myportal.live:8080/live/327089047961/608199916574/242528.ts
+
+#EXTINF:-1 tvg-logo="http://127.0.0.1/" group-title="Without category", UK| Really SD
+http://myportal.live:8080/live/327089047961/608199916574/242868.ts
+
+#EXTINF:-1 tvg-logo="http://127.0.0.1/" group-title="Without category", UK| Revelation SD
+http://myportal.live:8080/live/327089047961/608199916574/242463.ts
+
+#EXTINF:-1 tvg-logo="http://127.0.0.1/" group-title="Without category", UK| S4C FHD
+http://myportal.live:8080/live/327089047961/608199916574/242356.ts
+
+#EXTINF:-1 tvg-logo="http://127.0.0.1/" group-title="Without category", UK| S4C FHD
+http://myportal.live:8080/live/327089047961/608199916574/242689.ts
+
+#EXTINF:-1 tvg-logo="http://127.0.0.1/" group-title="Without category", UK| Samaa News SD
+http://myportal.live:8080/live/327089047961/608199916574/242691.ts
+
+#EXTINF:-1 tvg-logo="http://127.0.0.1/" group-title="Without category", UK| Sky Action FHD
+http://myportal.live:8080/live/327089047961/608199916574/242359.ts
+
+#EXTINF:-1 tvg-logo="http://127.0.0.1/" group-title="Without category", UK| Sky Arts FHD
+http://myportal.live:8080/live/327089047961/608199916574/242357.ts
+
+#EXTINF:-1 tvg-logo="http://127.0.0.1/" group-title="Without category", UK| Sky Atlantic FHD
+http://myportal.live:8080/live/327089047961/608199916574/242358.ts
+
+#EXTINF:-1 tvg-logo="http://127.0.0.1/" group-title="Without category", UK| Sky Comedy FHD
+http://myportal.live:8080/live/327089047961/608199916574/242441.ts
+
+#EXTINF:-1 tvg-logo="http://127.0.0.1/" group-title="Without category", UK| Sky Comedy HD
+http://myportal.live:8080/live/327089047961/608199916574/242370.ts
+
+#EXTINF:-1 tvg-logo="http://127.0.0.1/" group-title="Without category", UK| Sky Crime HD
+http://myportal.live:8080/live/327089047961/608199916574/242371.ts
+
+#EXTINF:-1 tvg-logo="http://127.0.0.1/" group-title="Without category", UK| Sky Documentaries FHD
+http://myportal.live:8080/live/327089047961/608199916574/242372.ts
+
+#EXTINF:-1 tvg-logo="http://127.0.0.1/" group-title="Without category", UK| Sky Drama FHD
+http://myportal.live:8080/live/327089047961/608199916574/242362.ts
+
+#EXTINF:-1 tvg-logo="http://127.0.0.1/" group-title="Without category", UK| Sky Family FHD
+http://myportal.live:8080/live/327089047961/608199916574/242443.ts
+
+#EXTINF:-1 tvg-logo="http://127.0.0.1/" group-title="Without category", UK| Sky Greats FHD
+http://myportal.live:8080/live/327089047961/608199916574/242364.ts
+
+#EXTINF:-1 tvg-logo="http://127.0.0.1/" group-title="Without category", UK| Sky History FHD
+http://myportal.live:8080/live/327089047961/608199916574/242373.ts
+
+#EXTINF:-1 tvg-logo="http://127.0.0.1/" group-title="Without category", UK| Sky Hits FHD
+http://myportal.live:8080/live/327089047961/608199916574/242365.ts
+
+#EXTINF:-1 tvg-logo="http://127.0.0.1/" group-title="Without category", UK| Sky Max FHD
+http://myportal.live:8080/live/327089047961/608199916574/266244.ts
+
+#EXTINF:-1 tvg-logo="http://127.0.0.1/" group-title="Without category", UK| Sky Nature FHD
+http://myportal.live:8080/live/327089047961/608199916574/242375.ts
+
+#EXTINF:-1 tvg-logo="http://127.0.0.1/" group-title="Without category", UK| Sky News FHD
+http://myportal.live:8080/live/327089047961/608199916574/242376.ts
+
+#EXTINF:-1 tvg-logo="http://127.0.0.1/" group-title="Without category", UK| Sky Premiere FHD
+http://myportal.live:8080/live/327089047961/608199916574/242366.ts
+
+#EXTINF:-1 tvg-logo="http://127.0.0.1/" group-title="Without category", UK| Sky Sci-Fi FHD
+http://myportal.live:8080/live/327089047961/608199916574/242384.ts
+
+#EXTINF:-1 tvg-logo="http://127.0.0.1/" group-title="Without category", UK| Sky SciFi/Horror FHD
+http://myportal.live:8080/live/327089047961/608199916574/242447.ts
+
+#EXTINF:-1 tvg-logo="http://127.0.0.1/" group-title="Without category", UK| Sky Select FHD
+http://myportal.live:8080/live/327089047961/608199916574/242368.ts
+
+#EXTINF:-1 tvg-logo="http://127.0.0.1/" group-title="Without category", UK| Sky Select HD
+http://myportal.live:8080/live/327089047961/608199916574/242448.ts
+
+#EXTINF:-1 tvg-logo="http://127.0.0.1/" group-title="Without category", UK| Sky Select SD
+http://myportal.live:8080/live/327089047961/608199916574/242707.ts
+
+#EXTINF:-1 tvg-logo="http://127.0.0.1/" group-title="Without category", UK| Sky Showcase HD
+http://myportal.live:8080/live/327089047961/608199916574/242377.ts
+
+#EXTINF:-1 tvg-logo="http://127.0.0.1/" group-title="Without category", UK| Sky Sports Action FHD
+http://myportal.live:8080/live/327089047961/608199916574/242778.ts
+
+#EXTINF:-1 tvg-logo="http://127.0.0.1/" group-title="Without category", UK| Sky Sports Action HD
+http://myportal.live:8080/live/327089047961/608199916574/529847.ts
+
+#EXTINF:-1 tvg-logo="http://127.0.0.1/" group-title="Without category", UK| Sky Sports Action SD
+http://myportal.live:8080/live/327089047961/608199916574/530026.ts
+
+#EXTINF:-1 tvg-logo="http://127.0.0.1/" group-title="Without category", UK| Sky Sports Arena FHD
+http://myportal.live:8080/live/327089047961/608199916574/242770.ts
+
+#EXTINF:-1 tvg-logo="http://127.0.0.1/" group-title="Without category", UK| Sky Sports Arena HD
+http://myportal.live:8080/live/327089047961/608199916574/529848.ts
+
+#EXTINF:-1 tvg-logo="http://127.0.0.1/" group-title="Without category", UK| Sky Sports Arena SD
+http://myportal.live:8080/live/327089047961/608199916574/530027.ts
+
+#EXTINF:-1 tvg-logo="http://127.0.0.1/" group-title="Without category", UK| Sky Sports Cricket FHD
+http://myportal.live:8080/live/327089047961/608199916574/242771.ts
+
+#EXTINF:-1 tvg-logo="http://127.0.0.1/" group-title="Without category", UK| Sky Sports Cricket HD
+http://myportal.live:8080/live/327089047961/608199916574/529849.ts
+
+#EXTINF:-1 tvg-logo="http://127.0.0.1/" group-title="Without category", UK| Sky Sports Cricket SD
+http://myportal.live:8080/live/327089047961/608199916574/530028.ts
+
+#EXTINF:-1 tvg-logo="http://127.0.0.1/" group-title="Without category", UK| Sky Sports F1 FHD
+http://myportal.live:8080/live/327089047961/608199916574/242772.ts
+
+#EXTINF:-1 tvg-logo="http://127.0.0.1/" group-title="Without category", UK| Sky Sports F1 HD
+http://myportal.live:8080/live/327089047961/608199916574/529948.ts
+
+#EXTINF:-1 tvg-logo="http://127.0.0.1/" group-title="Without category", UK| Sky Sports F1 SD
+http://myportal.live:8080/live/327089047961/608199916574/530029.ts
+
+#EXTINF:-1 tvg-logo="http://127.0.0.1/" group-title="Without category", UK| Sky Sports Football FHD
+http://myportal.live:8080/live/327089047961/608199916574/242773.ts
+
+#EXTINF:-1 tvg-logo="http://127.0.0.1/" group-title="Without category", UK| Sky Sports Football HD
+http://myportal.live:8080/live/327089047961/608199916574/529949.ts
+
+#EXTINF:-1 tvg-logo="http://127.0.0.1/" group-title="Without category", UK| Sky Sports Football SD
+http://myportal.live:8080/live/327089047961/608199916574/530030.ts
+
+#EXTINF:-1 tvg-logo="http://127.0.0.1/" group-title="Without category", UK| Sky Sports Golf FHD
+http://myportal.live:8080/live/327089047961/608199916574/242774.ts
+
+#EXTINF:-1 tvg-logo="http://127.0.0.1/" group-title="Without category", UK| Sky Sports Golf HD
+http://myportal.live:8080/live/327089047961/608199916574/529950.ts
+
+#EXTINF:-1 tvg-logo="http://127.0.0.1/" group-title="Without category", UK| Sky Sports Golf SD
+http://myportal.live:8080/live/327089047961/608199916574/530031.ts
+
+#EXTINF:-1 tvg-logo="http://127.0.0.1/" group-title="Without category", UK| Sky Sports Main Event FHD
+http://myportal.live:8080/live/327089047961/608199916574/242775.ts
+
+#EXTINF:-1 tvg-logo="http://127.0.0.1/" group-title="Without category", UK| Sky Sports Main Event HD
+http://myportal.live:8080/live/327089047961/608199916574/529951.ts
+
+#EXTINF:-1 tvg-logo="http://127.0.0.1/" group-title="Without category", UK| Sky Sports Main Event SD
+http://myportal.live:8080/live/327089047961/608199916574/530037.ts
+
+#EXTINF:-1 tvg-logo="http://127.0.0.1/" group-title="Without category", UK| Sky Sports Mix FHD
+http://myportal.live:8080/live/327089047961/608199916574/242776.ts
+
+#EXTINF:-1 tvg-logo="http://127.0.0.1/" group-title="Without category", UK| Sky Sports Mix HD
+http://myportal.live:8080/live/327089047961/608199916574/529952.ts
+
+#EXTINF:-1 tvg-logo="http://127.0.0.1/" group-title="Without category", UK| Sky Sports Mix SD
+http://myportal.live:8080/live/327089047961/608199916574/530038.ts
+
+#EXTINF:-1 tvg-logo="http://127.0.0.1/" group-title="Without category", UK| Sky Sports News FHD
+http://myportal.live:8080/live/327089047961/608199916574/242777.ts
+
+#EXTINF:-1 tvg-logo="http://127.0.0.1/" group-title="Without category", UK| Sky Sports News HD
+http://myportal.live:8080/live/327089047961/608199916574/529953.ts
+
+#EXTINF:-1 tvg-logo="http://127.0.0.1/" group-title="Without category", UK| Sky Sports News SD
+http://myportal.live:8080/live/327089047961/608199916574/530039.ts
+
+#EXTINF:-1 tvg-logo="http://127.0.0.1/" group-title="Without category", UK| Sky Sports Premiere League FHD
+http://myportal.live:8080/live/327089047961/608199916574/242790.ts
+
+#EXTINF:-1 tvg-logo="http://127.0.0.1/" group-title="Without category", UK| Sky Sports Premiere League HD
+http://myportal.live:8080/live/327089047961/608199916574/529955.ts
+
+#EXTINF:-1 tvg-logo="http://127.0.0.1/" group-title="Without category", UK| Sky Sports Premiere League SD
+http://myportal.live:8080/live/327089047961/608199916574/530040.ts
+
+#EXTINF:-1 tvg-logo="http://127.0.0.1/" group-title="Without category", UK| Sky Sports Racing FHD
+http://myportal.live:8080/live/327089047961/608199916574/242681.ts
+
+#EXTINF:-1 tvg-logo="http://127.0.0.1/" group-title="Without category", UK| Sky Sports Racing HD
+http://myportal.live:8080/live/327089047961/608199916574/529954.ts
+
+#EXTINF:-1 tvg-logo="http://127.0.0.1/" group-title="Without category", UK| Sky Sports Racing SD
+http://myportal.live:8080/live/327089047961/608199916574/530041.ts
+
+#EXTINF:-1 tvg-logo="http://127.0.0.1/" group-title="Without category", UK| Sky Thriller FHD
+http://myportal.live:8080/live/327089047961/608199916574/242369.ts
+
+#EXTINF:-1 tvg-logo="http://127.0.0.1/" group-title="Without category", UK| Sky Witness FHD
+http://myportal.live:8080/live/327089047961/608199916574/242378.ts
+
+#EXTINF:-1 tvg-logo="http://127.0.0.1/" group-title="Without category", UK| SONY TV SD
+http://myportal.live:8080/live/327089047961/608199916574/242727.ts
+
+#EXTINF:-1 tvg-logo="http://127.0.0.1/" group-title="Without category", UK| Takbeer TV SD
+http://myportal.live:8080/live/327089047961/608199916574/242736.ts
+
+#EXTINF:-1 tvg-logo="http://127.0.0.1/" group-title="Without category", UK| Tiny HD
+http://myportal.live:8080/live/327089047961/608199916574/242742.ts
+
+#EXTINF:-1 tvg-logo="http://127.0.0.1/" group-title="Without category", UK| TLC FHD
+http://myportal.live:8080/live/327089047961/608199916574/242861.ts
+
+#EXTINF:-1 tvg-logo="http://127.0.0.1/" group-title="Without category", UK| TNT Sports 1 FHD
+http://myportal.live:8080/live/327089047961/608199916574/242251.ts
+
+#EXTINF:-1 tvg-logo="http://127.0.0.1/" group-title="Without category", UK| TNT Sports 1 HD
+http://myportal.live:8080/live/327089047961/608199916574/542602.ts
+
+#EXTINF:-1 tvg-logo="http://127.0.0.1/" group-title="Without category", UK| TNT Sports 1 SD
+http://myportal.live:8080/live/327089047961/608199916574/567572.ts
+
+#EXTINF:-1 tvg-logo="http://127.0.0.1/" group-title="Without category", UK| TNT Sports 2 FHD
+http://myportal.live:8080/live/327089047961/608199916574/242252.ts
+
+#EXTINF:-1 tvg-logo="http://127.0.0.1/" group-title="Without category", UK| TNT Sports 2 HD
+http://myportal.live:8080/live/327089047961/608199916574/542603.ts
+
+#EXTINF:-1 tvg-logo="http://127.0.0.1/" group-title="Without category", UK| TNT Sports 2 SD
+http://myportal.live:8080/live/327089047961/608199916574/567573.ts
+
+#EXTINF:-1 tvg-logo="http://127.0.0.1/" group-title="Without category", UK| TNT Sports 3 FHD
+http://myportal.live:8080/live/327089047961/608199916574/242253.ts
+
+#EXTINF:-1 tvg-logo="http://127.0.0.1/" group-title="Without category", UK| TNT Sports 3 HD
+http://myportal.live:8080/live/327089047961/608199916574/542604.ts
+
+#EXTINF:-1 tvg-logo="http://127.0.0.1/" group-title="Without category", UK| TNT Sports 3 SD
+http://myportal.live:8080/live/327089047961/608199916574/567574.ts
+
+#EXTINF:-1 tvg-logo="http://127.0.0.1/" group-title="Without category", UK| TNT Sports 4 FHD
+http://myportal.live:8080/live/327089047961/608199916574/242254.ts
+
+#EXTINF:-1 tvg-logo="http://127.0.0.1/" group-title="Without category", UK| TNT Sports 4 HD
+http://myportal.live:8080/live/327089047961/608199916574/542605.ts
+
+#EXTINF:-1 tvg-logo="http://127.0.0.1/" group-title="Without category", UK| TNT Sports 4 SD
+http://myportal.live:8080/live/327089047961/608199916574/567575.ts
+
+#EXTINF:-1 tvg-logo="http://127.0.0.1/" group-title="Without category", UK| TRT World FHD
+http://myportal.live:8080/live/327089047961/608199916574/242387.ts
+
+#EXTINF:-1 tvg-logo="http://127.0.0.1/" group-title="Without category", UK| TVC News SD
+http://myportal.live:8080/live/327089047961/608199916574/242752.ts
+
+#EXTINF:-1 tvg-logo="http://127.0.0.1/" group-title="Without category", UK| Utsav Gold SD
+http://myportal.live:8080/live/327089047961/608199916574/242755.ts
+
+#EXTINF:-1 tvg-logo="http://127.0.0.1/" group-title="Without category", UK| UTV FHD
+http://myportal.live:8080/live/327089047961/608199916574/242390.ts
+
+#EXTINF:-1 tvg-logo="http://127.0.0.1/" group-title="Without category", UK| UTV HD
+http://myportal.live:8080/live/327089047961/608199916574/242459.ts
+
+#EXTINF:-1 tvg-logo="http://127.0.0.1/" group-title="Without category", UK| UTV SD
+http://myportal.live:8080/live/327089047961/608199916574/242757.ts
+
+#EXTINF:-1 tvg-logo="http://127.0.0.1/" group-title="Without category", UK| Viaplay Xtra FHD
+http://myportal.live:8080/live/327089047961/608199916574/242419.ts
+
+#EXTINF:-1 tvg-logo="http://127.0.0.1/" group-title="Without category", UK| Vox Africa SD
+http://myportal.live:8080/live/327089047961/608199916574/242761.ts
+
+#EXTINF:-1 tvg-logo="http://127.0.0.1/" group-title="Without category", UK| W SD
+http://myportal.live:8080/live/327089047961/608199916574/242460.ts
+
+#EXTINF:-1 tvg-logo="http://127.0.0.1/" group-title="Without category", UK| YESTERDAY SD
+http://myportal.live:8080/live/327089047961/608199916574/242768.ts
+
