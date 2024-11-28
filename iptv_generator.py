@@ -328,24 +328,89 @@ class PlaylistGenerator:
         # Define extensions to look for
         extensions = {'.m3u', '.m3u8'}
 
-        # Get the script's directory
+        # Get the script's directory and local m3u directory
         script_dir = os.path.dirname(os.path.abspath(__file__))
+        local_m3u_dir = os.path.join(script_dir, 'local m3u')
 
-        # Walk through directories
-        for root, _, files in os.walk(script_dir):
-            for file in files:
-                if os.path.splitext(file)[1].lower() in extensions:
-                    # Skip output files
-                    if file == 'iptv.m3u':
-                        continue
+        # Walk through local m3u directory
+        if os.path.exists(local_m3u_dir):
+            for root, _, files in os.walk(local_m3u_dir):
+                for file in files:
+                    if os.path.splitext(file)[1].lower() in extensions:
+                        playlist_path = os.path.join(root, file)
+                        self.local_playlists.append({
+                            'name': f'local.{os.path.basename(file)}',
+                            'path': playlist_path
+                        })
+                        self.logger.info(
+                            f"Found local playlist: {os.path.basename(file)}")
 
-                    playlist_path = os.path.join(root, file)
-                    self.local_playlists.append({
-                        'name': f'local.{os.path.basename(file)}',
-                        'path': playlist_path
-                    })
-                    self.logger.info(
-                        f"Found local playlist: {os.path.basename(file)}")
+    def fetch_playlist(self, category: Optional[str] = None,
+                       country: Optional[str] = None) -> str:
+        """Fetch and combine playlists from all sources"""
+        combined_content = []
+        successful_sources = []
+
+        # Fetch online playlists
+        with ThreadPoolExecutor(max_workers=self.max_workers) as executor:
+            futures = {
+                executor.submit(self._fetch_single_playlist, source): source
+                for source in self.PLAYLIST_SOURCES
+            }
+
+            with tqdm(
+                total=len(self.PLAYLIST_SOURCES),
+                desc=f"{Fore.CYAN}Fetching online playlists{Style.RESET_ALL}"
+            ) as pbar:
+                for future in as_completed(futures):
+                    source = futures[future]
+                    try:
+                        content = future.result()
+                        if content:
+                            successful_sources.append(source['name'])
+                            combined_content.append(content)
+                        pbar.update(1)
+                    except Exception as e:
+                        self.logger.warning(
+                            f"Error fetching from {source['name']}: {str(e)}")
+                        pbar.update(1)
+
+        # Process local playlists
+        if self.local_playlists:
+            self.logger.info("Processing local playlists...")
+            for playlist in self.local_playlists:
+                content = self._fetch_local_playlist(playlist)
+                if content:
+                    successful_sources.append(playlist['name'])
+                    combined_content.append(content)
+
+        if successful_sources:
+            self.logger.info(
+                f"Successfully fetched playlists from: "
+                f"{', '.join(successful_sources)}")
+            return self._merge_playlists(combined_content)
+
+        raise Exception("All playlist sources failed")
+
+    def _merge_playlists(self, playlists: List[str]) -> str:
+        """Merge multiple playlists into a single playlist"""
+        combined_content = []
+
+        # Process each playlist
+        for playlist in playlists:
+            lines = playlist.splitlines()
+            # Skip header lines from subsequent playlists
+            if combined_content:
+                lines = [
+                    line for line in lines
+                    if not line.startswith('#EXTM3U')
+                    and not line.startswith('#EXTINF:-1 tvg-url')
+                ]
+            combined_content.extend(lines)
+
+        # Enhance and organize the combined content
+        enhanced = self.add_epg_mapping('\n'.join(combined_content))
+        return self.organize_by_groups(enhanced)
 
     def _fetch_local_playlist(self, playlist: Dict) -> Optional[str]:
         """Read a local playlist file"""
