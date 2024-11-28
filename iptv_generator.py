@@ -61,6 +61,14 @@ class PlaylistGenerator:
             'name': 'iptv-org.categories',
             'url': 'https://iptv-org.github.io/iptv/index.category.m3u'
         },
+        {
+            'name': 'iptv-org.countries',
+            'url': 'https://iptv-org.github.io/iptv/index.country.m3u'
+        },
+        {
+            'name': 'iptv-org.languages',
+            'url': 'https://iptv-org.github.io/iptv/index.language.m3u'
+        },
         # Free-TV playlists
         {
             'name': 'free-tv.main',
@@ -189,6 +197,8 @@ class PlaylistGenerator:
                 new_line += f',{channel_name}'
 
                 modified_lines.append(new_line)
+            elif line.startswith('#EXTM3U'):
+                continue
             elif line.startswith('http'):
                 modified_lines.append(line)
 
@@ -479,6 +489,10 @@ class PlaylistGenerator:
 class EPGFetcher:
     EPG_SOURCES = [
         # Primary EPG Sources
+        {
+            'name': 'iptv-org.epg',
+            'guide_url': 'https://iptv-org.github.io/epg/guides/en/default.xml'
+        },
         {
             'name': 'i.mjh.nz',
             'guide_url': 'https://i.mjh.nz/all/epg.xml'
