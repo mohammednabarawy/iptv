@@ -330,7 +330,7 @@ class PlaylistGenerator:
 
         # Get the script's directory and local m3u directory
         script_dir = os.path.dirname(os.path.abspath(__file__))
-        local_m3u_dir = os.path.join(script_dir, 'local m3u')
+        local_m3u_dir = os.path.join(script_dir, 'local_m3u')
 
         # Walk through local m3u directory
         if os.path.exists(local_m3u_dir):
