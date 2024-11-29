@@ -4,6 +4,7 @@
 *.xml
 guide.xml
 iptv.m3u
+*.zip
 
 # Cache files
 stream_cache.json
