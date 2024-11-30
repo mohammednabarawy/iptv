@@ -247,10 +247,15 @@ class DataManager:
                 
                 # Insert new EPG data
                 for channel_id, data in epg_data.items():
-                    cursor.execute("""
-                        INSERT INTO epg_data (channel_id, data, updated_at)
-                        VALUES (?, ?, CURRENT_TIMESTAMP)
-                    """, (channel_id, str(data)))
+                    try:
+                        json_data = json.dumps(data)
+                        cursor.execute("""
+                            INSERT INTO epg_data (channel_id, data, updated_at)
+                            VALUES (?, ?, CURRENT_TIMESTAMP)
+                        """, (channel_id, json_data))
+                    except (TypeError, json.JSONEncodeError) as e:
+                        self.logger.warning(f"Failed to encode EPG data for channel {channel_id}: {str(e)}")
+                        continue
                 
                 # Update metadata
                 cursor.execute("""
@@ -282,7 +287,11 @@ class DataManager:
                 
                 epg_data = {}
                 for row in rows:
-                    epg_data[row['channel_id']] = eval(row['data'])
+                    try:
+                        epg_data[row['channel_id']] = json.loads(row['data'])
+                    except json.JSONDecodeError:
+                        self.logger.warning(f"Failed to decode EPG data for channel {row['channel_id']}")
+                        continue
                 
                 print(f"Loaded EPG data with {len(epg_data)} entries in {time.time() - start_time:.2f} seconds")
                 return epg_data

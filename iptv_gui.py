@@ -26,6 +26,7 @@ import xml.etree.ElementTree as ET
 from urllib3.util.retry import Retry
 from requests.adapters import HTTPAdapter
 from typing import Dict, Optional
+from concurrent.futures import ThreadPoolExecutor, as_completed
 
 # Set up logger
 logger = setup_logger()
@@ -81,7 +82,7 @@ class Channel:
 
 class WorkerSignals(QObject):
     """Defines the signals available from a running worker thread"""
-    progress = pyqtSignal(object)
+    progress = pyqtSignal(tuple)  # Changed to tuple for (channel, current, total)
     error = pyqtSignal(str)
     finished = pyqtSignal()
     result = pyqtSignal(object)
@@ -89,23 +90,21 @@ class WorkerSignals(QObject):
 class WorkerThread(QThread):
     """Worker thread for running background tasks"""
     def __init__(self, fn, *args, **kwargs):
-        super().__init__()
+        super(WorkerThread, self).__init__()
         self.fn = fn
         self.args = args
         self.kwargs = kwargs
         self.signals = WorkerSignals()
-        self.result = None
-        
-        # Connect signals
-        self.finished.connect(self.signals.finished)
         
         logger.debug(f"Created worker thread for function: {fn.__name__}")
 
     def run(self):
         try:
             logger.debug(f"Starting worker thread: {self.fn.__name__}")
-            self.result = self.fn(*self.args, **self.kwargs)
+            result = self.fn(*self.args, **self.kwargs)
             logger.debug(f"Worker thread completed: {self.fn.__name__}")
+            # Emit the result signal before finished
+            self.signals.result.emit(result)
         except Exception as e:
             logger.error(f"Error in worker thread: {str(e)}", exc_info=True)
             self.signals.error.emit(str(e))
@@ -188,7 +187,8 @@ class IPTVGeneratorGUI(QMainWindow):
             category_label.setPixmap(qta.icon('fa5s.tags').pixmap(16, 16))
             category_layout.addWidget(category_label)
             self.category_combo = QComboBox()
-            self.category_combo.addItems(['All', 'Movies', 'Sports', 'News', 'Entertainment', 'Music'])
+            self.category_combo.addItem('All')  # Default to show all categories
+            self.category_combo.addItems(['Movies', 'Sports', 'News', 'Entertainment', 'Music'])
             category_layout.addWidget(self.category_combo)
             filter_layout.addLayout(category_layout)
             
@@ -205,6 +205,7 @@ class IPTVGeneratorGUI(QMainWindow):
             # Official only filter
             self.official_only = QCheckBox("Official iptv.org only")
             self.official_only.setIcon(qta.icon('fa5s.check-circle'))
+            self.official_only.setChecked(False)  # Default to show all channels
             filter_layout.addWidget(self.official_only)
             
             filter_group.setLayout(filter_layout)
@@ -906,52 +907,62 @@ class IPTVGeneratorGUI(QMainWindow):
     def update_channels_table(self, channels):
         """Update the channels table with the given channels"""
         try:
-            # Disconnect signal temporarily to prevent triggering during update
-            self.channels_table.itemChanged.disconnect(self.on_selection_changed)
+            # Temporarily block signals to prevent multiple updates
+            self.channels_table.blockSignals(True)
             
+            # Clear existing items
             self.channels_table.setRowCount(0)
-            if not channels:
-                return
-
-            for channel in channels:
+            
+            # Clear channel map
+            self.channel_map.clear()
+            
+            # Add channels to table
+            for i, channel in enumerate(channels):
                 row = self.channels_table.rowCount()
                 self.channels_table.insertRow(row)
                 
-                # Create checkbox item for selection
+                # Store channel mapping
+                self.channel_map[row] = channel
+                
+                # Select checkbox
                 checkbox = QTableWidgetItem()
-                checkbox.setFlags(Qt.ItemFlag.ItemIsUserCheckable | Qt.ItemFlag.ItemIsEnabled)
-                checkbox.setCheckState(Qt.CheckState.Unchecked)
+                checkbox.setFlags(Qt.ItemIsUserCheckable | Qt.ItemIsEnabled)
+                checkbox.setCheckState(Qt.Unchecked)
                 self.channels_table.setItem(row, 0, checkbox)
                 
-                # Set other channel information
-                self.channels_table.setItem(row, 1, QTableWidgetItem(channel.name))
-                self.channels_table.setItem(row, 2, QTableWidgetItem(channel.group))
-                self.channels_table.setItem(row, 3, QTableWidgetItem(channel.url))
+                # Channel name
+                name_item = QTableWidgetItem(channel.name)
+                self.channels_table.setItem(row, 1, name_item)
                 
-                # Set status icon based on is_working
+                # Channel group
+                group_item = QTableWidgetItem(channel.group)
+                self.channels_table.setItem(row, 2, group_item)
+                
+                # Channel URL
+                url_item = QTableWidgetItem(channel.url)
+                self.channels_table.setItem(row, 3, url_item)
+                
+                # Working status
                 status_item = QTableWidgetItem()
-                if channel.is_working is True:
-                    status_item.setIcon(QIcon.fromTheme('dialog-ok'))
-                    status_item.setText('Working')
-                elif channel.is_working is False:
-                    status_item.setIcon(QIcon.fromTheme('dialog-error'))
-                    status_item.setText('Not Working')
-                else:
-                    status_item.setText('Not Checked')
+                if channel.is_working is not None:
+                    status_text = "Working" if channel.is_working else "Not Working"
+                    status_item.setText(status_text)
+                    status_item.setForeground(Qt.green if channel.is_working else Qt.red)
                 self.channels_table.setItem(row, 4, status_item)
                 
-                # Set EPG status
-                epg_item = QTableWidgetItem()
-                epg_item.setText('Yes' if channel.has_epg else 'No')
+                # EPG status
+                epg_item = QTableWidgetItem("Yes" if channel.has_epg else "No")
+                epg_item.setForeground(Qt.green if channel.has_epg else Qt.gray)
                 self.channels_table.setItem(row, 5, epg_item)
-
-            # Reconnect signal after update
-            self.channels_table.itemChanged.connect(self.on_selection_changed)
-            self.update_selected_count()
+            
+            # Re-enable signals
+            self.channels_table.blockSignals(False)
+            
+            # Update counts
+            self.update_channel_count()
             
         except Exception as e:
             logger.error(f"Error updating channels table: {str(e)}", exc_info=True)
-            raise
 
     def on_selection_changed(self, item):
         """Handle changes in channel selection"""
@@ -961,17 +972,19 @@ class IPTVGeneratorGUI(QMainWindow):
     def update_selected_count(self):
         """Update selected count and button states"""
         try:
-            selected_count = 0
-            for row in range(self.channels_table.rowCount()):
-                if self.channels_table.item(row, 0).checkState() == Qt.CheckState.Checked:
-                    selected_count += 1
+            # Use list comprehension for better performance
+            selected_count = sum(
+                1 for row in range(self.channels_table.rowCount())
+                if self.channels_table.item(row, 0).checkState() == Qt.CheckState.Checked
+            )
             
             # Update status label
             self.selected_count_label.setText(f"Selected: {selected_count}")
             
             # Update button states
-            self.check_button.setEnabled(selected_count > 0)
-            self.generate_button.setEnabled(selected_count > 0)
+            has_selection = selected_count > 0
+            self.check_button.setEnabled(has_selection)
+            self.generate_button.setEnabled(has_selection)
             
             logger.debug(f"Selection changed: {selected_count} channels selected")
             
@@ -981,21 +994,41 @@ class IPTVGeneratorGUI(QMainWindow):
     def select_all_visible(self):
         """Select all visible channels"""
         try:
+            # Disconnect signal temporarily to prevent multiple updates
+            self.channels_table.itemChanged.disconnect(self.on_selection_changed)
+            
+            # Batch select all visible channels
             for row in range(self.channels_table.rowCount()):
                 if not self.channels_table.isRowHidden(row):
                     self.channels_table.item(row, 0).setCheckState(Qt.CheckState.Checked)
+            
+            # Reconnect signal and update once
+            self.channels_table.itemChanged.connect(self.on_selection_changed)
             self.update_selected_count()
+            
         except Exception as e:
             logger.error(f"Error selecting all channels: {str(e)}", exc_info=True)
+            # Ensure signal is reconnected even if there's an error
+            self.channels_table.itemChanged.connect(self.on_selection_changed)
 
     def deselect_all(self):
         """Deselect all channels"""
         try:
+            # Disconnect signal temporarily to prevent multiple updates
+            self.channels_table.itemChanged.disconnect(self.on_selection_changed)
+            
+            # Batch deselect all channels
             for row in range(self.channels_table.rowCount()):
                 self.channels_table.item(row, 0).setCheckState(Qt.CheckState.Unchecked)
+            
+            # Reconnect signal and update once
+            self.channels_table.itemChanged.connect(self.on_selection_changed)
             self.update_selected_count()
+            
         except Exception as e:
             logger.error(f"Error deselecting all channels: {str(e)}", exc_info=True)
+            # Ensure signal is reconnected even if there's an error
+            self.channels_table.itemChanged.connect(self.on_selection_changed)
 
     def generate(self):
         """Generate output files for selected channels"""
@@ -1115,32 +1148,37 @@ class IPTVGeneratorGUI(QMainWindow):
             return
 
         try:
-            search_text = self.search_input.text().lower()
+            search_text = self.search_input.text().lower().strip()
             category = self.category_combo.currentText()
-            country = self.country_edit.text().lower()
+            country = self.country_edit.text().lower().strip()
             official_only = self.official_only.isChecked()
 
             filtered_channels = []
             for channel in self.all_channels:
-                # Check source filter
-                if official_only and not channel.tvg_id.startswith('iptv-org'):
+                # Skip empty channels
+                if not channel.name or not channel.url:
+                    continue
+                    
+                # Check source filter (only if checked)
+                if official_only and not any(src in channel.tvg_id.lower() for src in ['iptv-org', 'github']):
                     continue
                 
-                # Check search text
-                if search_text and search_text not in channel.name.lower():
+                # Check search text (only if provided)
+                if search_text and not any(search_text in field.lower() for field in [channel.name, channel.group, channel.tvg_name] if field):
                     continue
                     
-                # Check category
-                if category != 'All' and category.lower() not in channel.group.lower():
+                # Check category (only if not All)
+                if category != 'All' and not any(category.lower() in field.lower() for field in [channel.group, channel.name] if field):
                     continue
                     
-                # Check country
-                if country and not any(country in tag.lower() for tag in [channel.group, channel.name]):
+                # Check country (only if provided)
+                if country and not any(country in field.lower() for field in [channel.group, channel.name, channel.tvg_name] if field):
                     continue
                     
                 filtered_channels.append(channel)
 
             self.update_channels_table(filtered_channels)
+            self.update_channel_count()
             logger.info(f"Showing {len(filtered_channels)} channels after filtering")
             
         except Exception as e:
@@ -1150,26 +1188,12 @@ class IPTVGeneratorGUI(QMainWindow):
     def get_channel_from_row(self, row):
         """Get channel object from table row"""
         try:
-            # Get name item which contains the row index
-            name_item = self.channels_table.item(row, 1)
-            if not name_item:
-                logger.debug(f"No name item found in row {row}")
-                return None
-            
-            # Get original row index
-            original_row = None
-            if name_item:
-                original_row = row
-            
-            # Get channel from map using original row
-            channel = None
-            if original_row is not None:
-                channel = self.all_channels[original_row]
-            
+            # Get channel directly from the mapping
+            channel = self.channel_map.get(row)
             if not channel:
-                logger.warning(f"No channel found for row index {original_row}")
+                logger.debug(f"No channel found in map for row {row}")
                 return None
-            
+                
             if not isinstance(channel, Channel):
                 logger.warning(f"Invalid channel data in row {row}")
                 return None
@@ -1201,6 +1225,7 @@ class IPTVGeneratorGUI(QMainWindow):
     def check_selected_channels(self):
         """Check if selected channels are working"""
         try:
+            logger.debug("Starting check_selected_channels")
             selected_channels = []
             for row in range(self.channels_table.rowCount()):
                 if self.channels_table.item(row, 0).checkState() == Qt.CheckState.Checked:
@@ -1209,6 +1234,7 @@ class IPTVGeneratorGUI(QMainWindow):
                         selected_channels.append(channel)
             
             if not selected_channels:
+                logger.debug("No channels selected")
                 QMessageBox.warning(self, 'Warning', 'Please select channels to check')
                 return
             
@@ -1217,16 +1243,39 @@ class IPTVGeneratorGUI(QMainWindow):
             self.progress_bar.setValue(0)
             
             # Disable buttons during check
+            logger.debug("Disabling buttons")
             self.check_button.setEnabled(False)
             self.generate_button.setEnabled(False)
             self.load_button.setEnabled(False)
             
+            def on_worker_finished():
+                logger.debug("Worker finished, re-enabling buttons")
+                self.check_button.setEnabled(True)
+                self.generate_button.setEnabled(True)
+                self.load_button.setEnabled(True)
+                self.progress_bar.setValue(self.progress_bar.maximum())
+                self.log_message("Channel check completed")
+            
+            def on_worker_error(error_msg):
+                logger.error(f"Worker error: {error_msg}")
+                self.log_message(f"Error checking channels: {error_msg}")
+                on_worker_finished()  # Re-enable buttons on error
+            
             # Create worker thread for checking channels
+            logger.debug("Creating worker thread")
             self.worker = WorkerThread(self.check_channels, selected_channels)
+            
+            # Connect signals
+            logger.debug("Connecting worker signals")
             self.worker.signals.progress.connect(self.update_check_progress)
-            self.worker.signals.finished.connect(lambda: self.on_check_complete(selected_channels))
-            self.worker.signals.error.connect(self.on_error)
+            self.worker.signals.finished.connect(on_worker_finished)
+            self.worker.signals.error.connect(on_worker_error)
+            self.worker.signals.result.connect(lambda results: self.on_check_complete(results))
+            
+            # Start worker
+            logger.debug("Starting worker thread")
             self.worker.start()
+            logger.debug("Worker thread started")
             
         except Exception as e:
             logger.error("Error starting channel check", exc_info=True)
@@ -1238,113 +1287,178 @@ class IPTVGeneratorGUI(QMainWindow):
     def check_channels(self, channels):
         """Check if channels are working"""
         try:
+            logger.debug("Starting check_channels")
             results = []
             total = len(channels)
             
-            # Configure session with retry strategy
+            # Configure session with retry strategy and connection pooling
+            logger.debug("Configuring requests session")
             session = requests.Session()
-            retries = Retry(total=2, backoff_factor=1,
-                          status_forcelist=[500, 502, 503, 504])
-            session.mount('http://', HTTPAdapter(max_retries=retries))
-            session.mount('https://', HTTPAdapter(max_retries=retries))
+            retries = Retry(
+                total=2,
+                backoff_factor=0.1,
+                status_forcelist=[500, 502, 503, 504]
+            )
             
-            for i, channel in enumerate(channels):
-                try:
-                    # Try to get stream headers with timeout
-                    response = session.head(channel.url, 
-                                         timeout=5,
-                                         allow_redirects=True,
-                                         verify=False)
-                    
-                    # Check if response is successful and contains video content
-                    is_working = (response.status_code == 200 and
-                                response.headers.get('content-type', '').startswith(('video/', 'application/')))
-                    
-                    channel.is_working = is_working
-                    logger.info(f"Channel {channel.name}: {'Working' if is_working else 'Not working'}")
-                    
-                except Exception as e:
-                    channel.is_working = False
-                    logger.error(f"Error checking channel {channel.name}: {str(e)}")
+            # Increase max pool size for concurrent connections
+            logger.debug("Setting up connection pool")
+            adapter = HTTPAdapter(
+                max_retries=retries,
+                pool_connections=50,
+                pool_maxsize=50
+            )
+            session.mount('http://', adapter)
+            session.mount('https://', adapter)
+            
+            # Use ThreadPoolExecutor for parallel checking
+            max_workers = min(32, os.cpu_count() * 4)  # Limit max workers
+            logger.debug(f"Creating thread pool with {max_workers} workers")
+            
+            with ThreadPoolExecutor(max_workers=max_workers) as executor:
+                # Submit all check tasks
+                future_to_channel = {
+                    executor.submit(
+                        self._check_single_channel, 
+                        session, 
+                        channel
+                    ): channel for channel in channels
+                }
                 
-                results.append(channel)
-                # Emit progress update (channel, current count, total count)
-                self.worker.signals.progress.emit((channel, i + 1, total))
-                
+                completed = 0
+                for future in as_completed(future_to_channel):
+                    channel = future_to_channel[future]
+                    completed += 1
+                    
+                    try:
+                        is_working = future.result()
+                        channel.is_working = is_working
+                        results.append(channel)
+                        
+                        # Emit progress update
+                        progress = (completed * 100) // total
+                        self.worker.signals.progress.emit((
+                            channel,
+                            is_working,
+                            progress
+                        ))
+                        
+                    except Exception as e:
+                        logger.error(f"Error checking channel {channel.name}: {str(e)}")
+                        channel.is_working = False
+                        results.append(channel)
+                        self.worker.signals.progress.emit((
+                            channel,
+                            False,
+                            progress
+                        ))
+            
             return results
             
         except Exception as e:
-            logger.error("Error in check_channels", exc_info=True)
+            logger.error(f"Error in check_channels: {str(e)}", exc_info=True)
             raise
+            
+    def _check_single_channel(self, session, channel):
+        """Check if a single channel is working"""
+        try:
+            logger.debug(f"Checking channel: {channel.name}")
+            
+            # Try HEAD request first
+            try:
+                response = session.head(
+                    channel.url,
+                    timeout=5,
+                    allow_redirects=True,
+                    verify=False
+                )
+            except requests.exceptions.RequestException:
+                # Fallback to GET request if HEAD fails
+                response = session.get(
+                    channel.url,
+                    timeout=5,
+                    stream=True,
+                    verify=False
+                )
+                
+                # Read a small chunk to verify stream
+                next(response.iter_content(chunk_size=1024), None)
+            
+            # Check content type
+            content_type = response.headers.get('content-type', '').lower()
+            valid_types = ['video/', 'application/x-mpegurl', 'application/vnd.apple.mpegurl']
+            
+            is_working = (
+                response.status_code == 200 and
+                any(t in content_type for t in valid_types)
+            )
+            
+            logger.debug(f"Channel {channel.name} status: {is_working}")
+            return is_working
+            
+        except Exception as e:
+            logger.debug(f"Channel {channel.name} check failed: {str(e)}")
+            return False
 
+    @pyqtSlot(tuple)
     def update_check_progress(self, progress_data):
         """Update progress bar and channel status during check"""
         try:
-            channel, current, total = progress_data
-            self.progress_bar.setValue(current)
+            channel, is_working, progress = progress_data
             
-            # Update channel status in table
+            # Find the row for this channel
             for row in range(self.channels_table.rowCount()):
-                if self.channels_table.item(row, 1).text() == channel.name:
+                if self.channel_map.get(row) == channel:
+                    # Update status
                     status_item = QTableWidgetItem()
-                    if channel.is_working:
-                        status_item.setIcon(QIcon.fromTheme('dialog-ok'))
-                        status_item.setText('Working')
-                    else:
-                        status_item.setIcon(QIcon.fromTheme('dialog-error'))
-                        status_item.setText('Not Working')
+                    status_text = "Working" if is_working else "Not Working"
+                    status_item.setText(status_text)
+                    status_item.setForeground(Qt.green if is_working else Qt.red)
                     self.channels_table.setItem(row, 4, status_item)
                     break
-                    
-            # Update log
-            status = 'Working' if channel.is_working else 'Not Working'
-            self.log_message(f"Checked {current}/{total}: {channel.name} - {status}")
+            
+            # Update progress bar
+            self.progress_bar.setValue(progress)
             
         except Exception as e:
-            logger.error("Error updating check progress", exc_info=True)
-            self.log_message(f"Error updating check progress: {str(e)}")
+            logger.error(f"Error updating check progress: {str(e)}", exc_info=True)
 
     def on_check_complete(self, checked_channels):
         """Handle completion of channel checking"""
         try:
+            logger.debug("Channel check completed")
+            
             # Re-enable buttons
             self.check_button.setEnabled(True)
             self.generate_button.setEnabled(True)
             self.load_button.setEnabled(True)
             
-            # Reset progress bar
-            self.progress_bar.setValue(0)
+            # Set progress bar to 100%
+            self.progress_bar.setValue(self.progress_bar.maximum())
             
-            # Save updated channel statuses
-            self.save_data()
-            
-            # Show summary
-            working = sum(1 for ch in checked_channels if ch.is_working)
-            total = len(checked_channels)
-            QMessageBox.information(self, 'Check Complete', 
-                                  f'Checked {total} channels\n'
-                                  f'Working: {working}\n'
-                                  f'Not Working: {total - working}')
-            
-            self.log_message("Channel check complete")
+            # Log completion
+            working_count = sum(1 for c in checked_channels if c.is_working)
+            total_count = len(checked_channels)
+            self.log_message(
+                f"Channel check completed: {working_count}/{total_count} channels working"
+            )
             
         except Exception as e:
-            logger.error(f"Error completing channel check: {str(e)}", exc_info=True)
-            self.error_signal.emit(f"Error completing channel check: {str(e)}")
+            logger.error(f"Error in on_check_complete: {str(e)}", exc_info=True)
 
     def get_channel_from_row(self, row):
         """Get channel object from table row"""
         try:
-            name = self.channels_table.item(row, 1).text()
-            url = self.channels_table.item(row, 3).text()
-            group = self.channels_table.item(row, 2).text()
+            # Get channel directly from the mapping
+            channel = self.channel_map.get(row)
+            if not channel:
+                logger.debug(f"No channel found in map for row {row}")
+                return None
+                
+            if not isinstance(channel, Channel):
+                logger.warning(f"Invalid channel data in row {row}")
+                return None
             
-            # Find matching channel in all_channels
-            for channel in self.all_channels:
-                if channel.name == name and channel.url == url:
-                    return channel
-                    
-            return None
+            return channel
             
         except Exception as e:
             logger.error(f"Error getting channel from row {row}: {str(e)}")
