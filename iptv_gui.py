@@ -1393,6 +1393,47 @@ class IPTVGeneratorGUI(QMainWindow):
             logger.error(f"Error in check_channels: {str(e)}", exc_info=True)
             raise
             
+    def _check_single_channel(self, session, channel):
+        """Check if a single channel is working"""
+        try:
+            logger.debug(f"Checking channel: {channel.name}")
+            
+            # Try HEAD request first
+            try:
+                response = session.head(
+                    channel.url,
+                    timeout=5,
+                    allow_redirects=True,
+                    verify=False
+                )
+            except requests.exceptions.RequestException:
+                # Fallback to GET request if HEAD fails
+                response = session.get(
+                    channel.url,
+                    timeout=5,
+                    stream=True,
+                    verify=False
+                )
+                
+                # Read a small chunk to verify stream
+                next(response.iter_content(chunk_size=1024), None)
+            
+            # Check content type
+            content_type = response.headers.get('content-type', '').lower()
+            valid_types = ['video/', 'application/x-mpegurl', 'application/vnd.apple.mpegurl']
+            
+            is_working = (
+                response.status_code == 200 and
+                any(t in content_type for t in valid_types)
+            )
+            
+            logger.debug(f"Channel {channel.name} status: {is_working}")
+            return is_working
+            
+        except Exception as e:
+            logger.debug(f"Channel {channel.name} check failed: {str(e)}")
+            return False
+
     @pyqtSlot(tuple)
     def update_check_progress(self, progress_data):
         """Update progress bar and channel status during check"""
