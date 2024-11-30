@@ -132,7 +132,6 @@ class IPTVGeneratorGUI(QMainWindow):
             self.epg_data = {}
             self.channel_map = {}
             self.is_loading = False
-            self.checkbox_column = 6  # Index of checkbox column
             
             # Create data manager
             self.data_manager = DataManager()
@@ -213,20 +212,27 @@ class IPTVGeneratorGUI(QMainWindow):
             
             # Create channels table
             self.channels_table = QTableWidget()
-            self.table_columns = ["Name", "Group", "Country", "Source", "EPG", "Status", "Selected"]
-            self.channels_table.setColumnCount(len(self.table_columns))
-            self.channels_table.setHorizontalHeaderLabels(self.table_columns)
+            self.channels_table.setColumnCount(6)
+            self.channels_table.setHorizontalHeaderLabels([
+                "Select", "Name", "Group", "URL", "Status", "EPG"
+            ])
             
             # Set column resize modes
-            self.channels_table.horizontalHeader().setSectionResizeMode(0, QHeaderView.Stretch)
-            for i in range(1, len(self.table_columns)):
-                self.channels_table.horizontalHeader().setSectionResizeMode(i, QHeaderView.ResizeToContents)
+            self.channels_table.horizontalHeader().setSectionResizeMode(0, QHeaderView.ResizeToContents)
+            self.channels_table.horizontalHeader().setSectionResizeMode(1, QHeaderView.Stretch)
+            self.channels_table.horizontalHeader().setSectionResizeMode(2, QHeaderView.ResizeToContents)
+            self.channels_table.horizontalHeader().setSectionResizeMode(3, QHeaderView.Stretch)
+            self.channels_table.horizontalHeader().setSectionResizeMode(4, QHeaderView.ResizeToContents)
+            self.channels_table.horizontalHeader().setSectionResizeMode(5, QHeaderView.ResizeToContents)
             
             # Enable sorting
             self.channels_table.setSortingEnabled(True)
             
-            # Connect cell changed signal
-            self.channels_table.cellChanged.connect(self.on_cell_changed)
+            # Add selection counter
+            self.selected_count_label = QLabel("Selected: 0")
+            
+            # Connect selection signal
+            self.channels_table.itemChanged.connect(self.on_selection_changed)
             
             layout.addWidget(self.channels_table)
             
@@ -236,8 +242,7 @@ class IPTVGeneratorGUI(QMainWindow):
             count_label = QLabel()
             count_label.setPixmap(qta.icon('fa5s.list').pixmap(16, 16))
             selection_layout.addWidget(count_label)
-            self.channel_count_label = QLabel("Channels: 0")
-            selection_layout.addWidget(self.channel_count_label)
+            selection_layout.addWidget(self.selected_count_label)
             
             selection_layout.addStretch()
             
@@ -898,30 +903,132 @@ class IPTVGeneratorGUI(QMainWindow):
             self.error_signal.emit(f"EPG loading error: {str(e)}")
             return {}
 
+    def update_channels_table(self, channels):
+        """Update the channels table with the given channels"""
+        try:
+            # Disconnect signal temporarily to prevent triggering during update
+            self.channels_table.itemChanged.disconnect(self.on_selection_changed)
+            
+            self.channels_table.setRowCount(0)
+            if not channels:
+                return
+
+            for channel in channels:
+                row = self.channels_table.rowCount()
+                self.channels_table.insertRow(row)
+                
+                # Create checkbox item for selection
+                checkbox = QTableWidgetItem()
+                checkbox.setFlags(Qt.ItemFlag.ItemIsUserCheckable | Qt.ItemFlag.ItemIsEnabled)
+                checkbox.setCheckState(Qt.CheckState.Unchecked)
+                self.channels_table.setItem(row, 0, checkbox)
+                
+                # Set other channel information
+                self.channels_table.setItem(row, 1, QTableWidgetItem(channel.name))
+                self.channels_table.setItem(row, 2, QTableWidgetItem(channel.group))
+                self.channels_table.setItem(row, 3, QTableWidgetItem(channel.url))
+                
+                # Set status icon based on is_working
+                status_item = QTableWidgetItem()
+                if channel.is_working is True:
+                    status_item.setIcon(QIcon.fromTheme('dialog-ok'))
+                    status_item.setText('Working')
+                elif channel.is_working is False:
+                    status_item.setIcon(QIcon.fromTheme('dialog-error'))
+                    status_item.setText('Not Working')
+                else:
+                    status_item.setText('Not Checked')
+                self.channels_table.setItem(row, 4, status_item)
+                
+                # Set EPG status
+                epg_item = QTableWidgetItem()
+                epg_item.setText('Yes' if channel.has_epg else 'No')
+                self.channels_table.setItem(row, 5, epg_item)
+
+            # Reconnect signal after update
+            self.channels_table.itemChanged.connect(self.on_selection_changed)
+            self.update_selected_count()
+            
+        except Exception as e:
+            logger.error(f"Error updating channels table: {str(e)}", exc_info=True)
+            raise
+
+    def on_selection_changed(self, item):
+        """Handle changes in channel selection"""
+        if item and item.column() == 0:  # Check if it's the checkbox column
+            self.update_selected_count()
+
+    def update_selected_count(self):
+        """Update selected count and button states"""
+        try:
+            selected_count = 0
+            for row in range(self.channels_table.rowCount()):
+                if self.channels_table.item(row, 0).checkState() == Qt.CheckState.Checked:
+                    selected_count += 1
+            
+            # Update status label
+            self.selected_count_label.setText(f"Selected: {selected_count}")
+            
+            # Update button states
+            self.check_button.setEnabled(selected_count > 0)
+            self.generate_button.setEnabled(selected_count > 0)
+            
+            logger.debug(f"Selection changed: {selected_count} channels selected")
+            
+        except Exception as e:
+            logger.error(f"Error updating selection count: {str(e)}", exc_info=True)
+
+    def select_all_visible(self):
+        """Select all visible channels"""
+        try:
+            for row in range(self.channels_table.rowCount()):
+                if not self.channels_table.isRowHidden(row):
+                    self.channels_table.item(row, 0).setCheckState(Qt.CheckState.Checked)
+            self.update_selected_count()
+        except Exception as e:
+            logger.error(f"Error selecting all channels: {str(e)}", exc_info=True)
+
+    def deselect_all(self):
+        """Deselect all channels"""
+        try:
+            for row in range(self.channels_table.rowCount()):
+                self.channels_table.item(row, 0).setCheckState(Qt.CheckState.Unchecked)
+            self.update_selected_count()
+        except Exception as e:
+            logger.error(f"Error deselecting all channels: {str(e)}", exc_info=True)
+
     def generate(self):
-        selected_channels = []
-        for row in range(self.channels_table.rowCount()):
-            if self.channels_table.item(row, 6).checkState() == Qt.Checked:
-                selected_channels.append(self.all_channels[row])
+        """Generate output files for selected channels"""
+        try:
+            selected_channels = []
+            for row in range(self.channels_table.rowCount()):
+                if self.channels_table.item(row, 0).checkState() == Qt.CheckState.Checked:
+                    channel = self.get_channel_from_row(row)
+                    if channel:
+                        selected_channels.append(channel)
 
-        if not selected_channels:
-            QMessageBox.warning(self, "Warning", "Please select at least one channel.")
-            return
+            if not selected_channels:
+                QMessageBox.warning(self, "Warning", "Please select at least one channel.")
+                return
 
-        self.generate_button.setEnabled(False)
-        self.progress_bar.setRange(0, 0)
+            self.generate_button.setEnabled(False)
+            self.progress_bar.setRange(0, 0)
 
-        # Create worker thread
-        self.worker = WorkerThread(
-            self.generate_output,
-            selected_channels,
-            self.m3u_path.text(),
-            self.epg_path.text()
-        )
-        self.worker.signals.finished.connect(self.generation_finished)
-        self.worker.signals.error.connect(self.generation_error)
-        self.worker.start()
-        
+            # Create worker thread
+            self.worker = WorkerThread(
+                self.generate_output,
+                selected_channels,
+                self.m3u_path.text(),
+                self.epg_path.text()
+            )
+            self.worker.signals.finished.connect(self.generation_finished)
+            self.worker.signals.error.connect(self.generation_error)
+            self.worker.start()
+            
+        except Exception as e:
+            logger.error(f"Error starting generation: {str(e)}", exc_info=True)
+            self.generate_button.setEnabled(True)
+
     def generate_output(self, selected_channels, m3u_path, epg_path):
         try:
             # Generate M3U content
@@ -991,8 +1098,8 @@ class IPTVGeneratorGUI(QMainWindow):
 
     def on_selection_changed(self):
         """Handle table selection"""
-        selected_count = sum(1 for row in range(self.channels_table.rowCount()) if self.channels_table.item(row, 6).checkState() == Qt.Checked)
-        self.channel_count_label.setText(f"Channels: {selected_count}")
+        selected_count = sum(1 for row in range(self.channels_table.rowCount()) if self.channels_table.item(row, 0).checkState() == Qt.CheckState.Checked)
+        self.selected_count_label.setText(f"Selected: {selected_count}")
         
         # Enable/disable buttons based on selection
         has_selection = selected_count > 0
@@ -1000,7 +1107,7 @@ class IPTVGeneratorGUI(QMainWindow):
         self.check_button.setEnabled(has_selection)
 
     def update_channel_count(self):
-        self.channel_count_label.setText(f"Channels: {self.channels_table.rowCount()}")
+        self.selected_count_label.setText(f"Channels: {self.channels_table.rowCount()}")
 
     def apply_filters(self):
         """Apply filters to the channels table"""
@@ -1040,94 +1147,25 @@ class IPTVGeneratorGUI(QMainWindow):
             logger.error(f"Error applying filters: {str(e)}", exc_info=True)
             self.error_signal.emit(f"Error applying filters: {str(e)}")
 
-    def update_channels_table(self, channels):
-        """Update the table with channel data"""
-        try:
-            # Disable sorting temporarily for better performance
-            self.channels_table.setSortingEnabled(False)
-            self.is_loading = True
-            
-            # Clear existing items and channel map
-            self.channels_table.setRowCount(0)
-            self.channel_map.clear()
-            
-            # Pre-allocate rows
-            self.channels_table.setRowCount(len(channels))
-            
-            for row, channel in enumerate(channels):
-                try:
-                    # Store channel in map
-                    self.channel_map[row] = channel
-                    
-                    # Create items
-                    name_item = QTableWidgetItem(channel.name)
-                    name_item.setData(Qt.UserRole, row)  # Store row index instead of channel
-                    
-                    category_item = QTableWidgetItem(channel.group)
-                    country = channel.tvg_id.split('.')[0] if '.' in channel.tvg_id else ''
-                    country_item = QTableWidgetItem(country)
-                    source_item = QTableWidgetItem(channel.tvg_id)
-                    
-                    epg_item = QTableWidgetItem("Yes" if channel.has_epg else "No")
-                    epg_item.setBackground(QColor(0, 255, 0) if channel.has_epg else QColor(255, 0, 0))
-                    
-                    status_text = "Unknown"
-                    status_color = Qt.white
-                    if channel.is_working is not None:
-                        status_text = "Working" if channel.is_working else "Dead"
-                        status_color = Qt.green if channel.is_working else Qt.red
-                    status_item = QTableWidgetItem(status_text)
-                    status_item.setBackground(status_color)
-                    
-                    # Create checkbox item
-                    checkbox_item = QTableWidgetItem()
-                    checkbox_item.setFlags(Qt.ItemIsUserCheckable | Qt.ItemIsEnabled)
-                    checkbox_item.setCheckState(Qt.Checked if channel.tvg_id.startswith('iptv-org') else Qt.Unchecked)
-                    
-                    # Set items
-                    self.channels_table.setItem(row, 0, name_item)
-                    self.channels_table.setItem(row, 1, category_item)
-                    self.channels_table.setItem(row, 2, country_item)
-                    self.channels_table.setItem(row, 3, source_item)
-                    self.channels_table.setItem(row, 4, epg_item)
-                    self.channels_table.setItem(row, 5, status_item)
-                    self.channels_table.setItem(row, 6, checkbox_item)
-                    
-                except Exception as e:
-                    logger.error(f"Error adding channel {channel.name} to row {row}: {str(e)}")
-                    continue
-                    
-            # Re-enable sorting and update
-            self.channels_table.setSortingEnabled(True)
-            self.update_channel_count()
-            
-            # Connect to sort indicator changed signal
-            self.channels_table.horizontalHeader().sortIndicatorChanged.connect(self.on_sort_changed)
-            
-        except Exception as e:
-            logger.error(f"Error updating channels table: {str(e)}")
-            self.error_signal.emit(f"Error updating table: {str(e)}")
-            
-        finally:
-            self.is_loading = False
-
     def get_channel_from_row(self, row):
         """Get channel object from table row"""
         try:
             # Get name item which contains the row index
-            name_item = self.channels_table.item(row, 0)
+            name_item = self.channels_table.item(row, 1)
             if not name_item:
                 logger.debug(f"No name item found in row {row}")
                 return None
             
             # Get original row index
-            original_row = name_item.data(Qt.UserRole)
-            if original_row is None:
-                logger.warning(f"No row index stored in row {row}")
-                return None
+            original_row = None
+            if name_item:
+                original_row = row
             
             # Get channel from map using original row
-            channel = self.channel_map.get(original_row)
+            channel = None
+            if original_row is not None:
+                channel = self.all_channels[original_row]
+            
             if not channel:
                 logger.warning(f"No channel found for row index {original_row}")
                 return None
@@ -1141,115 +1179,6 @@ class IPTVGeneratorGUI(QMainWindow):
         except Exception as e:
             logger.error(f"Error getting channel from row {row}: {str(e)}")
             return None
-
-    def on_sort_changed(self, logicalIndex, order):
-        """Handle table sorting"""
-        try:
-            # Update channel map with new row positions
-            new_channel_map = {}
-            for row in range(self.channels_table.rowCount()):
-                name_item = self.channels_table.item(row, 0)
-                if name_item:
-                    original_row = name_item.data(Qt.UserRole)
-                    if original_row in self.channel_map:
-                        new_channel_map[row] = self.channel_map[original_row]
-                        name_item.setData(Qt.UserRole, row)
-            
-            # Update channel map
-            self.channel_map = new_channel_map
-            
-        except Exception as e:
-            logger.error(f"Error updating channel map after sort: {str(e)}")
-
-    def select_all_visible(self):
-        """Select all visible channels"""
-        try:
-            self.is_loading = True
-            
-            # Get visible rows
-            visible_rows = []
-            for row in range(self.channels_table.rowCount()):
-                if not self.channels_table.isRowHidden(row):
-                    visible_rows.append(row)
-            
-            # Update checkboxes for visible rows
-            for row in visible_rows:
-                checkbox_item = self.channels_table.item(row, self.checkbox_column)
-                if checkbox_item:
-                    checkbox_item.setCheckState(Qt.Checked)
-            
-            self.update_channel_count()
-            
-        except Exception as e:
-            logger.error(f"Error selecting all visible channels: {str(e)}", exc_info=True)
-        finally:
-            self.is_loading = False
-
-    def deselect_all(self):
-        """Deselect all channels"""
-        try:
-            self.is_loading = True
-            
-            # Update all checkboxes
-            for row in range(self.channels_table.rowCount()):
-                checkbox_item = self.channels_table.item(row, self.checkbox_column)
-                if checkbox_item:
-                    checkbox_item.setCheckState(Qt.Unchecked)
-            
-            self.update_channel_count()
-            
-        except Exception as e:
-            logger.error(f"Error deselecting all channels: {str(e)}", exc_info=True)
-        finally:
-            self.is_loading = False
-
-    def update_channel_count(self):
-        """Update the channel count label"""
-        try:
-            total_count = self.channels_table.rowCount()
-            selected_count = 0
-            
-            for row in range(total_count):
-                checkbox_item = self.channels_table.item(row, self.checkbox_column)
-                if checkbox_item and checkbox_item.checkState() == Qt.Checked:
-                    selected_count += 1
-            
-            self.channel_count_label.setText(f"Selected: {selected_count} / Total: {total_count}")
-            
-            # Enable/disable buttons based on selection
-            has_selection = selected_count > 0
-            self.check_button.setEnabled(has_selection)
-            self.generate_button.setEnabled(has_selection)
-            
-        except Exception as e:
-            logger.error(f"Error updating channel count: {str(e)}", exc_info=True)
-
-    def on_cell_changed(self, row, column):
-        """Handle cell changes in the table"""
-        if self.is_loading:
-            return
-            
-        if column == self.checkbox_column:
-            try:
-                checkbox_item = self.channels_table.item(row, column)
-                if not checkbox_item:
-                    return
-                    
-                channel_item = self.channels_table.item(row, 0)
-                
-                if channel_item:
-                    channel_index = channel_item.data(Qt.UserRole)
-                    if isinstance(channel_index, int):
-                        channel = self.all_channels[channel_index]
-                        state = "selected" if checkbox_item.checkState() == Qt.Checked else "unselected"
-                        logger.info(f"Channel {channel.name} {state}")
-                    else:
-                        logger.warning(f"Warning: No channel index found in row {row}")
-                else:
-                    logger.warning(f"Warning: No channel item found in row {row}")
-                    
-            except Exception as e:
-                logger.error(f"Error handling checkbox change: {str(e)}")
 
     def update_progress(self, message):
         """Update progress bar and log message"""
