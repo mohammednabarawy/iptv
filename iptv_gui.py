@@ -1,3 +1,8 @@
+import warnings
+import urllib3
+# Suppress only the InsecureRequestWarning from urllib3
+warnings.filterwarnings('ignore', category=urllib3.exceptions.InsecureRequestWarning)
+
 import sys
 from PyQt5.QtWidgets import (QApplication, QMainWindow, QWidget, QVBoxLayout,
                            QHBoxLayout, QPushButton, QLabel, QProgressBar,
