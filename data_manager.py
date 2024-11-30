@@ -9,7 +9,12 @@ from typing import List, Dict, Optional
 from contextlib import contextmanager
 
 class DataManager:
-    def __init__(self, data_dir: str = "y:/videos/iptv/data"):
+    def __init__(self, data_dir: str = None):
+        if data_dir is None:
+            # Use relative path from the script location
+            script_dir = os.path.dirname(os.path.abspath(__file__))
+            data_dir = os.path.join(script_dir, "data")
+            
         self.data_dir = data_dir
         self.db_path = os.path.join(data_dir, "iptv.db")
         
@@ -26,7 +31,7 @@ class DataManager:
         self.logger = logging.getLogger(__name__)
         
         # Initialize database and migrate data if needed
-        print("Initializing database...")
+        print(f"Initializing database at {self.db_path}...")
         self._init_db()
         if not self._is_data_migrated():
             print("Starting data migration...")
