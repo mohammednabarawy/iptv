@@ -73,7 +73,7 @@ class IPTVChecker:
             except Exception as e:
                 print(f"Error: {e}")
 
-    def check_stream(self, url: str, worker_id: int) -> bool:
+    def check_stream(self, url: str) -> bool:
         """Check if a stream is valid using VLC."""
         try:
             # First do a quick HEAD request to check if the stream is accessible
@@ -91,145 +91,110 @@ class IPTVChecker:
             player.set_media(media)
             
             # Try to play the stream
-            if player.play() == -1:
+            result = player.play()
+            if result == -1:
+                player.release()
                 return False
                 
             # Wait a bit for the stream to start
-            time.sleep(0.5)
+            time.sleep(1)
             
             # Check if media is playing
             start_time = time.time()
             while time.time() - start_time < self.check_time:
                 state = player.get_state()
                 if state == vlc.State.Error:
+                    player.release()
                     return False
                 elif state == vlc.State.Playing:
                     player.stop()
+                    player.release()
                     return True
                 time.sleep(0.1)
             
             player.stop()
+            player.release()
             return False
             
         except Exception as e:
+            print(f"Error checking stream {url}: {str(e)}")
             return False
 
-    def process_streams_parallel(self, streams: List[Tuple[str, str]]) -> List[Tuple[str, str, bool]]:
+    def process_streams_parallel(self, streams: List[Tuple[str, str]]):
         """Process multiple streams in parallel."""
-        results = []
-        total = len(streams)
-        completed = 0
+        try:
+            with concurrent.futures.ThreadPoolExecutor(max_workers=self.max_workers) as executor:
+                future_to_url = {
+                    executor.submit(self.check_stream, url): (url, tvg_id)
+                    for i, (url, tvg_id) in enumerate(streams)
+                }
+                for future in concurrent.futures.as_completed(future_to_url):
+                    url, tvg_id = future_to_url[future]
+                    try:
+                        is_valid = future.result()
+                        if is_valid:
+                            self.online_count += 1
+                    except Exception as e:
+                        self.print_colored(f"Error checking {url}: {str(e)}", Fore.RED)
+        except Exception as e:
+            self.print_colored(f"Error in parallel processing: {str(e)}", Fore.RED)
 
-        with concurrent.futures.ThreadPoolExecutor(max_workers=self.max_workers) as executor:
-            future_to_stream = {
-                executor.submit(self.check_stream, stream[1], i): stream 
-                for i, stream in enumerate(streams)
-            }
-            
-            for future in concurrent.futures.as_completed(future_to_stream):
-                stream = future_to_stream[future]
-                completed += 1
-                try:
-                    is_valid = future.result()
-                    if is_valid:
-                        self.online_count += 1
-                    results.append((stream[0], stream[1], is_valid))
-                    self.print_colored(
-                        f"Progress: {completed}/{total} streams checked ({self.online_count} online)",
-                        Fore.CYAN
-                    )
-                except Exception as e:
-                    results.append((stream[0], stream[1], False))
-
-        return results
-                
     def process_m3u(self, input_path: str):
         """Process M3U file and check all streams."""
+        if not os.path.exists(input_path):
+            self.print_colored(f"File not found: {input_path}", Fore.RED)
+            return
+
+        temp_file = os.path.join(self.temp_dir, f"temp_{os.path.basename(input_path)}")
+        streams = []
+        results = []
+        valid_streams = 0
+        current_extinf = None
+
         try:
-            if input_path.startswith(('http://', 'https://')):
-                try:
-                    content = self.session.get(input_path).text
-                except requests.RequestException as e:
-                    self.print_colored(f"Error downloading M3U file: {e}", Fore.RED)
-                    return
-            else:
-                try:
-                    with open(input_path, 'r', encoding='utf-8', errors='ignore') as f:
-                        content = f.read()
-                except Exception as e:
-                    self.print_colored(f"Error reading M3U file: {e}", Fore.RED)
-                    return
-                
-            # Parse M3U content
-            lines = [line.strip() for line in content.splitlines() if line.strip()]
-            if not lines:
-                self.print_colored("Empty M3U file!", Fore.RED)
-                return
-                
-            # Some M3U files might not start with #EXTM3U, we'll be more lenient
-            # Collect all streams and their info
-            streams = []
-            extinf = ""
-            
-            for line in lines:
-                if line.startswith('#EXTINF'):
-                    extinf = line
-                elif line.startswith(('http://', 'https://')):
-                    streams.append((extinf, line))
-                    extinf = ""
-                elif not line.startswith('#'):  # Handle URLs without #EXTINF
-                    if line.startswith(('rtmp://', 'rtsp://')):
-                        streams.append(("", line))
-            
-            if not streams:
-                self.print_colored("No valid streams found in the file!", Fore.RED)
+            with open(input_path, 'r', encoding='utf-8') as f:
+                for line in f:
+                    line = line.strip()
+                    if not line:
+                        continue
+
+                    if line.startswith('#EXTINF:'):
+                        current_extinf = line
+                    elif line.startswith('http'):
+                        url = line
+                        is_valid = self.check_stream(url)
+                        if is_valid:
+                            valid_streams += 1
+                        results.append((current_extinf, url, is_valid))
+                        current_extinf = None
+
+            if valid_streams == 0:
+                self.print_colored(f"No valid streams found in {os.path.basename(input_path)}", Fore.YELLOW)
                 return
 
-            # Store current streams for statistics
-            self.current_streams = streams
-            
-            # Use a temporary file for writing results
-            temp_file = f"{input_path}.temp"
-            
-            # Process streams in parallel
-            self.print_colored(f"Found {len(streams)} streams to check", Fore.GREEN)
-            results = self.process_streams_parallel(streams)
-            
-            # Count valid streams
-            valid_streams = sum(1 for _, _, is_valid in results if is_valid)
-            
-            if valid_streams == 0:
-                self.print_colored(f"No valid streams found, deleting {os.path.basename(input_path)}", Fore.YELLOW)
-                try:
-                    os.remove(input_path)
-                except Exception as e:
-                    self.print_colored(f"Error deleting file: {e}", Fore.RED)
-                return
-            
             # Write results to temporary file
-            try:
-                with open(temp_file, 'w', encoding='utf-8') as out:
-                    out.write('#EXTM3U\n')
-                    for extinf, url, is_valid in results:
-                        if is_valid:
-                            if extinf:
-                                out.write(f"{extinf}\n")
-                            out.write(f"{url}\n")
-                
-                # Replace original file with the new one
-                os.replace(temp_file, input_path)
-                
-                self.print_colored(
-                    f"Updated {os.path.basename(input_path)} with {valid_streams} working streams",
-                    Fore.CYAN
-                )
-            except Exception as e:
-                self.print_colored(f"Error saving file: {e}", Fore.RED)
-                if os.path.exists(temp_file):
-                    try:
-                        os.remove(temp_file)
-                    except:
-                        pass
+            with open(temp_file, 'w', encoding='utf-8') as out:
+                out.write('#EXTM3U\n')
+                for extinf, url, is_valid in results:
+                    if is_valid:
+                        if extinf:
+                            out.write(f"{extinf}\n")
+                        out.write(f"{url}\n")
+
+            # Replace original file with the new one
+            os.replace(temp_file, input_path)
+            self.print_colored(
+                f"Updated {os.path.basename(input_path)} with {valid_streams} working streams",
+                Fore.CYAN
+            )
+
+        except Exception as e:
+            self.print_colored(f"Error processing file: {str(e)}", Fore.RED)
+            if os.path.exists(temp_file):
+                try:
+                    os.remove(temp_file)
+                except:
+                    pass
 
     def process_directory(self, directory_path: str):
         """Process all M3U files in a directory one by one."""
@@ -237,7 +202,6 @@ class IPTVChecker:
             self.print_colored(f"Directory not found: {directory_path}", Fore.RED)
             return
 
-        # Get all M3U files
         m3u_files = []
         for file in os.listdir(directory_path):
             if file.lower().endswith(('.m3u', '.m3u8')):
@@ -248,75 +212,39 @@ class IPTVChecker:
             return
 
         total_files = len(m3u_files)
-        processed_files = 0
-        total_streams = 0
-        total_online = 0
-        
-        self.print_colored(f"\nFound {total_files} M3U files to process", Fore.GREEN)
-        
-        # Process each file sequentially
-        for m3u_file in sorted(m3u_files):
-            processed_files += 1
-            file_name = os.path.basename(m3u_file)
-            
-            # Clear line and show progress
-            self.print_colored(f"\n[{processed_files}/{total_files}] Processing: {file_name}", Fore.CYAN)
-            print("-" * 50)
-            
-            # Reset counters for this file
-            prev_online = self.online_count
-            
-            # Process the current file
+        for i, m3u_file in enumerate(m3u_files, 1):
+            self.print_colored(f"\nProcessing file {i}/{total_files}: {os.path.basename(m3u_file)}", Fore.CYAN)
             self.process_m3u(m3u_file)
-            
-            # Update statistics
-            file_online = self.online_count - prev_online
-            if hasattr(self, 'current_streams'):
-                total_streams += len(self.current_streams)
-                total_online += file_online
-                
-            print("-" * 50)
-            
-        # Show final statistics
-        self.print_colored("\nDirectory processing complete!", Fore.GREEN)
-        self.print_colored(f"Total files processed: {processed_files}", Fore.GREEN)
-        self.print_colored(f"Total streams checked: {total_streams}", Fore.GREEN)
-        self.print_colored(f"Total working streams: {total_online}", Fore.GREEN)
 
     def main(self):
         """Main entry point."""
-        print(f"IPTV-Check Tool {self.VERSION}")
-        print("-------------------------------------")
-        print("http://github.com/peterpt")
-        print("-------------------------------------")
-        
-        if len(sys.argv) != 2:
-            self.print_colored("Usage: python iptv_check.py <m3u_file_or_directory>", Fore.YELLOW)
-            sys.exit(1)
-            
-        input_path = sys.argv[1]
-        
-        print("NOTE")
-        print("This tool will check each stream for 3 seconds to verify")
-        print("if every link in m3u file is valid, so, it may take a while")
-        print("-------------------------------------")
-        
+        self.print_colored(f"IPTV Stream Checker v{self.VERSION}", Fore.CYAN)
+        self.print_colored("=" * 50, Fore.CYAN)
+
+        # Check dependencies
         self.check_dependencies()
+
+        # Check internet connection
         if not self.check_internet():
-            sys.exit(1)
-            
+            return
+
+        # Clean temp files
         self.clean_temp_files()
-        
-        # Initialize counters
-        self.online_count = 0
-        self.current_streams = []
-        
-        # Process directory or single file
-        if os.path.isdir(input_path):
-            self.process_directory(input_path)
+
+        if len(sys.argv) < 2:
+            self.print_colored("Usage:", Fore.YELLOW)
+            self.print_colored("  Single file:    iptv_check.py <m3u_file>", Fore.CYAN)
+            self.print_colored("  Directory:      iptv_check.py -d <directory>", Fore.CYAN)
+            return
+
+        if sys.argv[1] == "-d":
+            if len(sys.argv) < 3:
+                self.print_colored("Error: Directory path required!", Fore.RED)
+                return
+            self.process_directory(sys.argv[2])
         else:
-            self.process_m3u(input_path)
-                
+            self.process_m3u(sys.argv[1])
+
 if __name__ == "__main__":
     checker = IPTVChecker()
     checker.main()
