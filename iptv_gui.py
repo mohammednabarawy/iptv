@@ -407,11 +407,31 @@ class IPTVGeneratorGUI(QMainWindow):
                 response.raise_for_status()
                 
                 # Handle gzipped content
-                if response.headers.get('content-type') == 'application/x-gzip' or \
-                   epg_source['guide_url'].endswith('.gz'):
-                    xml_content = gzip.decompress(response.content).decode('utf-8')
-                else:
-                    xml_content = response.content.decode('utf-8')
+                def decode_content(content, url):
+                    """Decode content based on the URL and content type"""
+                    import gzip
+                    from io import BytesIO
+                    
+                    try:
+                        # Check if the content is gzipped
+                        if url.endswith('.gz'):
+                            try:
+                                # Use BytesIO to handle the gzipped content in memory
+                                with BytesIO(content) as buf:
+                                    with gzip.GzipFile(fileobj=buf) as gz:
+                                        content = gz.read()
+                            except gzip.BadGzipFile:
+                                logger.warning(f"Content from {url} appears to be not properly gzipped, trying direct decode")
+                        
+                        # Try UTF-8 decoding first
+                        return content.decode('utf-8', errors='ignore')
+                        
+                    except Exception as e:
+                        logger.error(f"Error decoding content from {url}: {str(e)}")
+                        raise
+                
+                content = response.content
+                xml_content = decode_content(content, epg_source['guide_url'])
                 
                 # Parse XML
                 root = ET.fromstring(xml_content)
@@ -611,6 +631,7 @@ class IPTVGeneratorGUI(QMainWindow):
             
             # After channels are loaded, load EPG
             self.progress_signal.emit("Loading EPG data...")
+            from epg_fetcher_optimized import EPGFetcher
             self.load_epg()
             
         except Exception as e:
@@ -618,121 +639,31 @@ class IPTVGeneratorGUI(QMainWindow):
             self.error_signal.emit(str(e))
 
     def load_epg(self):
-        """Load EPG data and update channel information"""
+        """Load EPG data from various sources"""
         try:
-            logger.info("Loading EPG data")
-            from iptv_generator import EPGFetcher
-            import gzip
-            import io
+            logger.info("Loading EPG data...")
+            epg_fetcher = EPGFetcher(max_workers=10)
             
-            epg_fetcher = EPGFetcher()
-            epg_data = {}
-            
-            def decompress_content(content, url):
-                if url.endswith('.gz'):
-                    try:
-                        return gzip.decompress(content).decode('utf-8')
-                    except Exception as e:
-                        logger.error(f"Failed to decompress content from {url}: {str(e)}", exc_info=True)
-                        return content.decode('utf-8', errors='ignore')
-                return content.decode('utf-8', errors='ignore')
-            
-            # Load EPG from each source
-            for epg_source in EPGFetcher.EPG_SOURCES:
-                try:
-                    logger.info(f"Loading EPG from {epg_source['name']}")
-                    response = epg_fetcher.session.get(epg_source['guide_url'], stream=True)
-                    response.raise_for_status()
-                    
-                    # Get content and decompress if needed
-                    content = decompress_content(response.content, epg_source['guide_url'])
-                    
-                    if not content:
-                        continue
-                    
-                    # Parse EPG XML content
-                    from xml.etree import ElementTree as ET
-                    try:
-                        root = ET.fromstring(content)
-                        source_channels = 0
-                        
-                        # First pass: collect all channel IDs and their variations
-                        for channel in root.findall('.//channel'):
-                            channel_id = channel.get('id')
-                            if channel_id:
-                                epg_data[channel_id] = True
-                                epg_data[channel_id.lower()] = True
-                                epg_data[channel_id.replace(' ', '')] = True
-                                
-                                # Add common variations of channel IDs
-                                if '.' in channel_id:
-                                    base_id = channel_id.split('.')[0]
-                                    epg_data[base_id] = True
-                                    epg_data[base_id.lower()] = True
-                                source_channels += 1
-                        
-                        # Second pass: collect programme channel IDs
-                        for programme in root.findall('.//programme'):
-                            channel = programme.get('channel')
-                            if channel and channel not in epg_data:
-                                epg_data[channel] = True
-                                epg_data[channel.lower()] = True
-                                epg_data[channel.replace(' ', '')] = True
-                                source_channels += 1
-                                
-                        logger.info(f"Loaded {source_channels} channel EPG data from {epg_source['name']}")
-                                
-                    except ET.ParseError as e:
-                        logger.error(f"Error parsing EPG XML from {epg_source['name']}: {str(e)}", exc_info=True)
-                        continue
-                            
-                except Exception as e:
-                    logger.error(f"Error loading EPG source {epg_source['name']}: {str(e)}", exc_info=True)
-                    continue
+            # Fetch EPG data with optimized fetcher
+            self.epg_data = epg_fetcher.fetch_epg()
             
             # Update channel EPG status
-            self.epg_data = epg_data
             epg_count = 0
-            
-            # Helper function to check if a channel has EPG
-            def has_epg_match(channel):
-                # Direct match
-                if channel.tvg_id in epg_data:
-                    return True
-                    
-                # Case-insensitive match
-                if channel.tvg_id.lower() in epg_data:
-                    return True
-                    
-                # No-space match
-                if channel.tvg_id.replace(' ', '') in epg_data:
-                    return True
-                    
-                # Base ID match (without extension)
-                if '.' in channel.tvg_id:
-                    base_id = channel.tvg_id.split('.')[0]
-                    if base_id in epg_data or base_id.lower() in epg_data:
-                        return True
-                        
-                # Name-based match
-                name_id = channel.name.lower().replace(' ', '')
-                if name_id in epg_data:
-                    return True
-                    
-                return False
-            
-            # Update EPG status for all channels
             for channel in self.all_channels:
-                channel.has_epg = has_epg_match(channel)
+                channel_id = channel.tvg_id.replace(' ', '')
+                channel.has_epg = (
+                    channel_id in self.epg_data or
+                    channel_id.lower() in self.epg_data or
+                    (channel.name.lower().replace(' ', '') in self.epg_data)
+                )
                 if channel.has_epg:
                     epg_count += 1
             
             logger.info(f"EPG data loaded for {epg_count} channels ({(epg_count/len(self.all_channels)*100):.1f}%)")
-            return epg_data
+            return self.epg_data
             
         except Exception as e:
-            logger.error("EPG loading error", exc_info=True)
-            self.error_signal.emit(f"EPG loading error: {str(e)}")
+            logger.error(f"Error in load_epg: {str(e)}")
             return {}
 
     def on_channels_loaded(self, channels):
@@ -863,13 +794,27 @@ class IPTVGeneratorGUI(QMainWindow):
             epg_data = {}
             
             def decode_content(content, url):
-                if url.endswith('.gz'):
-                    try:
-                        return gzip.decompress(content).decode('utf-8')
-                    except Exception as e:
-                        logger.error(f"Failed to decompress content from {url}: {str(e)}", exc_info=True)
-                        return content.decode('utf-8', errors='ignore')
-                return content.decode('utf-8', errors='ignore')
+                """Decode content based on the URL and content type"""
+                import gzip
+                from io import BytesIO
+                
+                try:
+                    # Check if the content is gzipped
+                    if url.endswith('.gz'):
+                        try:
+                            # Use BytesIO to handle the gzipped content in memory
+                            with BytesIO(content) as buf:
+                                with gzip.GzipFile(fileobj=buf) as gz:
+                                    content = gz.read()
+                        except gzip.BadGzipFile:
+                            logger.warning(f"Content from {url} appears to be not properly gzipped, trying direct decode")
+                    
+                    # Try UTF-8 decoding first
+                    return content.decode('utf-8', errors='ignore')
+                    
+                except Exception as e:
+                    logger.error(f"Error decoding content from {url}: {str(e)}")
+                    raise
             
             # Process each EPG source
             for epg_source in EPGFetcher.EPG_SOURCES:
