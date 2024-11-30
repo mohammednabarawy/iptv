@@ -95,15 +95,20 @@ class WorkerThread(QThread):
         self.args = args
         self.kwargs = kwargs
         self.signals = WorkerSignals()
+        self.is_stopped = False
         
         logger.debug(f"Created worker thread for function: {fn.__name__}")
 
+    def stop(self):
+        """Stop the worker thread gracefully"""
+        logger.debug("Stopping worker thread")
+        self.is_stopped = True
+    
     def run(self):
+        """Run the worker thread"""
         try:
-            logger.debug(f"Starting worker thread: {self.fn.__name__}")
+            logger.debug("Starting worker thread")
             result = self.fn(*self.args, **self.kwargs)
-            logger.debug(f"Worker thread completed: {self.fn.__name__}")
-            # Emit the result signal before finished
             self.signals.result.emit(result)
         except Exception as e:
             logger.error(f"Error in worker thread: {str(e)}", exc_info=True)
@@ -131,6 +136,7 @@ class IPTVGeneratorGUI(QMainWindow):
             self.epg_data = {}
             self.channel_map = {}
             self.is_loading = False
+            self.worker = None
             
             # Create data manager
             self.data_manager = DataManager()
@@ -303,6 +309,12 @@ class IPTVGeneratorGUI(QMainWindow):
             self.check_button.setIcon(qta.icon('fa5s.heartbeat'))
             self.check_button.setEnabled(False)
             buttons_layout.addWidget(self.check_button)
+            
+            self.stop_button = QPushButton("Stop Checking")
+            self.stop_button.setIcon(qta.icon('fa5s.stop-circle'))
+            self.stop_button.setEnabled(False)
+            self.stop_button.clicked.connect(self.stop_checking)
+            buttons_layout.addWidget(self.stop_button)
             
             self.generate_button = QPushButton("Generate Selected")
             self.generate_button.setIcon(qta.icon('fa5s.play-circle'))
@@ -1242,19 +1254,22 @@ class IPTVGeneratorGUI(QMainWindow):
             self.progress_bar.setMaximum(len(selected_channels))
             self.progress_bar.setValue(0)
             
-            # Disable buttons during check
-            logger.debug("Disabling buttons")
+            # Update button states
+            logger.debug("Updating button states")
             self.check_button.setEnabled(False)
             self.generate_button.setEnabled(False)
             self.load_button.setEnabled(False)
+            self.stop_button.setEnabled(True)
             
             def on_worker_finished():
                 logger.debug("Worker finished, re-enabling buttons")
                 self.check_button.setEnabled(True)
                 self.generate_button.setEnabled(True)
                 self.load_button.setEnabled(True)
+                self.stop_button.setEnabled(False)
                 self.progress_bar.setValue(self.progress_bar.maximum())
                 self.log_message("Channel check completed")
+                self.save_data()  # Save the results
             
             def on_worker_error(error_msg):
                 logger.error(f"Worker error: {error_msg}")
@@ -1283,6 +1298,23 @@ class IPTVGeneratorGUI(QMainWindow):
             self.check_button.setEnabled(True)
             self.generate_button.setEnabled(True)
             self.load_button.setEnabled(True)
+            self.stop_button.setEnabled(False)
+
+    def stop_checking(self):
+        """Stop the channel checking process"""
+        try:
+            if self.worker and self.worker.isRunning():
+                logger.info("Stopping channel check")
+                self.worker.stop()
+                self.log_message("Stopping channel check...")
+                self.stop_button.setEnabled(False)
+                
+                # Save current progress
+                self.save_data()
+                
+        except Exception as e:
+            logger.error(f"Error stopping channel check: {str(e)}", exc_info=True)
+            self.log_message(f"Error stopping channel check: {str(e)}")
 
     def check_channels(self, channels):
         """Check if channels are working"""
@@ -1299,9 +1331,6 @@ class IPTVGeneratorGUI(QMainWindow):
                 backoff_factor=0.1,
                 status_forcelist=[500, 502, 503, 504]
             )
-            
-            # Increase max pool size for concurrent connections
-            logger.debug("Setting up connection pool")
             adapter = HTTPAdapter(
                 max_retries=retries,
                 pool_connections=50,
@@ -1326,6 +1355,12 @@ class IPTVGeneratorGUI(QMainWindow):
                 
                 completed = 0
                 for future in as_completed(future_to_channel):
+                    # Check if stopping was requested
+                    if hasattr(self, 'worker') and self.worker.is_stopped:
+                        logger.info("Channel check stopped by user")
+                        executor.shutdown(wait=False)
+                        break
+                        
                     channel = future_to_channel[future]
                     completed += 1
                     
@@ -1358,47 +1393,6 @@ class IPTVGeneratorGUI(QMainWindow):
             logger.error(f"Error in check_channels: {str(e)}", exc_info=True)
             raise
             
-    def _check_single_channel(self, session, channel):
-        """Check if a single channel is working"""
-        try:
-            logger.debug(f"Checking channel: {channel.name}")
-            
-            # Try HEAD request first
-            try:
-                response = session.head(
-                    channel.url,
-                    timeout=5,
-                    allow_redirects=True,
-                    verify=False
-                )
-            except requests.exceptions.RequestException:
-                # Fallback to GET request if HEAD fails
-                response = session.get(
-                    channel.url,
-                    timeout=5,
-                    stream=True,
-                    verify=False
-                )
-                
-                # Read a small chunk to verify stream
-                next(response.iter_content(chunk_size=1024), None)
-            
-            # Check content type
-            content_type = response.headers.get('content-type', '').lower()
-            valid_types = ['video/', 'application/x-mpegurl', 'application/vnd.apple.mpegurl']
-            
-            is_working = (
-                response.status_code == 200 and
-                any(t in content_type for t in valid_types)
-            )
-            
-            logger.debug(f"Channel {channel.name} status: {is_working}")
-            return is_working
-            
-        except Exception as e:
-            logger.debug(f"Channel {channel.name} check failed: {str(e)}")
-            return False
-
     @pyqtSlot(tuple)
     def update_check_progress(self, progress_data):
         """Update progress bar and channel status during check"""
