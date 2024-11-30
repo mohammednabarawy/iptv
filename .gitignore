@@ -58,3 +58,9 @@ logs/
 .Trashes
 ehthumbs.db
 Thumbs.db
+
+# Data files
+data/*.json
+data/channels.json
+data/epg_data.json
+data/metadata.json
