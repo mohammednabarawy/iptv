@@ -6,4 +6,3 @@ python-vlc>=3.0.21203
 pyqt5
 qtawesome
 beautifulsoup4>=4.13.0
-aiohttp
