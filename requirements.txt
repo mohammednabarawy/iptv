@@ -3,3 +3,7 @@ tqdm>=4.65.0
 colorama>=0.4.6
 m3u8
 python-vlc>=3.0.21203
+pyqt5
+qtawesome
+beautifulsoup4>=4.13.0
+aiohttp

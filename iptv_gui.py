@@ -11,7 +11,7 @@ from PyQt5.QtWidgets import (QApplication, QMainWindow, QWidget, QVBoxLayout,
                            QTableWidgetItem, QHeaderView, QLineEdit, QComboBox, 
                            QCheckBox, QGroupBox)
 from PyQt5.QtCore import (Qt, QThread, pyqtSignal, QMetaObject, Q_ARG, pyqtSlot,
-                         QObject)
+                         QObject, QRunnable, QThreadPool, QEventLoop)
 from PyQt5.QtGui import QIcon, QColor
 import qtawesome as qta
 import iptv_generator
@@ -32,6 +32,8 @@ from urllib3.util.retry import Retry
 from requests.adapters import HTTPAdapter
 from typing import Dict, Optional
 from concurrent.futures import ThreadPoolExecutor, as_completed
+from config import ConfigManager
+from PyQt5.QtCore import QThreadPool
 
 # Set up logger
 logger = setup_logger()
@@ -92,34 +94,204 @@ class WorkerSignals(QObject):
     finished = pyqtSignal()
     result = pyqtSignal(object)
 
-class WorkerThread(QThread):
-    """Worker thread for running background tasks"""
+class ChannelCheckRunnable(QRunnable):
+    """
+    Runnable class for channel checking to work with QThreadPool
+    """
     def __init__(self, fn, *args, **kwargs):
-        super(WorkerThread, self).__init__()
+        """
+        Initialize the runnable with a function and its arguments
+        
+        :param fn: Function to run
+        :param args: Positional arguments
+        :param kwargs: Keyword arguments
+        """
+        super().__init__()
         self.fn = fn
         self.args = args
         self.kwargs = kwargs
         self.signals = WorkerSignals()
-        self.is_stopped = False
-        
-        logger.debug(f"Created worker thread for function: {fn.__name__}")
-
-    def stop(self):
-        """Stop the worker thread gracefully"""
-        logger.debug("Stopping worker thread")
-        self.is_stopped = True
     
+    @pyqtSlot()
     def run(self):
-        """Run the worker thread"""
+        """
+        Run the function and handle signals
+        """
         try:
-            logger.debug("Starting worker thread")
+            # Run the function
             result = self.fn(*self.args, **self.kwargs)
+            
+            # Emit result signal
             self.signals.result.emit(result)
-        except Exception as e:
-            logger.error(f"Error in worker thread: {str(e)}", exc_info=True)
-            self.signals.error.emit(str(e))
-        finally:
+            
+            # Emit finished signal
             self.signals.finished.emit()
+        
+        except Exception as e:
+            # Emit error signal if something goes wrong
+            self.signals.error.emit(str(e))
+
+class DataLoadWorker(QObject):
+    """
+    Worker class for asynchronous data loading from database
+    """
+    progress = pyqtSignal(int)  # Progress percentage (0-100)
+    channels_loaded = pyqtSignal(object)  # Emits loaded channels
+    epg_loaded = pyqtSignal(object)  # Emits loaded EPG data
+    finished = pyqtSignal()  # Emitted when all loading is complete
+    error = pyqtSignal(str)  # Emitted on error
+    
+    def __init__(self, data_manager):
+        super().__init__()
+        self.data_manager = data_manager
+    
+    @pyqtSlot()
+    def run(self):
+        """
+        Load data asynchronously
+        """
+        try:
+            # Load channels (60% of progress)
+            self.progress.emit(5)  # Starting
+            channels_data = self.data_manager.load_channels()
+            self.progress.emit(60)  # Channels loaded
+            self.channels_loaded.emit(channels_data)
+            
+            # Load EPG data (40% of remaining progress)
+            self.progress.emit(70)  # Starting EPG load
+            epg_data = self.data_manager.load_epg_data()
+            self.progress.emit(95)  # EPG loaded
+            self.epg_loaded.emit(epg_data)
+            
+            # All done
+            self.progress.emit(100)
+            self.finished.emit()
+            
+        except Exception as e:
+            self.error.emit(str(e))
+            self.finished.emit()
+
+
+class FastChannelChecker(QObject):
+    """
+    Optimized channel checker using concurrent requests
+    with improved performance and cancellation support
+    """
+    progress = pyqtSignal(tuple)  # Emits (current_progress, total_progress, channel)
+    finished = pyqtSignal(list)
+    error = pyqtSignal(str)
+    
+    def __init__(self, channels, max_workers=20, timeout=3):
+        super().__init__()
+        self.channels = channels
+        self.max_workers = max_workers
+        self.timeout = timeout
+        self.is_stopped = False
+        self.executor = None
+    
+    @pyqtSlot()
+    def run(self):
+        """
+        Perform fast, concurrent channel checking
+        Run this method in a separate thread
+        """
+        try:
+            # Create a thread-safe session
+            session = requests.Session()
+            adapter = HTTPAdapter(
+                pool_connections=self.max_workers, 
+                pool_maxsize=self.max_workers,
+                max_retries=Retry(
+                    total=1,  # Minimal retries
+                    backoff_factor=0.1,
+                    status_forcelist=[500, 502, 503, 504]
+                )
+            )
+            session.mount('http://', adapter)
+            session.mount('https://', adapter)
+            
+            # Use concurrent futures for fast checking
+            checked_channels = []
+            
+            # Use a context manager to ensure proper thread management
+            with concurrent.futures.ThreadPoolExecutor(max_workers=self.max_workers) as executor:
+                self.executor = executor  # Store reference for potential cancellation
+                
+                # Create futures for each channel
+                future_to_channel = {
+                    executor.submit(self._check_channel, session, channel): channel 
+                    for channel in self.channels
+                }
+                
+                # Process results as they complete
+                for i, future in enumerate(concurrent.futures.as_completed(future_to_channel), 1):
+                    # Check if stopping was requested
+                    if self.is_stopped:
+                        executor.shutdown(wait=False)
+                        break
+                    
+                    channel = future_to_channel[future]
+                    try:
+                        checked_channel = future.result()
+                        checked_channels.append(checked_channel)
+                        
+                        # Emit progress 
+                        self.progress.emit((i, len(self.channels), checked_channel))
+                    except Exception as e:
+                        # Log individual channel check failures
+                        print(f"Channel check failed: {channel.name} - {str(e)}")
+            
+            # Emit final results if not stopped
+            if not self.is_stopped:
+                self.finished.emit(checked_channels)
+        
+        except Exception as e:
+            # Emit error if not stopped
+            if not self.is_stopped:
+                self.error.emit(f"Channel checking failed: {str(e)}")
+        finally:
+            # Ensure thread is terminated
+            self.thread().quit()
+    
+    def _check_channel(self, session, channel):
+        """
+        Fast, lightweight channel checking method
+        """
+        try:
+            # Use HEAD request for minimal overhead
+            response = session.head(
+                channel.url, 
+                timeout=self.timeout, 
+                allow_redirects=True,
+                verify=False  # Consider making SSL verification configurable
+            )
+            
+            # Determine channel status
+            channel.is_working = (
+                response.status_code == 200 and 
+                any(t in response.headers.get('content-type', '').lower() 
+                    for t in ['video/', 'application/x-mpegurl', 'application/vnd.apple.mpegurl'])
+            )
+            
+            return channel
+        
+        except (requests.RequestException, Exception):
+            # Mark as not working on any request error
+            channel.is_working = False
+            return channel
+    
+    def stop(self):
+        """
+        Signal to stop the checking process
+        """
+        self.is_stopped = True
+        
+        # Attempt to cancel any running futures
+        if self.executor:
+            try:
+                self.executor.shutdown(wait=False)
+            except Exception:
+                pass
 
 class IPTVGeneratorGUI(QMainWindow):
     progress_signal = pyqtSignal(object)  # For progress updates
@@ -131,9 +303,10 @@ class IPTVGeneratorGUI(QMainWindow):
         super().__init__()
         
         try:
-            logger.info("Initializing main window")
+            # Initialize configuration BEFORE UI
+            self.config = ConfigManager()
             
-            # Initialize UI
+            # Initialize UI first
             self.init_ui()
             
             # Initialize data
@@ -142,6 +315,7 @@ class IPTVGeneratorGUI(QMainWindow):
             self.channel_map = {}
             self.is_loading = False
             self.worker = None
+            self.current_batch_index = 0
             
             # Create data manager
             self.data_manager = DataManager()
@@ -159,6 +333,11 @@ class IPTVGeneratorGUI(QMainWindow):
             self.check_button.clicked.connect(self.check_selected_channels)
             self.generate_button.clicked.connect(self.generate)
             
+            # Apply initial theme from config
+            if self.config.get('ui.theme') == 'dark':
+                self.theme_toggle.setChecked(True)
+                self.toggle_theme(Qt.Checked)
+            
             # Load saved data
             self.load_saved_data()
             
@@ -169,58 +348,56 @@ class IPTVGeneratorGUI(QMainWindow):
     def init_ui(self):
         """Initialize the user interface"""
         try:
-            self.setWindowTitle("IPTV Channel Manager")
-            self.setMinimumSize(1200, 800)
-            self.setWindowIcon(qta.icon('fa5s.tv'))
+            logger.info("Initializing UI")
             
-            # Create main widget and layout
+            # Set window properties
+            self.setWindowTitle('IPTV Channel Generator')
+            self.resize(1200, 800)
+            
+            # Create main layout
             main_widget = QWidget()
+            main_layout = QVBoxLayout()
+            main_widget.setLayout(main_layout)
             self.setCentralWidget(main_widget)
-            layout = QVBoxLayout(main_widget)
             
-            # Create filter options group
-            filter_group = QGroupBox("Filter Options")
+            # Create top layout for filters and buttons
+            top_layout = QHBoxLayout()
+            main_layout.addLayout(top_layout)
+            
+            # Filters group
+            filter_group = QGroupBox("Filters")
             filter_layout = QHBoxLayout()
             
-            # Search filter
-            search_layout = QHBoxLayout()
-            search_label = QLabel()
-            search_label.setPixmap(qta.icon('fa5s.search').pixmap(16, 16))
-            search_layout.addWidget(search_label)
+            # Search input
+            search_label = QLabel("Search:")
             self.search_input = QLineEdit()
-            self.search_input.setPlaceholderText("Search channels...")
-            search_layout.addWidget(self.search_input)
-            filter_layout.addLayout(search_layout)
+            filter_layout.addWidget(search_label)
+            filter_layout.addWidget(self.search_input)
             
-            # Category filter
-            category_layout = QHBoxLayout()
-            category_label = QLabel()
-            category_label.setPixmap(qta.icon('fa5s.tags').pixmap(16, 16))
-            category_layout.addWidget(category_label)
+            # Category combo
+            category_label = QLabel("Category:")
             self.category_combo = QComboBox()
-            self.category_combo.addItem('All')  # Default to show all categories
-            self.category_combo.addItems(['Movies', 'Sports', 'News', 'Entertainment', 'Music'])
-            category_layout.addWidget(self.category_combo)
-            filter_layout.addLayout(category_layout)
+            filter_layout.addWidget(category_label)
+            filter_layout.addWidget(self.category_combo)
             
-            # Country filter
-            country_layout = QHBoxLayout()
-            country_label = QLabel()
-            country_label.setPixmap(qta.icon('fa5s.globe').pixmap(16, 16))
-            country_layout.addWidget(country_label)
+            # Country input
+            country_label = QLabel("Country:")
             self.country_edit = QLineEdit()
-            self.country_edit.setPlaceholderText("Enter country...")
-            country_layout.addWidget(self.country_edit)
-            filter_layout.addLayout(country_layout)
+            filter_layout.addWidget(country_label)
+            filter_layout.addWidget(self.country_edit)
             
-            # Official only filter
-            self.official_only = QCheckBox("Official iptv.org only")
-            self.official_only.setIcon(qta.icon('fa5s.check-circle'))
+            # Official channels only
+            self.official_only = QCheckBox("Official Only")
             self.official_only.setChecked(False)  # Default to show all channels
             filter_layout.addWidget(self.official_only)
             
+            # Theme toggle
+            self.theme_toggle = QCheckBox("Dark Mode")
+            self.theme_toggle.stateChanged.connect(self.toggle_theme)
+            filter_layout.addWidget(self.theme_toggle)
+            
             filter_group.setLayout(filter_layout)
-            layout.addWidget(filter_group)
+            top_layout.addWidget(filter_group)
             
             # Create channels table
             self.channels_table = QTableWidget()
@@ -246,7 +423,7 @@ class IPTVGeneratorGUI(QMainWindow):
             # Connect selection signal
             self.channels_table.itemChanged.connect(self.on_selection_changed)
             
-            layout.addWidget(self.channels_table)
+            main_layout.addWidget(self.channels_table)
             
             # Selection buttons and count
             selection_layout = QHBoxLayout()
@@ -266,7 +443,7 @@ class IPTVGeneratorGUI(QMainWindow):
             self.deselect_all_button.setIcon(qta.icon('fa5s.square'))
             selection_layout.addWidget(self.deselect_all_button)
             
-            layout.addLayout(selection_layout)
+            main_layout.addLayout(selection_layout)
             
             # Output Options Group
             output_group = QGroupBox("Output Options")
@@ -301,7 +478,7 @@ class IPTVGeneratorGUI(QMainWindow):
             output_layout.addLayout(epg_layout)
             
             output_group.setLayout(output_layout)
-            layout.addWidget(output_group)
+            main_layout.addWidget(output_group)
             
             # Action buttons
             buttons_layout = QHBoxLayout()
@@ -326,17 +503,17 @@ class IPTVGeneratorGUI(QMainWindow):
             self.generate_button.setEnabled(False)
             buttons_layout.addWidget(self.generate_button)
             
-            layout.addLayout(buttons_layout)
+            main_layout.addLayout(buttons_layout)
             
             # Log output
             self.log_output = QTextEdit()
             self.log_output.setReadOnly(True)
             self.log_output.setMaximumHeight(150)
-            layout.addWidget(self.log_output)
+            main_layout.addWidget(self.log_output)
             
             # Progress bar
             self.progress_bar = QProgressBar()
-            layout.addWidget(self.progress_bar)
+            main_layout.addWidget(self.progress_bar)
             
             # Connect progress signals
             self.progress_signal.connect(self.update_progress)
@@ -347,6 +524,35 @@ class IPTVGeneratorGUI(QMainWindow):
         except Exception as e:
             logger.error(f"Error initializing UI: {str(e)}", exc_info=True)
             raise
+
+    def toggle_theme(self, state):
+        """Toggle between light and dark themes"""
+        try:
+            if state == Qt.Checked:
+                # Dark theme
+                dark_palette = QPalette()
+                dark_palette.setColor(QPalette.Window, QColor(53, 53, 53))
+                dark_palette.setColor(QPalette.WindowText, Qt.white)
+                dark_palette.setColor(QPalette.Base, QColor(25, 25, 25))
+                dark_palette.setColor(QPalette.AlternateBase, QColor(53, 53, 53))
+                dark_palette.setColor(QPalette.ToolTipBase, Qt.white)
+                dark_palette.setColor(QPalette.ToolTipText, Qt.white)
+                dark_palette.setColor(QPalette.Text, Qt.white)
+                dark_palette.setColor(QPalette.Button, QColor(53, 53, 53))
+                dark_palette.setColor(QPalette.ButtonText, Qt.white)
+                dark_palette.setColor(QPalette.BrightText, Qt.red)
+                dark_palette.setColor(QPalette.Link, QColor(42, 130, 218))
+                dark_palette.setColor(QPalette.Highlight, QColor(42, 130, 218))
+                dark_palette.setColor(QPalette.HighlightedText, Qt.black)
+                
+                QApplication.setPalette(dark_palette)
+                QApplication.setStyle("Fusion")
+            else:
+                # Light theme
+                QApplication.setPalette(QApplication.style().standardPalette())
+                QApplication.setStyle("Windows")
+        except Exception as e:
+            logger.error(f"Error toggling theme: {e}", exc_info=True)
 
     def load_channels(self):
         """Load channels from M3U files"""
@@ -462,46 +668,94 @@ class IPTVGeneratorGUI(QMainWindow):
             logger.error(f"Error in load_epg for {epg_source['name']}: {str(e)}", exc_info=True)
 
     def load_saved_data(self):
-        """Load saved channels and EPG data"""
+        """Load saved channels and EPG data with optimized async loading"""
         try:
             logger.info("Loading saved data")
+            self.progress_bar.setMaximum(100)
+            self.progress_bar.setValue(0)
             
-            # Load channels with timeout
-            start_time = time.time()
-            channels_data = self.data_manager.load_channels()
+            # Create a worker thread for loading data
+            # This moves the loading process off the main UI thread
+            self.load_data_thread = QThread()
+            self.load_data_worker = DataLoadWorker(self.data_manager)
+            self.load_data_worker.moveToThread(self.load_data_thread)
+            
+            # Connect signals
+            self.load_data_thread.started.connect(self.load_data_worker.run)
+            self.load_data_worker.channels_loaded.connect(self.on_channels_loaded_from_db)
+            self.load_data_worker.epg_loaded.connect(self.on_epg_loaded_from_db)
+            self.load_data_worker.progress.connect(self.update_load_progress)
+            self.load_data_worker.finished.connect(self.load_data_thread.quit)
+            self.load_data_worker.finished.connect(self.load_data_worker.deleteLater)
+            self.load_data_thread.finished.connect(self.load_data_thread.deleteLater)
+            
+            # Start the worker thread
+            self.load_data_thread.start()
+            
+        except Exception as e:
+            logger.error("Error loading saved data", exc_info=True)
+            self.log_message(f"Error loading saved data: {str(e)}")
+            self.progress_bar.setValue(0)
+    
+    def update_load_progress(self, progress):
+        """Update progress bar during data loading"""
+        self.progress_bar.setValue(progress)
+    
+    def on_channels_loaded_from_db(self, channels_data):
+        """Handle channels loaded from database"""
+        try:
             if channels_data:
+                # Process channels in batches to avoid UI freezing
                 self.all_channels = []
-                for channel_dict in channels_data:
-                    channel = Channel(
-                        name=channel_dict.get('name', ''),
-                        url=channel_dict.get('url', ''),
-                        group=channel_dict.get('group', ''),
-                        tvg_id=channel_dict.get('tvg_id', ''),
-                        tvg_name=channel_dict.get('tvg_name', ''),
-                        tvg_logo=channel_dict.get('tvg_logo', ''),
-                        has_epg=channel_dict.get('has_epg', False),
-                        is_working=channel_dict.get('is_working', None)
-                    )
-                    self.all_channels.append(channel)
-                logger.info(f"Loaded {len(self.all_channels)} channels in {time.time() - start_time:.2f} seconds")
+                batch_size = 10000
+                
+                # Calculate total batches for progress updates
+                total_batches = (len(channels_data) + batch_size - 1) // batch_size
+                
+                for batch_index in range(total_batches):
+                    # Get current batch
+                    start_idx = batch_index * batch_size
+                    end_idx = min(start_idx + batch_size, len(channels_data))
+                    batch = channels_data[start_idx:end_idx]
+                    
+                    # Process batch
+                    batch_channels = [Channel(
+                        name=ch.get('name', ''),
+                        url=ch.get('url', ''),
+                        group=ch.get('group', ''),
+                        tvg_id=ch.get('tvg_id', ''),
+                        tvg_name=ch.get('tvg_name', ''),
+                        tvg_logo=ch.get('tvg_logo', ''),
+                        has_epg=ch.get('has_epg', False),
+                        is_working=ch.get('is_working', None)
+                    ) for ch in batch]
+                    
+                    self.all_channels.extend(batch_channels)
+                    
+                    # Allow UI to process events between batches
+                    QApplication.processEvents()
+                
+                logger.info(f"Processed {len(self.all_channels)} channels into objects")
                 
                 # Update table with loaded channels
                 self.update_channels_table(self.all_channels)
             else:
                 logger.info("No saved channels found")
-            
-            # Load EPG data with timeout
-            start_time = time.time()
-            epg_data = self.data_manager.load_epg_data()
+                
+        except Exception as e:
+            logger.error(f"Error processing loaded channels: {str(e)}", exc_info=True)
+    
+    def on_epg_loaded_from_db(self, epg_data):
+        """Handle EPG data loaded from database"""
+        try:
             if epg_data:
                 self.epg_data = epg_data
-                logger.info(f"Loaded EPG data with {len(epg_data)} entries in {time.time() - start_time:.2f} seconds")
+                logger.info(f"Loaded EPG data with {len(epg_data)} entries")
             else:
                 logger.info("No saved EPG data found")
                 
         except Exception as e:
-            logger.error("Error loading saved data", exc_info=True)
-            self.log_message(f"Error loading saved data: {str(e)}")
+            logger.error(f"Error processing loaded EPG data: {str(e)}", exc_info=True)
 
     def load_all_channels(self):
         """Load channels from all sources"""
@@ -587,37 +841,29 @@ class IPTVGeneratorGUI(QMainWindow):
                             logger.info(f"Loading local playlist: {filename}")
                             playlist_path = os.path.join(local_m3u_dir, filename)
                             
-                            with open(playlist_path, 'r', encoding='utf-8', errors='ignore') as f:
+                            with open(playlist_path, 'r', encoding='utf-8') as f:
                                 content = f.read()
-                                
-                            lines = content.split('\n')
-                            i = 0
-                            local_channels = 0
-                            while i < len(lines):
-                                line = lines[i].strip()
-                                if line.startswith('#EXTINF:'):
-                                    try:
-                                        extinf_data = generator._parse_extinf(line)
-                                        if i + 1 < len(lines):
-                                            url = lines[i + 1].strip()
-                                            if url and not url.startswith('#'):
-                                                channel = Channel(
-                                                    name=extinf_data.get('name', ''),
-                                                    url=url,
-                                                    group=extinf_data.get('group-title', ''),
-                                                    tvg_id=extinf_data.get('tvg-id', ''),
-                                                    tvg_name=extinf_data.get('tvg-name', ''),
-                                                    tvg_logo=extinf_data.get('tvg-logo', '')
-                                                )
-                                                channels.append(channel)
-                                                local_channels += 1
-                                    except Exception as e:
-                                        logger.error(f"Error parsing channel in {filename}: {str(e)}", exc_info=True)
-                                    i += 2
-                                else:
-                                    i += 1
+                            
+                            # Parse M3U content
+                            playlist = m3u8.loads(content)
+                            
+                            for item in playlist.segments:
+                                try:
+                                    # Extract channel info
+                                    channel = Channel(
+                                        name=item.title,
+                                        url=item.uri,
+                                        group=item.group_title if hasattr(item, 'group_title') else "",
+                                        tvg_id=item.tvg_id if hasattr(item, 'tvg_id') else "",
+                                        tvg_name=item.tvg_name if hasattr(item, 'tvg_name') else "",
+                                        tvg_logo=item.tvg_logo if hasattr(item, 'tvg_logo') else ""
+                                    )
+                                    channels.append(channel)
+                                    logger.debug(f"Loaded channel: {channel.name}")
+                                except Exception as e:
+                                    logger.error(f"Error parsing channel in {filename}: {str(e)}", exc_info=True)
                                     
-                            logger.info(f"Loaded {local_channels} channels from {filename}")
+                            logger.info(f"Loaded {len(playlist.segments)} channels from {filename}")
                                     
                         except Exception as e:
                             logger.error(f"Error loading local playlist {filename}: {str(e)}", exc_info=True)
@@ -680,28 +926,54 @@ class IPTVGeneratorGUI(QMainWindow):
             logger.error(f"Error handling loaded channels: {str(e)}", exc_info=True)
             self.error_signal.emit(f"Error handling loaded channels: {str(e)}")
 
-    def on_check_complete(self):
-        """Handle completion of channel checking"""
+    def on_check_complete(self, checked_channels):
+        """
+        Handle completion of channel checking
+        """
         try:
-            # Re-enable buttons
-            self.check_button.setEnabled(True)
-            self.generate_button.setEnabled(True)
-            self.load_button.setEnabled(True)
+            # Use QTimer to ensure UI updates happen on main thread
+            from PyQt5.QtCore import QTimer
             
-            # Reset progress bar
-            self.progress_bar.setValue(0)
+            def update_ui():
+                try:
+                    # Update UI and log results
+                    self.log_message(f"Checked {len(checked_channels)} channels")
+                    
+                    # Update channel status in the table
+                    for channel in checked_channels:
+                        for row in range(self.channels_table.rowCount()):
+                            table_channel = self.get_channel_from_row(row)
+                            if table_channel and table_channel.url == channel.url:
+                                # Update working status
+                                status_item = self.channels_table.item(row, 4)  # Status column is index 4
+                                if status_item:
+                                    status_item.setText("Working" if channel.is_working else "Not Working")
+                                    status_item.setForeground(Qt.green if channel.is_working else Qt.red)
+                                break
+                    
+                    # Reset UI state
+                    self.progress_bar.setValue(self.progress_bar.maximum())
+                    self.stop_button.setEnabled(False)
+                    
+                    # Re-enable buttons
+                    self.check_button.setEnabled(True)
+                    self.generate_button.setEnabled(True)
+                    self.load_button.setEnabled(True)
+                    
+                    # Save results
+                    self.save_data()
+                    
+                    self.log_message("Channel check complete")
+                
+                except Exception as e:
+                    logger.error(f"Error updating UI after channel check: {str(e)}", exc_info=True)
             
-            # Update status in table
-            self.update_channels_table(self.all_channels)
-            
-            # Save updated channel statuses
-            self.save_data()
-            
-            self.log_message("Channel check complete")
+            # Ensure UI updates happen on main thread
+            QTimer.singleShot(0, update_ui)
             
         except Exception as e:
-            logger.error(f"Error completing channel check: {str(e)}", exc_info=True)
-            self.error_signal.emit(f"Error completing channel check: {str(e)}")
+            logger.error(f"Error in on_check_complete: {str(e)}", exc_info=True)
+            self.log_message(f"Error processing channel check results: {str(e)}")
 
     def save_data(self):
         """Save current channels and EPG data"""
@@ -937,7 +1209,7 @@ class IPTVGeneratorGUI(QMainWindow):
             # Use list comprehension for better performance
             selected_count = sum(
                 1 for row in range(self.channels_table.rowCount())
-                if self.channels_table.item(row, 0).checkState() == Qt.CheckState.Checked
+                if self.channels_table.item(row, 0).checkState() == Qt.Checked
             )
             
             # Update status label
@@ -997,7 +1269,7 @@ class IPTVGeneratorGUI(QMainWindow):
         try:
             selected_channels = []
             for row in range(self.channels_table.rowCount()):
-                if self.channels_table.item(row, 0).checkState() == Qt.CheckState.Checked:
+                if self.channels_table.item(row, 0).checkState() == Qt.Checked:
                     channel = self.get_channel_from_row(row)
                     if channel:
                         selected_channels.append(channel)
@@ -1093,7 +1365,7 @@ class IPTVGeneratorGUI(QMainWindow):
 
     def on_selection_changed(self):
         """Handle table selection"""
-        selected_count = sum(1 for row in range(self.channels_table.rowCount()) if self.channels_table.item(row, 0).checkState() == Qt.CheckState.Checked)
+        selected_count = sum(1 for row in range(self.channels_table.rowCount()) if self.channels_table.item(row, 0).checkState() == Qt.Checked)
         self.selected_count_label.setText(f"Selected: {selected_count}")
         
         # Enable/disable buttons based on selection
@@ -1166,15 +1438,46 @@ class IPTVGeneratorGUI(QMainWindow):
             logger.error(f"Error getting channel from row {row}: {str(e)}")
             return None
 
-    def update_progress(self, message):
-        """Update progress bar and log message"""
-        self.log_signal.emit(message)
-        if isinstance(message, int):
-            # Handle progress value
-            self.progress_bar.setValue(message)
-        else:
-            # Handle progress message
-            self.log_message(message)
+    def update_progress(self, progress_data):
+        """
+        Update progress bar and log progress
+        
+        :param progress_data: Tuple of (current_progress, total_progress, channel)
+                             or a string message
+        """
+        try:
+            # Check if input is a tuple (from channel checking)
+            if isinstance(progress_data, tuple) and len(progress_data) == 3:
+                current, total, channel = progress_data
+                
+                # Update progress bar
+                self.progress_bar.setValue(current)
+                
+                # Log progress
+                progress_message = f"Checking channel {current}/{total}: {channel.name}"
+                self.log_signal.emit(progress_message)
+                
+                # Optionally update channel status in table
+                for row in range(self.channels_table.rowCount()):
+                    table_channel = self.get_channel_from_row(row)
+                    if table_channel and table_channel.url == channel.url:
+                        status_item = self.channels_table.item(row, 3)  # Status column is index 3
+                        if status_item:
+                            status_item.setText("Checking...")
+                        break
+            
+            # If input is a string message
+            elif isinstance(progress_data, str):
+                self.log_signal.emit(progress_data)
+                
+            # Update progress bar if possible
+            if hasattr(self, 'progress_bar'):
+                self.progress_bar.repaint()
+        
+        except Exception as e:
+            logger.error(f"Error in update_progress: {str(e)}", exc_info=True)
+            # Fallback logging
+            print(f"Progress update error: {str(e)}")
 
     def on_error(self, error_message):
         """Handle errors during loading"""
@@ -1185,269 +1488,251 @@ class IPTVGeneratorGUI(QMainWindow):
         QMessageBox.critical(self, "Error", f"An error occurred: {error_message}")
 
     def check_selected_channels(self):
-        """Check if selected channels are working"""
+        """
+        Check selected channels with improved performance and responsiveness
+        Process channels in batches to prevent UI freezing
+        """
+        # Create or reset thread pool
+        if not hasattr(self, 'thread_pool'):
+            self.thread_pool = QThreadPool()
+        
+        # Set max thread count
+        self.thread_pool.setMaxThreadCount(max(4, os.cpu_count() * 2))
+        
+        # Get selected channels
+        selected_channels = [
+            self.get_channel_from_row(row) 
+            for row in range(self.channels_table.rowCount())
+            if self.channels_table.item(row, 0).checkState() == Qt.Checked
+        ]
+        
+        if not selected_channels:
+            QMessageBox.warning(self, "No Channels", "Please select channels to check.")
+            return
+        
+        # Determine if all channels are selected
+        all_channels_selected = len(selected_channels) == self.channels_table.rowCount()
+        
+        # If all channels are selected, process in batches of 10
+        if all_channels_selected:
+            # Split channels into batches of 10
+            channel_batches = [
+                selected_channels[i:i+10] 
+                for i in range(0, len(selected_channels), 10)
+            ]
+        else:
+            # If not all channels, process all selected channels in one batch
+            channel_batches = [selected_channels]
+        
+        # Reset progress
+        self.progress_bar.setValue(0)
+        self.progress_bar.setMaximum(len(selected_channels))
+        
+        # Store batches for processing
+        self.channel_batches = channel_batches
+        self.current_batch_index = 0
+        
+        # Start batch processing
+        self.process_next_channel_batch()
+        
+        # Stop button functionality
+        self.stop_button.clicked.connect(self.stop_checking)
+        self.stop_button.setEnabled(True)
+        
+        # Disable other buttons during checking
+        self.check_button.setEnabled(False)
+        self.generate_button.setEnabled(False)
+        self.load_button.setEnabled(False)
+        
+        self.log_message(f"Starting channel check for {len(selected_channels)} channels in batches")
+    
+    def process_next_channel_batch(self):
+        """
+        Process the next batch of channels
+        """
         try:
-            logger.debug("Starting check_selected_channels")
-            selected_channels = []
-            for row in range(self.channels_table.rowCount()):
-                if self.channels_table.item(row, 0).checkState() == Qt.CheckState.Checked:
-                    channel = self.get_channel_from_row(row)
-                    if channel:
-                        selected_channels.append(channel)
-            
-            if not selected_channels:
-                logger.debug("No channels selected")
-                QMessageBox.warning(self, 'Warning', 'Please select channels to check')
+            # Ensure batch index is initialized
+            if not hasattr(self, 'current_batch_index'):
+                self.current_batch_index = 0
+                
+            # Ensure channel_batches exists
+            if not hasattr(self, 'channel_batches'):
+                self.log_message("No channel batches to process")
+                self.finalize_channel_check()
                 return
-            
-            logger.info(f"Starting check of {len(selected_channels)} channels")
-            self.progress_bar.setMaximum(len(selected_channels))
-            self.progress_bar.setValue(0)
-            
-            # Update button states
-            logger.debug("Updating button states")
-            self.check_button.setEnabled(False)
-            self.generate_button.setEnabled(False)
-            self.load_button.setEnabled(False)
-            self.stop_button.setEnabled(True)
-            
-            def on_worker_finished():
-                logger.debug("Worker finished, re-enabling buttons")
-                self.check_button.setEnabled(True)
-                self.generate_button.setEnabled(True)
-                self.load_button.setEnabled(True)
-                self.stop_button.setEnabled(False)
-                self.progress_bar.setValue(self.progress_bar.maximum())
-                self.log_message("Channel check completed")
-                self.save_data()  # Save the results
-            
-            def on_worker_error(error_msg):
-                logger.error(f"Worker error: {error_msg}")
-                self.log_message(f"Error checking channels: {error_msg}")
-                on_worker_finished()  # Re-enable buttons on error
-            
-            # Create worker thread for checking channels
-            logger.debug("Creating worker thread")
-            self.worker = WorkerThread(self.check_channels, selected_channels)
-            
-            # Connect signals
-            logger.debug("Connecting worker signals")
-            self.worker.signals.progress.connect(self.update_check_progress)
-            self.worker.signals.finished.connect(on_worker_finished)
-            self.worker.signals.error.connect(on_worker_error)
-            self.worker.signals.result.connect(lambda results: self.on_check_complete(results))
-            
-            # Start worker
-            logger.debug("Starting worker thread")
-            self.worker.start()
-            logger.debug("Worker thread started")
-            
+                
+            # Check if there are more batches to process
+            if self.current_batch_index < len(self.channel_batches):
+                # Get current batch
+                current_batch = self.channel_batches[self.current_batch_index]
+                
+                # Create a runnable for channel checking
+                channel_check_runnable = ChannelCheckRunnable(
+                    self.perform_channel_check, 
+                    current_batch
+                )
+                
+                # Connect signals
+                channel_check_runnable.signals.result.connect(self.on_batch_check_complete)
+                channel_check_runnable.signals.error.connect(self.on_worker_error)
+                
+                # Start checking this batch
+                self.thread_pool.start(channel_check_runnable)
+                
+                # Log batch processing
+                self.log_message(f"Processing batch {self.current_batch_index + 1}/{len(self.channel_batches)}")
+            else:
+                # All batches processed
+                self.finalize_channel_check()
+        
         except Exception as e:
-            logger.error("Error starting channel check", exc_info=True)
-            self.log_message(f"Error starting channel check: {str(e)}")
-            self.check_button.setEnabled(True)
-            self.generate_button.setEnabled(True)
-            self.load_button.setEnabled(True)
-            self.stop_button.setEnabled(False)
-
-    def stop_checking(self):
-        """Stop the channel checking process"""
+            logger.error(f"Error processing channel batch: {str(e)}", exc_info=True)
+            self.finalize_channel_check()
+    
+    def on_batch_check_complete(self, checked_channels):
+        """
+        Handle completion of a batch of channel checking
+        """
         try:
-            if self.worker and self.worker.isRunning():
-                logger.info("Stopping channel check")
-                self.worker.stop()
-                self.log_message("Stopping channel check...")
-                self.stop_button.setEnabled(False)
-                
-                # Save current progress
-                self.save_data()
-                
-        except Exception as e:
-            logger.error(f"Error stopping channel check: {str(e)}", exc_info=True)
-            self.log_message(f"Error stopping channel check: {str(e)}")
-
-    def check_channels(self, channels):
-        """Check if channels are working"""
-        try:
-            logger.debug("Starting check_channels")
-            results = []
-            total = len(channels)
-            
-            # Configure session with retry strategy and connection pooling
-            logger.debug("Configuring requests session")
-            session = requests.Session()
-            retries = Retry(
-                total=2,
-                backoff_factor=0.1,
-                status_forcelist=[500, 502, 503, 504]
-            )
-            adapter = HTTPAdapter(
-                max_retries=retries,
-                pool_connections=50,
-                pool_maxsize=50
-            )
-            session.mount('http://', adapter)
-            session.mount('https://', adapter)
-            
-            # Use ThreadPoolExecutor for parallel checking
-            max_workers = min(32, os.cpu_count() * 4)  # Limit max workers
-            logger.debug(f"Creating thread pool with {max_workers} workers")
-            
-            with ThreadPoolExecutor(max_workers=max_workers) as executor:
-                # Submit all check tasks
-                future_to_channel = {
-                    executor.submit(
-                        self._check_single_channel, 
-                        session, 
-                        channel
-                    ): channel for channel in channels
-                }
-                
-                completed = 0
-                for future in as_completed(future_to_channel):
-                    # Check if stopping was requested
-                    if hasattr(self, 'worker') and self.worker.is_stopped:
-                        logger.info("Channel check stopped by user")
-                        executor.shutdown(wait=False)
+            # Update UI with this batch's results
+            for channel in checked_channels:
+                for row in range(self.channels_table.rowCount()):
+                    table_channel = self.get_channel_from_row(row)
+                    if table_channel and table_channel.url == channel.url:
+                        # Update working status in the correct column
+                        status_item = self.channels_table.item(row, 3)  # Status column is index 3
+                        if status_item:
+                            status_text = "Working" if channel.is_working else "Not Working"
+                            status_item.setText(status_text)
+                            status_item.setForeground(Qt.green if channel.is_working else Qt.red)
+                        
+                        # Optional: Update the channel object in the table
+                        table_channel.is_working = channel.is_working
                         break
-                        
-                    channel = future_to_channel[future]
-                    completed += 1
-                    
-                    try:
-                        is_working = future.result()
-                        channel.is_working = is_working
-                        results.append(channel)
-                        
-                        # Emit progress update
-                        progress = (completed * 100) // total
-                        self.worker.signals.progress.emit((
-                            channel,
-                            is_working,
-                            progress
-                        ))
-                        
-                    except Exception as e:
-                        logger.error(f"Error checking channel {channel.name}: {str(e)}")
-                        channel.is_working = False
-                        results.append(channel)
-                        self.worker.signals.progress.emit((
-                            channel,
-                            False,
-                            progress
-                        ))
             
-            return results
+            # Move to next batch - ensure attribute exists
+            if not hasattr(self, 'current_batch_index'):
+                self.current_batch_index = 0
             
-        except Exception as e:
-            logger.error(f"Error in check_channels: {str(e)}", exc_info=True)
-            raise
-            
-    def _check_single_channel(self, session, channel):
-        """Check if a single channel is working"""
-        try:
-            logger.debug(f"Checking channel: {channel.name}")
-            
-            # Try HEAD request first
-            try:
-                response = session.head(
-                    channel.url,
-                    timeout=5,
-                    allow_redirects=True,
-                    verify=False
-                )
-            except requests.exceptions.RequestException:
-                # Fallback to GET request if HEAD fails
-                response = session.get(
-                    channel.url,
-                    timeout=5,
-                    stream=True,
-                    verify=False
-                )
-                
-                # Read a small chunk to verify stream
-                next(response.iter_content(chunk_size=1024), None)
-            
-            # Check content type
-            content_type = response.headers.get('content-type', '').lower()
-            valid_types = ['video/', 'application/x-mpegurl', 'application/vnd.apple.mpegurl']
-            
-            is_working = (
-                response.status_code == 200 and
-                any(t in content_type for t in valid_types)
-            )
-            
-            logger.debug(f"Channel {channel.name} status: {is_working}")
-            return is_working
-            
-        except Exception as e:
-            logger.debug(f"Channel {channel.name} check failed: {str(e)}")
-            return False
-
-    @pyqtSlot(tuple)
-    def update_check_progress(self, progress_data):
-        """Update progress bar and channel status during check"""
-        try:
-            channel, is_working, progress = progress_data
-            
-            # Find the row for this channel
-            for row in range(self.channels_table.rowCount()):
-                if self.channel_map.get(row) == channel:
-                    # Update status
-                    status_item = QTableWidgetItem()
-                    status_text = "Working" if is_working else "Not Working"
-                    status_item.setText(status_text)
-                    status_item.setForeground(Qt.green if is_working else Qt.red)
-                    self.channels_table.setItem(row, 4, status_item)
-                    break
+            self.current_batch_index += 1
             
             # Update progress bar
-            self.progress_bar.setValue(progress)
+            current_progress = min(
+                self.current_batch_index * 10, 
+                self.progress_bar.maximum()
+            )
+            self.progress_bar.setValue(current_progress)
             
+            # Process next batch
+            self.process_next_channel_batch()
+        
         except Exception as e:
-            logger.error(f"Error updating check progress: {str(e)}", exc_info=True)
-
-    def on_check_complete(self, checked_channels):
-        """Handle completion of channel checking"""
+            logger.error(f"Error in batch check complete: {str(e)}", exc_info=True)
+            self.finalize_channel_check()
+    
+    def finalize_channel_check(self):
+        """
+        Finalize the channel checking process
+        """
         try:
-            logger.debug("Channel check completed")
+            # Reset UI state
+            self.progress_bar.setValue(self.progress_bar.maximum())
+            self.stop_button.setEnabled(False)
             
             # Re-enable buttons
             self.check_button.setEnabled(True)
             self.generate_button.setEnabled(True)
             self.load_button.setEnabled(True)
             
-            # Set progress bar to 100%
-            self.progress_bar.setValue(self.progress_bar.maximum())
+            # Save results
+            self.save_data()
             
-            # Log completion
-            working_count = sum(1 for c in checked_channels if c.is_working)
-            total_count = len(checked_channels)
-            self.log_message(
-                f"Channel check completed: {working_count}/{total_count} channels working"
-            )
+            self.log_message("Channel check complete")
             
+            # Clear batch-related attributes
+            if hasattr(self, 'channel_batches'):
+                del self.channel_batches
+            if hasattr(self, 'current_batch_index'):
+                del self.current_batch_index
+        
         except Exception as e:
-            logger.error(f"Error in on_check_complete: {str(e)}", exc_info=True)
+            logger.error(f"Error finalizing channel check: {str(e)}", exc_info=True)
+            self.log_message(f"Error finalizing channel check: {str(e)}")
 
-    def get_channel_from_row(self, row):
-        """Get channel object from table row"""
+    def stop_checking(self):
+        """Stop the ongoing channel checking process"""
         try:
-            # Get channel directly from the mapping
-            channel = self.channel_map.get(row)
-            if not channel:
-                logger.debug(f"No channel found in map for row {row}")
-                return None
-                
-            if not isinstance(channel, Channel):
-                logger.warning(f"Invalid channel data in row {row}")
-                return None
+            # Stop the channel checking thread if it exists
+            if hasattr(self, 'channel_checker'):
+                self.channel_checker.stop()
             
-            return channel
+            # Stop any ongoing batch processing
+            if hasattr(self, 'channel_batches'):
+                # Clear remaining batches
+                self.channel_batches = self.channel_batches[:self.current_batch_index + 1]
             
+            # Stop thread pool
+            if hasattr(self, 'thread_pool'):
+                try:
+                    self.thread_pool.clear()
+                    self.thread_pool.waitForDone()
+                except Exception as pool_error:
+                    logger.error(f"Error stopping thread pool: {str(pool_error)}", exc_info=True)
+            
+            # Finalize the channel check
+            self.finalize_channel_check()
+            
+            # Log the stopping of channel check
+            self.log_message("Channel checking stopped by user.")
+        
         except Exception as e:
-            logger.error(f"Error getting channel from row {row}: {str(e)}")
-            return None
+            logger.error(f"Error stopping channel check: {str(e)}", exc_info=True)
+            self.log_message(f"Error stopping channel check: {str(e)}")
+            
+            # Ensure UI is reset even if stopping fails
+            self.finalize_channel_check()
+
+    def on_worker_error(self, error_message):
+        """Handle worker thread errors"""
+        self.stop_button.setEnabled(False)
+        self.progress_bar.setValue(0)
+        QMessageBox.critical(self, "Error", f"An error occurred: {error_message}")
+
+    def perform_channel_check(self, selected_channels):
+        """
+        Perform the actual channel checking
+        
+        :param selected_channels: List of channels to check
+        :return: List of checked channels
+        """
+        # Create a channel checker
+        channel_checker = FastChannelChecker(selected_channels)
+        
+        # Create an event loop to run the channel checker
+        loop = QEventLoop()
+        checked_channels = []
+        
+        def on_finished(channels):
+            nonlocal checked_channels
+            checked_channels = channels
+            loop.quit()
+        
+        def on_error(error):
+            logger.error(f"Channel check error: {error}")
+            loop.quit()
+        
+        # Connect signals
+        channel_checker.finished.connect(on_finished)
+        channel_checker.error.connect(on_error)
+        channel_checker.progress.connect(self.update_progress)
+        
+        # Run the channel checker
+        channel_checker.run()
+        
+        # Start the event loop
+        loop.exec_()
+        
+        return checked_channels
 
 def main():
     app = QApplication(sys.argv)

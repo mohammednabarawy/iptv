@@ -111,9 +111,14 @@ class DataManager:
     
     @contextmanager
     def _get_db(self):
-        """Context manager for database connections"""
+        """Context manager for database connections with optimized settings"""
+        # Regular connection to allow both read and write operations
         conn = sqlite3.connect(self.db_path)
         conn.row_factory = sqlite3.Row
+        
+        # Set optimized database parameters
+        conn.execute("PRAGMA busy_timeout = 5000")  # 5 seconds
+        
         try:
             yield conn
         finally:
@@ -205,22 +210,32 @@ class DataManager:
             raise
     
     def load_channels(self) -> Optional[List[Dict]]:
-        """Load channels data from database"""
+        """Load channels data from database with optimized performance"""
         try:
             with self._get_db() as conn:
+                # Set optimized database parameters
+                conn.execute("PRAGMA cache_size = -10000")  # Use 10MB cache
+                conn.execute("PRAGMA temp_store = MEMORY")
+                
                 cursor = conn.cursor()
                 
                 start_time = time.time()
-                cursor.execute("SELECT * FROM channels")
-                rows = cursor.fetchall()
                 
-                if not rows:
-                    print("No channels found in database")
-                    return None
+                # Use a more efficient query that only selects needed columns
+                # This reduces memory usage and improves performance
+                cursor.execute("""
+                    SELECT url, name, group_title, tvg_id, tvg_name, tvg_logo, has_epg, is_working 
+                    FROM channels
+                """)
                 
+                # Process rows in batches to reduce memory pressure
                 channels = []
-                for row in rows:
-                    channel = {
+                batch_size = 10000
+                rows = cursor.fetchmany(batch_size)
+                
+                while rows:
+                    # Use list comprehension for faster processing
+                    batch_channels = [{
                         'name': row['name'],
                         'url': row['url'],
                         'group': row['group_title'],
@@ -229,8 +244,14 @@ class DataManager:
                         'tvg_logo': row['tvg_logo'],
                         'has_epg': bool(row['has_epg']),
                         'is_working': row['is_working']
-                    }
-                    channels.append(channel)
+                    } for row in rows]
+                    
+                    channels.extend(batch_channels)
+                    rows = cursor.fetchmany(batch_size)
+                
+                if not channels:
+                    print("No channels found in database")
+                    return None
                 
                 print(f"Loaded {len(channels)} channels in {time.time() - start_time:.2f} seconds")
                 return channels
@@ -277,26 +298,37 @@ class DataManager:
             raise
     
     def load_epg_data(self) -> Optional[Dict]:
-        """Load EPG data from database"""
+        """Load EPG data from database with optimized performance"""
         try:
             with self._get_db() as conn:
+                # Set optimized database parameters
+                conn.execute("PRAGMA cache_size = -10000")  # Use 10MB cache
+                conn.execute("PRAGMA temp_store = MEMORY")
+                
                 cursor = conn.cursor()
                 
                 start_time = time.time()
-                cursor.execute("SELECT * FROM epg_data")
-                rows = cursor.fetchall()
                 
-                if not rows:
+                # Only select the columns we need
+                cursor.execute("SELECT channel_id, data FROM epg_data")
+                
+                # Process rows in batches
+                epg_data = {}
+                batch_size = 500
+                rows = cursor.fetchmany(batch_size)
+                
+                while rows:
+                    for row in rows:
+                        try:
+                            epg_data[row['channel_id']] = json.loads(row['data'])
+                        except json.JSONDecodeError:
+                            self.logger.warning(f"Failed to decode EPG data for channel {row['channel_id']}")
+                            continue
+                    rows = cursor.fetchmany(batch_size)
+                
+                if not epg_data:
                     print("No EPG data found in database")
                     return None
-                
-                epg_data = {}
-                for row in rows:
-                    try:
-                        epg_data[row['channel_id']] = json.loads(row['data'])
-                    except json.JSONDecodeError:
-                        self.logger.warning(f"Failed to decode EPG data for channel {row['channel_id']}")
-                        continue
                 
                 print(f"Loaded EPG data with {len(epg_data)} entries in {time.time() - start_time:.2f} seconds")
                 return epg_data
