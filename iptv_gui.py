@@ -3,46 +3,56 @@ import urllib3
 # Suppress only the InsecureRequestWarning from urllib3
 warnings.filterwarnings('ignore', category=urllib3.exceptions.InsecureRequestWarning)
 
+# Set up logger
+from logger_config import setup_logger
+logger = setup_logger()
+
 import sys
+import os
+import time
+import json
+import logging
+import requests
+import m3u8
+import sqlite3
+import threading
+import xml.etree.ElementTree as ET
+import iptv_generator
+from typing import Dict, List, Optional, Tuple, Union
+from datetime import datetime
+from urllib.parse import urlparse
+from requests.adapters import HTTPAdapter
+from requests.packages.urllib3.util.retry import Retry
+from concurrent.futures import ThreadPoolExecutor, as_completed
+import concurrent.futures
+
+# PyQt5 imports
 from PyQt5.QtWidgets import (QApplication, QMainWindow, QWidget, QVBoxLayout,
                            QHBoxLayout, QPushButton, QLabel, QProgressBar,
                            QTextEdit, QFileDialog, QMessageBox, QTabWidget,
                            QListWidget, QListWidgetItem, QFrame, QTableWidget,
                            QTableWidgetItem, QHeaderView, QLineEdit, QComboBox, 
-                           QCheckBox, QGroupBox)
+                           QCheckBox, QGroupBox, QMenu)
 from PyQt5.QtCore import (Qt, QThread, pyqtSignal, QMetaObject, Q_ARG, pyqtSlot,
                          QObject, QRunnable, QThreadPool, QEventLoop)
-from PyQt5.QtGui import QIcon, QColor
+from PyQt5.QtGui import QIcon, QColor, QPixmap
+from PyQt5.QtMultimedia import QMediaPlayer
+from PyQt5.QtMultimediaWidgets import QVideoWidget
 import qtawesome as qta
-import iptv_generator
-import logging
-import os
-import concurrent.futures
-import json
-from data_manager import DataManager
-import requests
-import m3u8
-from datetime import datetime, timedelta
-import vlc
-import time
-from logger_config import setup_logger
-import gzip
-import xml.etree.ElementTree as ET
-from urllib3.util.retry import Retry
-from requests.adapters import HTTPAdapter
-from typing import Dict, Optional
-from concurrent.futures import ThreadPoolExecutor, as_completed
-from config import ConfigManager
-from PyQt5.QtCore import QThreadPool
 
-# Set up logger
-logger = setup_logger()
+# Local imports
+from data_manager import DataManager
+from config_manager import ConfigManager
+from dashboard import Dashboard
+from favorites import FavoritesTab
+from watch_history import WatchHistoryTab
 
 class Channel:
     """Represents an IPTV channel with its properties"""
     def __init__(self, name: str = "", url: str = "", group: str = "", 
                  tvg_id: str = "", tvg_name: str = "", tvg_logo: str = "",
-                 has_epg: bool = False, is_working: Optional[bool] = None):
+                 has_epg: bool = False, is_working: Optional[bool] = None,
+                 resolution: str = None, content_type: str = None):
         self.name = name
         self.url = url
         self.group = group
@@ -51,6 +61,8 @@ class Channel:
         self.tvg_logo = tvg_logo
         self.has_epg = has_epg
         self.is_working = is_working
+        self.resolution = resolution
+        self.content_type = content_type
 
     def to_dict(self) -> Dict:
         """Convert channel to dictionary for JSON serialization"""
@@ -62,7 +74,9 @@ class Channel:
             'tvg_name': self.tvg_name,
             'tvg_logo': self.tvg_logo,
             'has_epg': self.has_epg,
-            'is_working': self.is_working
+            'is_working': self.is_working,
+            'resolution': self.resolution,
+            'content_type': self.content_type
         }
 
     @classmethod
@@ -76,7 +90,9 @@ class Channel:
             tvg_name=data.get('tvg_name', ''),
             tvg_logo=data.get('tvg_logo', ''),
             has_epg=data.get('has_epg', False),
-            is_working=data.get('is_working', None)
+            is_working=data.get('is_working', None),
+            resolution=data.get('resolution', None),
+            content_type=data.get('content_type', None)
         )
 
     def __eq__(self, other):
@@ -181,11 +197,11 @@ class FastChannelChecker(QObject):
     finished = pyqtSignal(list)
     error = pyqtSignal(str)
     
-    def __init__(self, channels, max_workers=20, timeout=3):
+    def __init__(self, channels, max_workers=10, timeout=8):
         super().__init__()
         self.channels = channels
-        self.max_workers = max_workers
-        self.timeout = timeout
+        self.max_workers = max_workers  # Reduced for more reliable checking
+        self.timeout = timeout  # Increased timeout for better reliability
         self.is_stopped = False
         self.executor = None
     
@@ -255,23 +271,71 @@ class FastChannelChecker(QObject):
     
     def _check_channel(self, session, channel):
         """
-        Fast, lightweight channel checking method
+        Improved channel checking method that uses GET requests and validates stream data
         """
         try:
-            # Use HEAD request for minimal overhead
-            response = session.head(
+            # First try a GET request with stream=True to start receiving data
+            # but not download the entire stream
+            response = session.get(
                 channel.url, 
-                timeout=self.timeout, 
+                timeout=self.timeout,
+                stream=True,  # Important for streaming content
                 allow_redirects=True,
                 verify=False  # Consider making SSL verification configurable
             )
             
-            # Determine channel status
-            channel.is_working = (
-                response.status_code == 200 and 
-                any(t in response.headers.get('content-type', '').lower() 
-                    for t in ['video/', 'application/x-mpegurl', 'application/vnd.apple.mpegurl'])
-            )
+            # Check response status
+            if response.status_code != 200:
+                channel.is_working = False
+                return channel
+                
+            # Get content type
+            content_type = response.headers.get('content-type', '').lower()
+            
+            # List of valid content types for streaming media
+            valid_content_types = [
+                'video/', 
+                'audio/',
+                'application/x-mpegurl', 
+                'application/vnd.apple.mpegurl',
+                'application/octet-stream',  # Many streams use this generic type
+                'binary/octet-stream',
+                'application/dash+xml',      # DASH streams
+                'text/plain'                 # Some m3u8 playlists are served as text/plain
+            ]
+            
+            # Check content type
+            content_type_valid = any(t in content_type for t in valid_content_types)
+            
+            # For m3u8 playlists, try to validate the content
+            if 'mpegurl' in content_type or content_type == 'text/plain':
+                # Read a small amount of content to check if it's a valid m3u8 file
+                content_sample = response.text[:1024]  # Get first 1KB
+                
+                # Check for m3u8 signature
+                if '#EXTM3U' in content_sample:
+                    channel.is_working = True
+                    return channel
+            
+            # For direct streams, check if we can get some initial bytes
+            if content_type_valid or 'stream' in content_type:
+                # Try to get first chunk of data
+                try:
+                    # Get first chunk (up to 8KB) to verify stream is readable
+                    chunk = next(response.iter_content(chunk_size=8192), None)
+                    if chunk:  # We got some data
+                        channel.is_working = True
+                        return channel
+                except Exception:
+                    # Failed to get chunk
+                    pass
+            
+            # If we got here without returning, try one more check
+            # Some streams work despite not meeting the above criteria
+            if response.status_code == 200 and len(response.content) > 0:
+                channel.is_working = True
+            else:
+                channel.is_working = False
             
             return channel
         
@@ -298,6 +362,7 @@ class IPTVGeneratorGUI(QMainWindow):
     check_progress = pyqtSignal(int)      # For progress bar updates
     log_signal = pyqtSignal(str)          # For log messages
     error_signal = pyqtSignal(str)        # For error messages
+    update_thumbnail_signal = pyqtSignal(object, object)  # For updating thumbnails (label, pixmap)
 
     def __init__(self):
         super().__init__()
@@ -316,6 +381,7 @@ class IPTVGeneratorGUI(QMainWindow):
             self.is_loading = False
             self.worker = None
             self.current_batch_index = 0
+            self.current_filters = {}
             
             # Create data manager
             self.data_manager = DataManager()
@@ -325,6 +391,8 @@ class IPTVGeneratorGUI(QMainWindow):
             self.category_combo.currentTextChanged.connect(self.apply_filters)
             self.country_edit.textChanged.connect(self.apply_filters)
             self.official_only.stateChanged.connect(self.apply_filters)
+            self.resolution_combo.currentTextChanged.connect(self.apply_filters)
+            self.content_combo.currentTextChanged.connect(self.apply_filters)
             
             self.select_all_button.clicked.connect(self.select_all_visible)
             self.deselect_all_button.clicked.connect(self.deselect_all)
@@ -337,6 +405,14 @@ class IPTVGeneratorGUI(QMainWindow):
             if self.config.get('ui.theme') == 'dark':
                 self.theme_toggle.setChecked(True)
                 self.toggle_theme(Qt.Checked)
+            
+            # Initialize dashboard, favorites, and history tabs
+            self.init_dashboard_tab()
+            self.init_favorites_tab()
+            self.init_history_tab()
+            
+            # Connect tab changed signal
+            self.tab_widget.currentChanged.connect(self.on_tab_changed)
             
             # Load saved data
             self.load_saved_data()
@@ -354,15 +430,42 @@ class IPTVGeneratorGUI(QMainWindow):
             self.setWindowTitle('IPTV Channel Generator')
             self.resize(1200, 800)
             
-            # Create main layout
+            # Create main layout with tabs
             main_widget = QWidget()
             main_layout = QVBoxLayout()
             main_widget.setLayout(main_layout)
             self.setCentralWidget(main_widget)
             
+            # Create tab widget
+            self.tab_widget = QTabWidget()
+            main_layout.addWidget(self.tab_widget)
+            
+            # Create tabs
+            self.channels_tab = QWidget()
+            self.favorites_tab = QWidget()
+            self.history_tab = QWidget()
+            self.dashboard_tab = QWidget()
+            
+            # Add tabs to widget
+            self.tab_widget.addTab(self.channels_tab, "Channels")
+            self.tab_widget.addTab(self.favorites_tab, "Favorites")
+            self.tab_widget.addTab(self.history_tab, "Watch History")
+            self.tab_widget.addTab(self.dashboard_tab, "Dashboard")
+            
+            # Set up layouts for each tab
+            self.channels_layout = QVBoxLayout(self.channels_tab)
+            self.favorites_layout = QVBoxLayout(self.favorites_tab)
+            self.history_layout = QVBoxLayout(self.history_tab)
+            self.dashboard_layout = QVBoxLayout(self.dashboard_tab)
+            
+            # Initialize pagination variables
+            self.page_size = 100  # Number of channels per page
+            self.current_page = 0  # Current page index (0-based)
+            self.total_channels = 0  # Total number of channels
+            
             # Create top layout for filters and buttons
             top_layout = QHBoxLayout()
-            main_layout.addLayout(top_layout)
+            self.channels_layout.addLayout(top_layout)
             
             # Filters group
             filter_group = QGroupBox("Filters")
@@ -391,6 +494,29 @@ class IPTVGeneratorGUI(QMainWindow):
             self.official_only.setChecked(False)  # Default to show all channels
             filter_layout.addWidget(self.official_only)
             
+            # Add resolution filter
+            resolution_label = QLabel("Resolution:")
+            self.resolution_combo = QComboBox()
+            self.resolution_combo.addItem("All")
+            self.resolution_combo.addItem("SD")
+            self.resolution_combo.addItem("HD")
+            self.resolution_combo.addItem("FHD")
+            self.resolution_combo.addItem("4K")
+            filter_layout.addWidget(resolution_label)
+            filter_layout.addWidget(self.resolution_combo)
+            
+            # Add content type filter
+            content_label = QLabel("Content Type:")
+            self.content_combo = QComboBox()
+            self.content_combo.addItem("All")
+            self.content_combo.addItem("Movies")
+            self.content_combo.addItem("Series")
+            self.content_combo.addItem("Sports")
+            self.content_combo.addItem("News")
+            self.content_combo.addItem("Kids")
+            filter_layout.addWidget(content_label)
+            filter_layout.addWidget(self.content_combo)
+            
             # Theme toggle
             self.theme_toggle = QCheckBox("Dark Mode")
             self.theme_toggle.stateChanged.connect(self.toggle_theme)
@@ -401,10 +527,13 @@ class IPTVGeneratorGUI(QMainWindow):
             
             # Create channels table
             self.channels_table = QTableWidget()
-            self.channels_table.setColumnCount(6)
+            self.channels_table.setColumnCount(9)  # Added an extra column for hidden data
             self.channels_table.setHorizontalHeaderLabels([
-                "Select", "Name", "Group", "URL", "Status", "EPG"
+                "Select", "Name", "Group", "URL", "Status", "EPG", "Resolution", "Content Type", ""
             ])
+            
+            # Hide the last column which is used for data storage
+            self.channels_table.setColumnHidden(8, True)
             
             # Set column resize modes
             self.channels_table.horizontalHeader().setSectionResizeMode(0, QHeaderView.ResizeToContents)
@@ -413,6 +542,8 @@ class IPTVGeneratorGUI(QMainWindow):
             self.channels_table.horizontalHeader().setSectionResizeMode(3, QHeaderView.Stretch)
             self.channels_table.horizontalHeader().setSectionResizeMode(4, QHeaderView.ResizeToContents)
             self.channels_table.horizontalHeader().setSectionResizeMode(5, QHeaderView.ResizeToContents)
+            self.channels_table.horizontalHeader().setSectionResizeMode(6, QHeaderView.ResizeToContents)
+            self.channels_table.horizontalHeader().setSectionResizeMode(7, QHeaderView.ResizeToContents)
             
             # Enable sorting
             self.channels_table.setSortingEnabled(True)
@@ -423,7 +554,11 @@ class IPTVGeneratorGUI(QMainWindow):
             # Connect selection signal
             self.channels_table.itemChanged.connect(self.on_selection_changed)
             
-            main_layout.addWidget(self.channels_table)
+            # Enable context menu
+            self.channels_table.setContextMenuPolicy(Qt.CustomContextMenu)
+            self.channels_table.customContextMenuRequested.connect(self.show_context_menu)
+            
+            self.channels_layout.addWidget(self.channels_table)
             
             # Selection buttons and count
             selection_layout = QHBoxLayout()
@@ -432,6 +567,24 @@ class IPTVGeneratorGUI(QMainWindow):
             count_label.setPixmap(qta.icon('fa5s.list').pixmap(16, 16))
             selection_layout.addWidget(count_label)
             selection_layout.addWidget(self.selected_count_label)
+            
+            # Pagination controls
+            self.page_info_label = QLabel("Page 1 of 1")
+            selection_layout.addWidget(self.page_info_label)
+            
+            self.prev_page_button = QPushButton()
+            self.prev_page_button.setIcon(qta.icon('fa5s.chevron-left'))
+            self.prev_page_button.setToolTip("Previous Page")
+            self.prev_page_button.clicked.connect(self.prev_page)
+            self.prev_page_button.setEnabled(False)
+            selection_layout.addWidget(self.prev_page_button)
+            
+            self.next_page_button = QPushButton()
+            self.next_page_button.setIcon(qta.icon('fa5s.chevron-right'))
+            self.next_page_button.setToolTip("Next Page")
+            self.next_page_button.clicked.connect(self.next_page)
+            self.next_page_button.setEnabled(False)
+            selection_layout.addWidget(self.next_page_button)
             
             selection_layout.addStretch()
             
@@ -443,7 +596,15 @@ class IPTVGeneratorGUI(QMainWindow):
             self.deselect_all_button.setIcon(qta.icon('fa5s.square'))
             selection_layout.addWidget(self.deselect_all_button)
             
-            main_layout.addLayout(selection_layout)
+            # Add mini-player button
+            self.play_button = QPushButton("Preview")
+            self.play_button.setIcon(qta.icon('fa5s.play'))
+            self.play_button.setToolTip("Preview selected channel")
+            self.play_button.clicked.connect(self.preview_channel)
+            self.play_button.setEnabled(False)
+            selection_layout.addWidget(self.play_button)
+            
+            self.channels_layout.addLayout(selection_layout)
             
             # Output Options Group
             output_group = QGroupBox("Output Options")
@@ -478,11 +639,11 @@ class IPTVGeneratorGUI(QMainWindow):
             output_layout.addLayout(epg_layout)
             
             output_group.setLayout(output_layout)
-            main_layout.addWidget(output_group)
             
-            # Action buttons
+            # Buttons layout
             buttons_layout = QHBoxLayout()
             
+            # Load button
             self.load_button = QPushButton("Load Channels")
             self.load_button.setIcon(qta.icon('fa5s.sync'))
             buttons_layout.addWidget(self.load_button)
@@ -520,6 +681,7 @@ class IPTVGeneratorGUI(QMainWindow):
             self.check_progress.connect(lambda v: self.progress_bar.setValue(v))
             self.log_signal.connect(self.log_message)
             self.error_signal.connect(self.on_error)
+            self.update_thumbnail_signal.connect(self.update_thumbnail)
             
         except Exception as e:
             logger.error(f"Error initializing UI: {str(e)}", exc_info=True)
@@ -926,6 +1088,17 @@ class IPTVGeneratorGUI(QMainWindow):
             logger.error(f"Error handling loaded channels: {str(e)}", exc_info=True)
             self.error_signal.emit(f"Error handling loaded channels: {str(e)}")
 
+    def get_channel_from_row(self, row):
+        """
+        Get the channel object from a table row
+        """
+        try:
+            # Get channel from channel map
+            return self.channel_map.get(row)
+        except Exception as e:
+            logger.error(f"Error getting channel from row {row}: {str(e)}", exc_info=True)
+            return None
+
     def on_check_complete(self, checked_channels):
         """
         Handle completion of channel checking
@@ -939,17 +1112,15 @@ class IPTVGeneratorGUI(QMainWindow):
                     # Update UI and log results
                     self.log_message(f"Checked {len(checked_channels)} channels")
                     
-                    # Update channel status in the table
-                    for channel in checked_channels:
-                        for row in range(self.channels_table.rowCount()):
-                            table_channel = self.get_channel_from_row(row)
-                            if table_channel and table_channel.url == channel.url:
-                                # Update working status
-                                status_item = self.channels_table.item(row, 4)  # Status column is index 4
-                                if status_item:
-                                    status_item.setText("Working" if channel.is_working else "Not Working")
-                                    status_item.setForeground(Qt.green if channel.is_working else Qt.red)
+                    # First update the original channel objects with the check results
+                    for checked_channel in checked_channels:
+                        for channel in self.all_channels:
+                            if channel.url == checked_channel.url:
+                                channel.is_working = checked_channel.is_working
                                 break
+                    
+                    # Then update the UI with the updated channel objects
+                    self.update_channels_table(self.all_channels)
                     
                     # Reset UI state
                     self.progress_bar.setValue(self.progress_bar.maximum())
@@ -1164,9 +1335,49 @@ class IPTVGeneratorGUI(QMainWindow):
                 checkbox.setCheckState(Qt.Unchecked)
                 self.channels_table.setItem(row, 0, checkbox)
                 
-                # Channel name
+                # Channel name with thumbnail
+                name_widget = QWidget()
+                name_layout = QHBoxLayout(name_widget)
+                name_layout.setContentsMargins(2, 2, 2, 2)
+                
+                # Thumbnail label
+                thumbnail = QLabel()
+                thumbnail.setFixedSize(48, 36)
+                thumbnail.setScaledContents(True)
+                
+                # Set default thumbnail
+                default_pixmap = QPixmap(32, 24)
+                default_pixmap.fill(Qt.lightGray)
+                thumbnail.setPixmap(default_pixmap)
+                
+                # Load thumbnail asynchronously if tvg_logo is available
+                if channel.tvg_logo:
+                    self.load_thumbnail(channel.tvg_logo, thumbnail)
+                
+                # Add thumbnail to layout
+                name_layout.addWidget(thumbnail)
+                
+                # Channel name label
+                name_label = QLabel(channel.name)
+                name_label.setStyleSheet("text-align: left;")
+                name_layout.addWidget(name_label, 1)  # Stretch factor 1
+                
+                # Add favorite icon if channel is in favorites
+                if self.data_manager.is_favorite(channel.url):
+                    fav_label = QLabel()
+                    fav_pixmap = qta.icon('fa5s.heart', color='red').pixmap(16, 16)
+                    fav_label.setPixmap(fav_pixmap)
+                    fav_label.setToolTip("Favorite")
+                    name_layout.addWidget(fav_label)
+                
+                # Set the widget in the table
+                self.channels_table.setCellWidget(row, 1, name_widget)
+                
+                # Store the channel name in a hidden item for sorting/filtering
+                # We'll use a different column index for the hidden data
                 name_item = QTableWidgetItem(channel.name)
-                self.channels_table.setItem(row, 1, name_item)
+                name_item.setData(Qt.UserRole, channel.name)
+                self.channels_table.setItem(row, 8, name_item)  # Use a hidden column for data
                 
                 # Channel group
                 group_item = QTableWidgetItem(channel.group)
@@ -1176,7 +1387,7 @@ class IPTVGeneratorGUI(QMainWindow):
                 url_item = QTableWidgetItem(channel.url)
                 self.channels_table.setItem(row, 3, url_item)
                 
-                # Working status
+                # Working status - Make sure it appears in the Status column (index 4)
                 status_item = QTableWidgetItem()
                 if channel.is_working is not None:
                     status_text = "Working" if channel.is_working else "Not Working"
@@ -1184,16 +1395,31 @@ class IPTVGeneratorGUI(QMainWindow):
                     status_item.setForeground(Qt.green if channel.is_working else Qt.red)
                 self.channels_table.setItem(row, 4, status_item)
                 
+                # Clear any incorrect status text that might appear in the URL column
+                url_item = self.channels_table.item(row, 3)
+                if url_item and ("Working" in url_item.text() or "Not Working" in url_item.text()):
+                    # Reset URL to the correct value
+                    url_item.setText(channel.url)
+                
                 # EPG status
                 epg_item = QTableWidgetItem("Yes" if channel.has_epg else "No")
                 epg_item.setForeground(Qt.green if channel.has_epg else Qt.gray)
                 self.channels_table.setItem(row, 5, epg_item)
+                
+                # Resolution
+                resolution_item = QTableWidgetItem(channel.resolution if channel.resolution else "")
+                self.channels_table.setItem(row, 6, resolution_item)
+                
+                # Content Type
+                content_type_item = QTableWidgetItem(channel.content_type if channel.content_type else "")
+                self.channels_table.setItem(row, 7, content_type_item)
             
             # Re-enable signals
             self.channels_table.blockSignals(False)
             
-            # Update counts
+            # Update counts and pagination
             self.update_channel_count()
+            self.update_pagination_controls()
             
         except Exception as e:
             logger.error(f"Error updating channels table: {str(e)}", exc_info=True)
@@ -1219,11 +1445,42 @@ class IPTVGeneratorGUI(QMainWindow):
             has_selection = selected_count > 0
             self.check_button.setEnabled(has_selection)
             self.generate_button.setEnabled(has_selection)
+            self.play_button.setEnabled(selected_count == 1)  # Enable preview only when exactly one channel is selected
             
             logger.debug(f"Selection changed: {selected_count} channels selected")
             
         except Exception as e:
             logger.error(f"Error updating selection count: {str(e)}", exc_info=True)
+            
+    def preview_channel(self):
+        """Preview the selected channel in the mini-player"""
+        try:
+            # Find the selected channel
+            selected_channel = None
+            for row in range(self.channels_table.rowCount()):
+                if self.channels_table.item(row, 0).checkState() == Qt.Checked:
+                    selected_channel = self.get_channel_from_row(row)
+                    break
+                    
+            if not selected_channel:
+                self.log_message("No channel selected for preview")
+                return
+                
+            # Import mini-player here to avoid circular imports
+            from mini_player import MiniPlayer
+            
+            # Create and show mini-player
+            self.mini_player = MiniPlayer(selected_channel.url, selected_channel.name)
+            self.mini_player.show()
+            
+            # Add to watch history
+            self.data_manager.add_to_watch_history(selected_channel.url)
+            
+            self.log_message(f"Previewing channel: {selected_channel.name}")
+            
+        except Exception as e:
+            logger.error(f"Error previewing channel: {str(e)}", exc_info=True)
+            self.error_signal.emit(f"Error previewing channel: {str(e)}")
 
     def select_all_visible(self):
         """Select all visible channels"""
@@ -1374,50 +1631,168 @@ class IPTVGeneratorGUI(QMainWindow):
         self.check_button.setEnabled(has_selection)
 
     def update_channel_count(self):
-        self.selected_count_label.setText(f"Channels: {self.channels_table.rowCount()}")
+        visible_count = self.channels_table.rowCount()
+        self.selected_count_label.setText(f"Channels: {visible_count}/{self.total_channels}")
+        
+    def update_pagination_controls(self):
+        """Update pagination controls based on current state"""
+        total_pages = max(1, (self.total_channels + self.page_size - 1) // self.page_size)
+        current_page = self.current_page + 1  # Convert to 1-based for display
+        
+        # Update page info label
+        self.page_info_label.setText(f"Page {current_page} of {total_pages}")
+        
+        # Enable/disable navigation buttons
+        self.prev_page_button.setEnabled(self.current_page > 0)
+        self.next_page_button.setEnabled(self.current_page < total_pages - 1)
+        
+    def prev_page(self):
+        """Go to previous page"""
+        if self.current_page > 0:
+            self.current_page -= 1
+            self.apply_filters(reset_page=False)  # This will reload data with the new page without resetting
+        
+    def next_page(self):
+        """Go to next page"""
+        total_pages = (self.total_channels + self.page_size - 1) // self.page_size
+        if self.current_page < total_pages - 1:
+            self.current_page += 1
+            self.apply_filters(reset_page=False)  # This will reload data with the new page without resetting
 
-    def apply_filters(self):
-        """Apply filters to the channels table"""
-        if not self.all_channels:
-            return
-
+    def apply_filters(self, reset_page=True):
+        """Apply filters to the channels table
+        
+        Args:
+            reset_page: Whether to reset to first page (True for filter changes, False for pagination)
+        """
         try:
+            # Reset pagination only when filters change, not when navigating pages
+            if reset_page:
+                self.current_page = 0
+            
+            # Store current filters for pagination
+            self.current_filters = {}
+            
+            # Build filter dictionary for database query
             search_text = self.search_input.text().lower().strip()
-            category = self.category_combo.currentText()
-            country = self.country_edit.text().lower().strip()
-            official_only = self.official_only.isChecked()
-
-            filtered_channels = []
-            for channel in self.all_channels:
-                # Skip empty channels
-                if not channel.name or not channel.url:
-                    continue
-                    
-                # Check source filter (only if checked)
-                if official_only and not any(src in channel.tvg_id.lower() for src in ['iptv-org', 'github']):
-                    continue
+            if search_text:
+                self.current_filters['name'] = search_text
                 
-                # Check search text (only if provided)
-                if search_text and not any(search_text in field.lower() for field in [channel.name, channel.group, channel.tvg_name] if field):
-                    continue
-                    
-                # Check category (only if not All)
-                if category != 'All' and not any(category.lower() in field.lower() for field in [channel.group, channel.name] if field):
-                    continue
-                    
-                # Check country (only if provided)
-                if country and not any(country in field.lower() for field in [channel.group, channel.name, channel.tvg_name] if field):
-                    continue
-                    
+            category = self.category_combo.currentText()
+            if category != 'All':
+                self.current_filters['group_title'] = category
+                
+            country = self.country_edit.text().lower().strip()
+            if country:
+                # For country filtering, we need a more complex approach
+                # This is a simplified version - in a real app, you'd have a dedicated country field
+                if 'group_title' in self.current_filters:
+                    # If we already have a category filter, we need to handle both
+                    self.current_filters['group_title'] += f"|{country}"
+                else:
+                    self.current_filters['group_title'] = country
+                
+            official_only = self.official_only.isChecked()
+            if official_only:
+                self.current_filters['tvg_id'] = 'iptv-org'
+                
+            # Handle resolution filter
+            resolution = self.resolution_combo.currentText()
+            if resolution != 'All':
+                self.current_filters['resolution'] = resolution
+                
+            # Handle content type filter
+            content_type = self.content_combo.currentText()
+            if content_type != 'All':
+                self.current_filters['content_type'] = content_type
+            
+            # Get total count with filters for pagination
+            self.total_channels = self.data_manager.get_channel_count(self.current_filters)
+            logger.debug(f"Total channels matching filters: {self.total_channels}")
+            
+            # Calculate valid page number (in case total changed)
+            total_pages = max(1, (self.total_channels + self.page_size - 1) // self.page_size)
+            if self.current_page >= total_pages:
+                self.current_page = max(0, total_pages - 1)
+            
+            # Load current page of channels with filters
+            channels_data = self.data_manager.load_channels(
+                limit=self.page_size,
+                offset=self.current_page * self.page_size,
+                filters=self.current_filters
+            )
+            
+            # Convert to Channel objects
+            filtered_channels = []
+            for channel_dict in channels_data:
+                channel = Channel(
+                    name=channel_dict.get('name', ''),
+                    url=channel_dict.get('url', ''),
+                    group=channel_dict.get('group_title', ''),  # Fixed field name to match database
+                    tvg_id=channel_dict.get('tvg_id', ''),
+                    tvg_name=channel_dict.get('tvg_name', ''),
+                    tvg_logo=channel_dict.get('tvg_logo', ''),
+                    has_epg=channel_dict.get('has_epg', False),
+                    is_working=channel_dict.get('is_working', None),
+                    resolution=channel_dict.get('resolution', None),
+                    content_type=channel_dict.get('content_type', None)
+                )
                 filtered_channels.append(channel)
 
             self.update_channels_table(filtered_channels)
-            self.update_channel_count()
-            logger.info(f"Showing {len(filtered_channels)} channels after filtering")
+            logger.info(f"Showing {len(filtered_channels)} channels after filtering (page {self.current_page + 1} of {total_pages})")
+            
+            # Update pagination controls
+            self.update_pagination_controls()
             
         except Exception as e:
             logger.error(f"Error applying filters: {str(e)}", exc_info=True)
             self.error_signal.emit(f"Error applying filters: {str(e)}")
+
+    def load_saved_data(self):
+        """Load saved channels and EPG data"""
+        try:
+            logger.info("Loading saved data")
+            
+            # Get total channel count first for pagination
+            self.total_channels = self.data_manager.get_channel_count()
+            logger.info(f"Total channels in database: {self.total_channels}")
+            
+            # Load first page of channels with timeout
+            start_time = time.time()
+            channels_data = self.data_manager.load_channels(limit=self.page_size, offset=0)
+            if channels_data:
+                self.all_channels = []
+                for channel_dict in channels_data:
+                    channel = Channel(
+                        name=channel_dict.get('name', ''),
+                        url=channel_dict.get('url', ''),
+                        group=channel_dict.get('group_title', ''),  # Fixed field name to match database
+                        tvg_id=channel_dict.get('tvg_id', ''),
+                        tvg_name=channel_dict.get('tvg_name', ''),
+                        tvg_logo=channel_dict.get('tvg_logo', ''),
+                        has_epg=channel_dict.get('has_epg', False),
+                        is_working=channel_dict.get('is_working', None),
+                        resolution=channel_dict.get('resolution', None),
+                        content_type=channel_dict.get('content_type', None)
+                    )
+                    self.all_channels.append(channel)
+                
+                elapsed = time.time() - start_time
+                logger.info(f"Processed {len(self.all_channels)} channels into objects in {elapsed:.2f} seconds")
+                
+                # Update table with loaded channels
+                self.update_channels_table(self.all_channels)
+                
+                # Update pagination controls
+                self.update_pagination_controls()
+            else:
+                logger.info("No saved channels found")
+                self.total_channels = 0
+                self.update_pagination_controls()
+                
+        except Exception as e:
+            logger.error(f"Error loading saved data: {str(e)}", exc_info=True)
 
     def get_channel_from_row(self, row):
         """Get channel object from table row"""
@@ -1479,11 +1854,302 @@ class IPTVGeneratorGUI(QMainWindow):
             # Fallback logging
             print(f"Progress update error: {str(e)}")
 
+    def init_dashboard_tab(self):
+        """Initialize the dashboard tab"""
+        try:
+            # Create dashboard widget
+            self.dashboard = Dashboard(self.data_manager)
+            
+            # Add to dashboard tab
+            self.dashboard_layout.addWidget(self.dashboard)
+            
+        except Exception as e:
+            logger.error(f"Error initializing dashboard tab: {str(e)}", exc_info=True)
+    
+    def init_favorites_tab(self):
+        """Initialize the favorites tab"""
+        try:
+            # Create favorites widget
+            self.favorites = FavoritesTab(self.data_manager)
+            
+            # Connect signals
+            self.favorites.play_signal.connect(self.play_channel)
+            self.favorites.remove_signal.connect(self.on_favorite_removed)
+            
+            # Add to favorites tab
+            self.favorites_layout.addWidget(self.favorites)
+            
+        except Exception as e:
+            logger.error(f"Error initializing favorites tab: {str(e)}", exc_info=True)
+    
+    def init_history_tab(self):
+        """Initialize the watch history tab"""
+        try:
+            # Create history widget
+            self.history = WatchHistoryTab(self.data_manager)
+            
+            # Connect signals
+            self.history.play_signal.connect(self.play_channel)
+            self.history.favorite_signal.connect(self.on_favorite_added)
+            
+            # Add to history tab
+            self.history_layout.addWidget(self.history)
+            
+        except Exception as e:
+            logger.error(f"Error initializing history tab: {str(e)}", exc_info=True)
+    
+    def on_tab_changed(self, index):
+        """Handle tab changes"""
+        try:
+            # Refresh tab content when switching to it
+            if index == 3:  # Dashboard tab
+                # Refresh dashboard
+                self.dashboard.refresh()
+            elif index == 1:  # Favorites tab
+                # Refresh favorites
+                self.favorites.load_favorites()
+            elif index == 2:  # History tab
+                # Refresh history
+                self.history.load_history()
+                
+        except Exception as e:
+            logger.error(f"Error handling tab change: {str(e)}", exc_info=True)
+    
+    def play_channel(self, url, name):
+        """Play a channel using VLC player"""
+        try:
+            # Check if VLC is installed and available
+            if not self.check_vlc_installed():
+                # Prompt user to install VLC
+                self.prompt_install_vlc()
+                return
+                
+            # Play using VLC
+            self.play_with_vlc(url, name)
+            
+            # Add to watch history
+            self.data_manager.add_to_watch_history(url)
+            
+            self.log_message(f"Playing channel: {name}")
+            
+        except Exception as e:
+            logger.error(f"Error playing channel: {str(e)}", exc_info=True)
+            self.error_signal.emit(f"Error playing channel: {str(e)}")
+            
+    def check_vlc_installed(self):
+        """Check if VLC is installed on the system"""
+        try:
+            import subprocess
+            import os
+            
+            # Common paths for VLC executable
+            vlc_paths = [
+                r"C:\Program Files\VideoLAN\VLC\vlc.exe",
+                r"C:\Program Files (x86)\VideoLAN\VLC\vlc.exe"
+            ]
+            
+            # Check if VLC exists in common paths
+            for path in vlc_paths:
+                if os.path.exists(path):
+                    return True
+                    
+            # Try to run VLC from PATH
+            try:
+                subprocess.run(["vlc", "--version"], 
+                               stdout=subprocess.PIPE, 
+                               stderr=subprocess.PIPE, 
+                               check=True,
+                               shell=True)
+                return True
+            except (subprocess.SubprocessError, FileNotFoundError):
+                return False
+                
+        except Exception as e:
+            logger.error(f"Error checking VLC installation: {str(e)}", exc_info=True)
+            return False
+            
+    def prompt_install_vlc(self):
+        """Prompt the user to install VLC player"""
+        msg = QMessageBox()
+        msg.setIcon(QMessageBox.Warning)
+        msg.setWindowTitle("VLC Not Found")
+        msg.setText("VLC media player is required to play channels.")
+        msg.setInformativeText("Would you like to download and install VLC now?")
+        msg.setStandardButtons(QMessageBox.Yes | QMessageBox.No)
+        
+        if msg.exec_() == QMessageBox.Yes:
+            # Open VLC download page in web browser
+            import webbrowser
+            webbrowser.open("https://www.videolan.org/vlc/")
+            
+    def play_with_vlc(self, url, name):
+        """Play a channel using VLC player"""
+        try:
+            import subprocess
+            import os
+            
+            # Common paths for VLC executable
+            vlc_paths = [
+                r"C:\Program Files\VideoLAN\VLC\vlc.exe",
+                r"C:\Program Files (x86)\VideoLAN\VLC\vlc.exe"
+            ]
+            
+            vlc_path = None
+            
+            # Find VLC executable
+            for path in vlc_paths:
+                if os.path.exists(path):
+                    vlc_path = path
+                    break
+                    
+            if vlc_path:
+                # Launch VLC with the URL
+                subprocess.Popen([vlc_path, url], shell=True)
+            else:
+                # Try to run VLC from PATH
+                subprocess.Popen(["vlc", url], shell=True)
+                
+        except Exception as e:
+            logger.error(f"Error launching VLC: {str(e)}", exc_info=True)
+            self.error_signal.emit(f"Error launching VLC: {str(e)}")
+    
+    def on_favorite_added(self, url):
+        """Handle favorite added signal"""
+        try:
+            # Update channels table to show favorite status
+            self.update_channels_table(self.all_channels)
+            
+        except Exception as e:
+            logger.error(f"Error handling favorite added: {str(e)}", exc_info=True)
+    
+    def on_favorite_removed(self, url):
+        """Handle favorite removed signal"""
+        try:
+            # Update channels table to show favorite status
+            self.update_channels_table(self.all_channels)
+            
+        except Exception as e:
+            logger.error(f"Error handling favorite removed: {str(e)}", exc_info=True)
+            
+    def load_thumbnail(self, url, thumbnail_label):
+        """Load a channel thumbnail asynchronously"""
+        try:
+            # Create worker thread for loading thumbnail
+            worker = threading.Thread(target=self._load_thumbnail_worker, args=(url, thumbnail_label))
+            worker.daemon = True
+            worker.start()
+            
+        except Exception as e:
+            logger.error(f"Error starting thumbnail loader: {str(e)}", exc_info=True)
+            
+    def _load_thumbnail_worker(self, url, thumbnail_label):
+        """Worker thread for loading thumbnails"""
+        try:
+            # Check if URL is valid
+            if not url or not url.startswith(('http://', 'https://')):
+                return
+                
+            # Create session with timeout
+            session = requests.Session()
+            session.mount('http://', HTTPAdapter(max_retries=1))
+            session.mount('https://', HTTPAdapter(max_retries=1))
+            
+            # Get image data
+            response = session.get(url, timeout=3, verify=False)
+            response.raise_for_status()
+            
+            # Create pixmap from image data
+            pixmap = QPixmap()
+            pixmap.loadFromData(response.content)
+            
+            # Update thumbnail in UI thread
+            if not pixmap.isNull():
+                # Use signal to update UI from worker thread
+                self.update_thumbnail_signal.emit(thumbnail_label, pixmap)
+                
+        except Exception as e:
+            # Silently fail - thumbnails are not critical
+            pass
+            
+    def update_thumbnail(self, label, pixmap):
+        """Update thumbnail in the UI thread"""
+        try:
+            # Resize pixmap to fit the label while maintaining aspect ratio
+            pixmap = pixmap.scaled(label.width(), label.height(), Qt.KeepAspectRatio, Qt.SmoothTransformation)
+            
+            # Set the pixmap to the label
+            label.setPixmap(pixmap)
+            
+        except Exception as e:
+            # Silently fail - thumbnails are not critical
+            pass
+            
+    def show_context_menu(self, position):
+        """Show context menu for channels table"""
+        try:
+            # Get the row under the cursor
+            row = self.channels_table.rowAt(position.y())
+            if row < 0:
+                return
+                
+            # Get the channel from the row
+            channel = self.get_channel_from_row(row)
+            if not channel:
+                return
+                
+            # Create context menu
+            menu = QMenu()
+            
+            # Add actions
+            preview_action = menu.addAction(qta.icon('fa5s.play'), "Preview Channel")
+            
+            # Add/remove favorite action
+            is_favorite = self.data_manager.is_favorite(channel.url)
+            if is_favorite:
+                favorite_action = menu.addAction(qta.icon('fa5s.heart', color='red'), "Remove from Favorites")
+            else:
+                favorite_action = menu.addAction(qta.icon('fa5s.heart', color='gray'), "Add to Favorites")
+                
+            # Add copy actions
+            copy_menu = menu.addMenu("Copy")
+            copy_name_action = copy_menu.addAction("Copy Name")
+            copy_url_action = copy_menu.addAction("Copy URL")
+            
+            # Show menu and get selected action
+            action = menu.exec_(self.channels_table.mapToGlobal(position))
+            
+            # Handle action
+            if action == preview_action:
+                # Preview channel
+                self.play_channel(channel.url, channel.name)
+            elif action == favorite_action:
+                # Toggle favorite status
+                if is_favorite:
+                    self.data_manager.remove_from_favorites(channel.url)
+                    self.log_message(f"Removed {channel.name} from favorites")
+                else:
+                    self.data_manager.add_to_favorites(channel.url)
+                    self.log_message(f"Added {channel.name} to favorites")
+                    
+                # Update UI to reflect changes
+                self.update_channels_table(self.all_channels)
+            elif action == copy_name_action:
+                # Copy name to clipboard
+                QApplication.clipboard().setText(channel.name)
+                self.log_message(f"Copied channel name to clipboard: {channel.name}")
+            elif action == copy_url_action:
+                # Copy URL to clipboard
+                QApplication.clipboard().setText(channel.url)
+                self.log_message(f"Copied channel URL to clipboard")
+                
+        except Exception as e:
+            logger.error(f"Error showing context menu: {str(e)}", exc_info=True)
+    
     def on_error(self, error_message):
         """Handle errors during loading"""
+        self.log_message(f"Error: {error_message}")
+        self.progress_bar.setValue(0)
         self.load_button.setEnabled(True)
-        self.generate_button.setEnabled(True)
-        self.check_button.setEnabled(True)
         self.progress_bar.setValue(0)
         QMessageBox.critical(self, "Error", f"An error occurred: {error_message}")
 
@@ -1600,11 +2266,16 @@ class IPTVGeneratorGUI(QMainWindow):
                     table_channel = self.get_channel_from_row(row)
                     if table_channel and table_channel.url == channel.url:
                         # Update working status in the correct column
-                        status_item = self.channels_table.item(row, 3)  # Status column is index 3
+                        status_item = self.channels_table.item(row, 4)  # Status column is index 4
                         if status_item:
                             status_text = "Working" if channel.is_working else "Not Working"
                             status_item.setText(status_text)
                             status_item.setForeground(Qt.green if channel.is_working else Qt.red)
+                            
+                        # Make sure URL column contains the URL, not status
+                        url_item = self.channels_table.item(row, 3)  # URL column is index 3
+                        if url_item and ("Working" in url_item.text() or "Not Working" in url_item.text()):
+                            url_item.setText(table_channel.url)
                         
                         # Optional: Update the channel object in the table
                         table_channel.is_working = channel.is_working

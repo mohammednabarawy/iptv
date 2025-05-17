@@ -1,0 +1,10 @@
+{
+    "ui.theme": "light",
+    "pagination.page_size": 100,
+    "check.timeout": 3,
+    "check.concurrent_requests": 20,
+    "paths.m3u_output": "playlist.m3u",
+    "paths.epg_output": "guide.xml",
+    "features.auto_check": false,
+    "features.auto_load_epg": true
+}
